@@ -3,9 +3,9 @@
     android:id="@+id/drawer_head"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_width="300dp"
+    android:layout_width="200dp"
     tools:src="@drawable/captain_android"
     android:scaleType="centerCrop"
-    android:layout_height="240dp">
+    android:layout_height="140dp">
 
 </ImageView>
