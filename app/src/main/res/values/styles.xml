@@ -1,0 +1,69 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/app_main_color</item>
+        <item name="colorPrimaryDark">@color/app_dark_color</item>
+        <item name="colorAccent">@color/app_main_color</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="alertDialogTheme">@style/Theme.AppCompat.Light.Dialog.Alert</item>
+    </style>
+    <style name="MainTheme" parent="AppTheme">
+
+    </style>
+    <!-- 设置Toolbar 中的Spinner样式-->
+    <style name="MyActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:colorBackground">@android:color/white</item>
+        <item name="android:textColorPrimaryDisableOnly">@color/primary_text_default_material_light</item>
+    </style>
+
+    <style name="WebTheme" parent="AppTheme">
+        <item name="android:windowBackground">@color/web_background</item>
+    </style>
+
+    <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">#ffff8d</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabBackground">?attr/selectableItemBackground</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="tabTextAppearance">@style/MyCustomTabTextAppearance</item>
+        <item name="tabSelectedTextColor">@android:color/white</item>
+    </style>
+    <style name="MyCustomTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#99ffffff</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="AdapterView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:clipToPadding">false</item>
+        <item name="android:scrollbarStyle">outsideOverlay</item>
+        <item name="android:drawSelectorOnTop">true</item>
+    </style>
+
+    <style name="Widget.MyApp.HeaderBar.Spinner" parent="Widget.AppCompat.Spinner.DropDown.ActionBar">
+
+    </style>
+
+    <style name="AdapterItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/space_normal</item>
+        <item name="android:paddingRight">@dimen/space_normal</item>
+        <item name="android:paddingTop">@dimen/space_normal</item>
+        <item name="android:paddingBottom">@dimen/space_normal</item>
+        <item name="android:minHeight">?actionBarSize</item>
+        <item name="android:background">?selectableItemBackground</item>
+    </style>
+
+
+    <style name="ViewerThemeBase" parent="Theme.AppCompat.NoActionBar">
+        <!--<item name="android:windowTranslucentStatus">true</item>-->
+        <!--<item name="android:windowTranslucentNavigation">true</item>-->
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="ViewerTheme" parent="ViewerThemeBase" />
+</resources>
