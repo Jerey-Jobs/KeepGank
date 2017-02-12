@@ -6,12 +6,19 @@
     android:id="@+id/swipe_ly"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?selectableItemBackground"
+    android:background="#ffffff"
     android:minHeight="75dp"
-    android:paddingBottom="@dimen/space_large"
-    android:paddingLeft="@dimen/space_large"
-    android:paddingRight="@dimen/space_large"
-    android:paddingTop="@dimen/space_large">
+    android:layout_marginLeft="@dimen/space_normal"
+    android:layout_marginRight="@dimen/space_normal"
+    android:layout_marginTop="@dimen/space_normal"
+    android:padding="@dimen/space_normal">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="@dimen/space_large"
+        tools:src="@drawable/ic_type_github" />
 
     <TextView
         android:id="@+id/title"
@@ -33,13 +40,4 @@
         android:text="author"
         android:textColor="#757575"
         android:textSize="14sp" />
-
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        tools:src="@drawable/ic_type_github"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 </RelativeLayout>

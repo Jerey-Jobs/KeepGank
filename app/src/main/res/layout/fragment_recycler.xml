@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/swipe_ly"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/translucent_grey_300_96p">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"

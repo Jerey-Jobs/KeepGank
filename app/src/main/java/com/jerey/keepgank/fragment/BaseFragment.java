@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import com.orhanobut.logger.Logger;
 import com.trello.rxlifecycle.components.support.RxFragment;   //切记，是support下的，不然默认是android的Fragment
 
+import butterknife.ButterKnife;
+
 /**
  * Created by Xiamin on 2017/2/12.
  */
@@ -35,6 +37,7 @@ public abstract class BaseFragment extends RxFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
         afterCreate(savedInstanceState);
     }
 

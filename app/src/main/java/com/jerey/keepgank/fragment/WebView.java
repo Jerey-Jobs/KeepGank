@@ -10,7 +10,6 @@ import android.widget.ProgressBar;
 import com.jerey.keepgank.R;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by Xiamin on 2017/2/12.
@@ -31,7 +30,6 @@ public class WebView extends BaseFragment {
 
     @Override
     protected void afterCreate(Bundle savedInstanceState) {
-        ButterKnife.bind(this, mContainView);
         initWebView();
         mWebView.loadUrl(BLOG);
     }
