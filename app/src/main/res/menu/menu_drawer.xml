@@ -13,14 +13,15 @@
             android:icon="@drawable/ic_bookmark_grey600_24dp"
             android:title="@string/action_collection" />
 
-    </group>
-    <group
-        android:id="@+id/group_settings"
-        android:checkableBehavior="none">
+        <item
+            android:id="@+id/my_blog"
+            android:icon="@drawable/ic_star_grey600_24dp"
+            android:title="@string/action_blog" />
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings_grey600_24dp"
             android:title="@string/action_settings" />
+
     </group>
 
 </menu>
