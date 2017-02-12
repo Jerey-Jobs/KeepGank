@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.jerey.keepgank.fragment.HomeFragment;
 import com.orhanobut.logger.Logger;
 
 import butterknife.Bind;
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void updateUI(){
         switch (mCurrentUIIndex){
             case INDEX_HOME:
-                getSupportFragmentManager().beginTransaction().replace(R.id.content)
+                getSupportFragmentManager().beginTransaction().replace(R.id.content,new HomeFragment()).commit();
                 break;
             case INDEX_COLLECTION:
                 break;

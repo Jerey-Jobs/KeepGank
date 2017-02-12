@@ -10,7 +10,6 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 /**
  * Created by Xiamin on 2017/2/11.
  */
-
 public abstract class SingleFragmentActivity extends SwipeBackActivity {
 
     @Override
@@ -22,7 +21,6 @@ public abstract class SingleFragmentActivity extends SwipeBackActivity {
         getSupportFragmentManager().beginTransaction().add(android.R.id.content, fragment).commit();
 
     }
-
 
     protected abstract Fragment getFragment();
 
