@@ -3,7 +3,6 @@ package com.jerey.keepgank.realm;
 import android.content.Context;
 
 import com.jerey.keepgank.bean.Bookmark;
-import com.jerey.keepgank.bean.Type;
 import com.jerey.keepgank.data.IData;
 
 import java.util.List;
@@ -46,27 +45,6 @@ public class RealmData implements IData{
         } else {
             this.mConfiguration = configuration;
         }
-    }
-
-
-    @Override
-    public Observable<List<Type>> getVisibilityTypeList() {
-        return null;
-    }
-
-    @Override
-    public Observable<List<Type>> getAllTypeList() {
-        return null;
-    }
-
-    @Override
-    public Observable<Boolean> updateTypeList(List<Type> list) {
-        return null;
-    }
-
-    @Override
-    public void addTypeList() {
-
     }
 
     @Override

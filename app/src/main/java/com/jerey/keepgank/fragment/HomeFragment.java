@@ -34,6 +34,7 @@ public class HomeFragment extends BaseFragment {
     protected void afterCreate(Bundle savedInstanceState) {
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+
         mFragmentAdapter = new HomeFragmentPagerAdapter(getChildFragmentManager());
         mViewPager.setAdapter(mFragmentAdapter);
 

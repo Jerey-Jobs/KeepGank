@@ -1,7 +1,6 @@
 package com.jerey.keepgank.data;
 
 import com.jerey.keepgank.bean.Bookmark;
-import com.jerey.keepgank.bean.Type;
 
 import java.util.List;
 
@@ -12,14 +11,6 @@ import rx.Observable;
  */
 
 public interface IData {
-
-    Observable<List<Type>> getVisibilityTypeList();
-
-    Observable<List<Type>> getAllTypeList();
-
-    Observable<Boolean> updateTypeList(List<Type> list);
-
-    void addTypeList();
 
     Observable<Bookmark> addBookmark(Bookmark bookmark);
 

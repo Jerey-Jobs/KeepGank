@@ -159,7 +159,7 @@ public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     }
 
     private void loadData(int pager) {
-        GankApi.getIns()
+        GankApi.getInstance()
                 .getCommonGoods(mType, GankApi.LOAD_LIMIT, pager)
                 .compose(this.<Data>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
                 .cache()

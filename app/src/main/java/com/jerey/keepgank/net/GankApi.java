@@ -36,7 +36,7 @@ public class GankApi {
 
     private final GankCloudService mWebService;
 
-    public static GankApi getIns() {
+    public static GankApi getInstance() {
         if (null == instance) {
             synchronized (GankApi.class) {
                 if (null == instance) {
