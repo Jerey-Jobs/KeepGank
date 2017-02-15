@@ -4,6 +4,7 @@
     <string name="action_blog">Blog</string>
     <string name="action_settings">Settings</string>
     <string name="action_home">Home</string>
+    <string name="action_today">Today</string>
     <string name="action_collection">Collection</string>
     <string name="action_luck">Luck</string>
     <string name="android">Android</string>

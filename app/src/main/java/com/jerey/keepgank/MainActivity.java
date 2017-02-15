@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.jerey.keepgank.fragment.HomeFragment;
+import com.jerey.keepgank.fragment.TodayFragment;
 import com.jerey.keepgank.fragment.WebView;
 import com.orhanobut.logger.Logger;
 
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int INDEX_HOME = 0;
     private static final int INDEX_COLLECTION = 1;
     private static final int INDEX_Blog = 2;
+    private static final int INDEX_TODAY = 3;
 
     @Bind(R.id.drawer)
     DrawerLayout mDrawerLayout;
@@ -54,6 +56,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case INDEX_Blog:
                 getSupportFragmentManager().beginTransaction().replace(R.id.content,new WebView()).commit();
+                break;
+            case INDEX_TODAY:
+                getSupportFragmentManager().beginTransaction().replace(R.id.content,new TodayFragment()).commit();
+                break;
         }
     }
 
@@ -65,6 +71,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Logger.i("home被点击");
                 item.setChecked(true);
                 mCurrentUIIndex = INDEX_HOME;
+                updateUI();
+                break;
+            case R.id.nav_today:
+                Logger.i("今日被点击");
+                item.setChecked(true);
+                mCurrentUIIndex = INDEX_TODAY;
                 updateUI();
                 break;
             case R.id.nav_collection:
