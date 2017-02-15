@@ -209,4 +209,9 @@ public class Result implements Serializable {
         return createdDateTime;
     }
 
+    @Override
+    public String toString() {
+        return "who:" + who
+                + "desc:" + desc ;
+    }
 }

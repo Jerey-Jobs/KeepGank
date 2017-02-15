@@ -3,6 +3,7 @@ package com.jerey.keepgank.net;
 import android.util.Log;
 
 import com.jerey.keepgank.bean.Data;
+import com.jerey.keepgank.bean.GankDay;
 
 import java.io.IOException;
 
@@ -107,7 +108,7 @@ public class GankApi {
         );
 
         @GET("/api/day/{year}/{month}/{day}")
-        Observable<Data> getGoodsByDay(
+        Observable<GankDay> getGoodsByDay(
                 @Path("year") int year,
                 @Path("month") int month,
                 @Path("day") int day
@@ -135,6 +136,10 @@ public class GankApi {
         }
     }
 
+    public GankCloudService getWebService(){
+        return mWebService;
+    }
+
     class HttpInterceptor implements Interceptor {
         @Override
         public Response intercept(Chain chain) throws IOException {
@@ -148,4 +153,6 @@ public class GankApi {
             return response;
         }
     }
+
+
 }

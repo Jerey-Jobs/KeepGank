@@ -10,8 +10,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.animation.AccelerateInterpolator;
 
 import com.jerey.keepgank.R;
+import com.jerey.keepgank.bean.GankDay;
+import com.jerey.keepgank.net.GankApi;
+import com.orhanobut.logger.Logger;
+import com.trello.rxlifecycle.FragmentEvent;
 
 import butterknife.Bind;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static com.jerey.keepgank.R.id.toolbar;
 
@@ -60,5 +67,29 @@ public class TodayFragment extends BaseFragment {
                 statusBarColorAnim.start();
             }
         }
+
+        GankApi.getInstance()
+                .getWebService()
+                .getGoodsByDay(2017, 1, 12)
+                .compose(this.<GankDay>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
+                .cache()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<GankDay>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(GankDay gankDay) {
+                        Logger.d(gankDay.toString());
+                    }
+                });
     }
 }
