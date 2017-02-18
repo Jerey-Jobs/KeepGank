@@ -1,19 +1,20 @@
 package com.jerey.keepgank.fragment;
 
 import android.animation.ValueAnimator;
-import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.jerey.keepgank.R;
@@ -22,7 +23,9 @@ import com.jerey.keepgank.bean.GankDay;
 import com.jerey.keepgank.net.GankApi;
 import com.orhanobut.logger.Logger;
 import com.trello.rxlifecycle.FragmentEvent;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import butterknife.Bind;
@@ -36,7 +39,7 @@ import static com.jerey.keepgank.R.id.toolbar;
  * Created by Xiamin on 2017/2/15.
  */
 
-public class TodayFragment extends BaseFragment {
+public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDateSetListener {
 
     @Bind(toolbar)
     Toolbar mToolbar;
@@ -48,12 +51,15 @@ public class TodayFragment extends BaseFragment {
     RecyclerView mRecyclerView;
     @Bind(R.id.story_img)
     ImageView mImageView;
+    @Bind(R.id.float_action_button)
+    FloatingActionButton mButton;
 
     private LinearLayoutManager mLinearLayoutManager;
     private DayFragmentAdapter mAdapter;
     int year;
     int month;
     int day;
+
     @Override
     protected int returnLayoutID() {
         return R.layout.fragment_day;
@@ -71,44 +77,15 @@ public class TodayFragment extends BaseFragment {
         year = calendar.get(java.util.Calendar.YEAR);
         month = calendar.get(java.util.Calendar.MONTH) + 1;
         day = calendar.get(java.util.Calendar.DAY_OF_MONTH);
-
-        mToolbarLayout.setTitle(year + "年" + month + "月" + day + "日");
-        GankApi.getInstance()
-                .getWebService()
-                .getGoodsByDay(year, month, day)
-                .compose(this.<GankDay>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
-                .cache()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<GankDay>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Toast.makeText(getActivity(),"请求网络出错",Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onNext(GankDay gankDay) {
-                        Logger.d(gankDay.toString());
-                        Logger.d(gankDay.results.福利.get(0).getUrl());
-                        Glide.with(TodayFragment.this)
-                                .load(gankDay.results.福利.get(0).getUrl())
-                                .override(300,200)
-                                .error(R.drawable.captain_android)
-                                .placeholder(R.drawable.captain_android)
-                                .into(mImageView);
-                        mAdapter.setData(gankDay.results);
-                        mRecyclerView.setAdapter(mAdapter);
-                    }
-                });
+        //加载前一天的先
+        load(year, month, day -1);
+        //再加载今天的
+        load(year, month, day);
     }
 
-    private void initUI(){
+    private void initUI() {
         mToolbarLayout.setTitle("今日热点");
+        mImageView.setImageResource(R.drawable.jay);
         //设置渐显动画，替换状态栏颜色
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             int statusBarColor = ((AppCompatActivity) getActivity()).getWindow().getStatusBarColor();
@@ -136,6 +113,60 @@ public class TodayFragment extends BaseFragment {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mLinearLayoutManager = new LinearLayoutManager(mRecyclerView.getContext());
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar now = Calendar.getInstance();
+                DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
+                        TodayFragment.this,
+                        now.get(Calendar.YEAR),
+                        now.get(Calendar.MONTH),
+                        now.get(Calendar.DAY_OF_MONTH)
+                );
+                datePickerDialog.setVersion(DatePickerDialog.Version.VERSION_2);
+                datePickerDialog.show(getActivity().getFragmentManager(), "Datepickerdialog");
+            }
+        });
+    }
 
+    private void load(final int year, final int month, final int day) {
+
+        GankApi.getInstance()
+                .getWebService()
+                .getGoodsByDay(year, month, day )
+                .compose(this.<GankDay>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
+                .cache()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<GankDay>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                     //   Toast.makeText(getActivity(), "请求网络出错", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNext(GankDay gankDay) {
+                        mToolbarLayout.setTitle(year + "年" + month + "月" + day   + "日");
+                        Logger.d(gankDay.toString());
+                        Logger.d(gankDay.results.福利.get(0).getUrl());
+                        Glide.with(TodayFragment.this)
+                                .load(gankDay.results.福利.get(0).getUrl())
+                                .override(300, 200)
+                                .error(R.drawable.jay)
+                                .into(mImageView);
+                        mAdapter.setData(gankDay.results);
+                        mRecyclerView.setAdapter(mAdapter);
+                    }
+                });
+    }
+
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        Log.d("###", "DatePickerDialog" + year + "-" + monthOfYear + "-" + dayOfMonth);
+        load(year,monthOfYear + 1,dayOfMonth);
     }
 }

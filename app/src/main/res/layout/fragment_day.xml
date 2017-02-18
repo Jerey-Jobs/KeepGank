@@ -34,18 +34,19 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/transparent"
                 android:fitsSystemWindows="true"
-                app:layout_collapseMode="pin" />
+                app:layout_collapseMode="pin"
+                app:navigationIcon="@drawable/ic_arrow_back"/>
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/float_action_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@drawable/ic_type_github_circle_white_24dp" />
+        app:srcCompat="@drawable/ic_today_white_36dp" />
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
