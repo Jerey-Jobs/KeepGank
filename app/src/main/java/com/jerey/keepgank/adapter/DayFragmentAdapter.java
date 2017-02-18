@@ -123,6 +123,7 @@ public class DayFragmentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public void setData(GankDayResults results){
+        mList.clear();
         if (results.Android != null){
             mList.add(new ViewItem("Android",null,TYPE_TITLE));
             for (Result r: results.Android){
