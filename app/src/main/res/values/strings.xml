@@ -41,4 +41,6 @@
     <string name="empty">Empty</string>
     <string name="no_more">No more</string>
     <string name="git_hub" translatable="false">GitHub</string>
+
+    <string name="error">错误</string>
 </resources>

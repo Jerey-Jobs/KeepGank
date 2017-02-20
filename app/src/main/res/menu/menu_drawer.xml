@@ -10,7 +10,7 @@
             android:title="@string/action_home" />
         <item
             android:id="@+id/nav_today"
-            android:icon="@drawable/ic_home_grey600_24dp"
+            android:icon="@drawable/ic_today_white_36dp"
             android:title="@string/action_today" />
 
         <item
