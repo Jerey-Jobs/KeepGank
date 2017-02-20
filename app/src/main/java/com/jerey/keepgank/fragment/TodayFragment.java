@@ -78,7 +78,7 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
         month = calendar.get(java.util.Calendar.MONTH) + 1;
         day = calendar.get(java.util.Calendar.DAY_OF_MONTH);
         //加载前一天的先
-        load(year, month, day -1);
+        load(year, month, day - 1);
         //再加载今天的
         load(year, month, day);
     }
@@ -133,7 +133,7 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
 
         GankApi.getInstance()
                 .getWebService()
-                .getGoodsByDay(year, month, day )
+                .getGoodsByDay(year, month, day)
                 .compose(this.<GankDay>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
                 .cache()
                 .subscribeOn(Schedulers.io())
@@ -145,21 +145,25 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
 
                     @Override
                     public void onError(Throwable e) {
-                     //   Toast.makeText(getActivity(), "请求网络出错", Toast.LENGTH_SHORT).show();
+                        showSnackbar(R.string.error);
                     }
 
                     @Override
                     public void onNext(GankDay gankDay) {
-                        mToolbarLayout.setTitle(year + "年" + month + "月" + day   + "日");
                         Logger.d(gankDay.toString());
-                        Logger.d(gankDay.results.福利.get(0).getUrl());
-                        Glide.with(TodayFragment.this)
-                                .load(gankDay.results.福利.get(0).getUrl())
-                                .override(300, 200)
-                                .error(R.drawable.jay)
-                                .into(mImageView);
-                        mAdapter.setData(gankDay.results);
-                        mRecyclerView.setAdapter(mAdapter);
+                        if (gankDay != null && gankDay.results != null && gankDay.results.Android != null) {
+                            mToolbarLayout.setTitle(year + "年" + month + "月" + day + "日");
+                            Logger.d(gankDay.results.福利.get(0).getUrl());
+                            Glide.with(TodayFragment.this)
+                                    .load(gankDay.results.福利.get(0).getUrl())
+                                    .override(300, 200)
+                                    .error(R.drawable.jay)
+                                    .into(mImageView);
+                            mAdapter.setData(gankDay.results);
+                            mRecyclerView.setAdapter(mAdapter);
+                        } else {
+                            showSnackbar("该日可能没有更新哦");
+                        }
                     }
                 });
     }
@@ -167,6 +171,6 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         Log.d("###", "DatePickerDialog" + year + "-" + monthOfYear + "-" + dayOfMonth);
-        load(year,monthOfYear + 1,dayOfMonth);
+        load(year, monthOfYear + 1, dayOfMonth);
     }
 }
