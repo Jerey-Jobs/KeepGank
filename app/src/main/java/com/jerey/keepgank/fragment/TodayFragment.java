@@ -18,6 +18,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.jerey.keepgank.R;
+import com.jerey.keepgank.View.SlideInOutRightItemAnimator;
 import com.jerey.keepgank.adapter.DayFragmentAdapter;
 import com.jerey.keepgank.bean.GankDay;
 import com.jerey.keepgank.net.GankApi;
@@ -161,6 +162,7 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
                                     .into(mImageView);
                             mAdapter.setData(gankDay.results);
                             mRecyclerView.setAdapter(mAdapter);
+                            mRecyclerView.setItemAnimator(new SlideInOutRightItemAnimator(mRecyclerView));
                         } else {
                             showSnackbar("该日可能没有更新哦");
                         }

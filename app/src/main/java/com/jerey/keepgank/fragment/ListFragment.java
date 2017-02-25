@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.jerey.keepgank.R;
+import com.jerey.keepgank.View.SlideInOutRightItemAnimator;
 import com.jerey.keepgank.View.SwipeToRefreshLayout;
 import com.jerey.keepgank.adapter.ListFragmentAdapter;
 import com.jerey.keepgank.bean.Data;
@@ -99,6 +100,7 @@ public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         initSwipeRefreshLayout(mSwipeRefreshLayout);
         mAdapter = new ListFragmentAdapter(getActivity());
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setItemAnimator(new SlideInOutRightItemAnimator(mRecyclerView));
         mRecyclerView.addOnScrollListener(mOnScrollListener);
         requestRefresh();
     }

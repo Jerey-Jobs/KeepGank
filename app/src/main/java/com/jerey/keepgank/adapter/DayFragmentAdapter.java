@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.bean.GankDayResults;
 import com.jerey.keepgank.bean.Result;
-import com.jerey.keepgank.utils.SystemUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,8 +109,9 @@ public class DayFragmentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 //                    if(GankApplication.getOpenUrl()== GeneralPrefs.OPEN_URL_WEB_VIEW){
 //                        WebActivity.startWebActivity(mContext, result);
 //                    }else{
-                    SystemUtils.openUrlByBrowser(mContext, result.url);
+//                    SystemUtils.openUrlByBrowser(mContext, result.url);
 //                    }
+
                 }
             });
         }

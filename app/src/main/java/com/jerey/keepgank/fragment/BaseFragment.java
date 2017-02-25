@@ -30,7 +30,9 @@ public abstract class BaseFragment extends RxFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mContainView = inflater.inflate(returnLayoutID(), container, false);
+        if(mContainView == null) {
+            mContainView = inflater.inflate(returnLayoutID(), container, false);
+        }
         return mContainView;
     }
 

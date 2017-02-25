@@ -17,9 +17,6 @@ import com.jerey.keepgank.fragment.TodayFragment;
 import com.jerey.keepgank.fragment.WebView;
 import com.orhanobut.logger.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -53,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Fragment mBlogFragment;
     Fragment mTodayFragment;
     Fragment mCurrentFragment;
-    List<Fragment> mFragmentList = new ArrayList<>(5);
 
     private void updateUI() {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {

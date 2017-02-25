@@ -9,9 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jerey.keepgank.R;
+import com.jerey.keepgank.activity.MyWebActivity;
 import com.jerey.keepgank.bean.Result;
 import com.jerey.keepgank.utils.IconUtils;
-import com.jerey.keepgank.utils.SystemUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,9 +74,9 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
                 @Override
                 public void onClick(View v) {
 //                    if(GankApplication.getOpenUrl()== GeneralPrefs.OPEN_URL_WEB_VIEW){
-//                        WebActivity.startWebActivity(mContext, result);
+                        MyWebActivity.startWebActivity(mContext, result);
 //                    }else{
-                    SystemUtils.openUrlByBrowser(mContext, result.getUrl());
+//                    SystemUtils.openUrlByBrowser(mContext, result.getUrl());
 //                    }
                 }
             });

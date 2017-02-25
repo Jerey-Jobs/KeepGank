@@ -21,8 +21,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="#f5f5f5"
-                android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+                android:background="?attr/colorPrimary"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
             <ProgressBar

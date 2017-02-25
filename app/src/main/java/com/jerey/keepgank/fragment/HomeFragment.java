@@ -43,6 +43,7 @@ public class HomeFragment extends BaseFragment {
                 mFragmentAdapter.addFragment(ListFragment.getListFragment(type), type);
         }
         mFragmentAdapter.notifyDataSetChanged();
+        //所有子fragment均不销毁
         mViewPager.setOffscreenPageLimit(mFragmentAdapter.getCount());
         mTabLayout.setupWithViewPager(mViewPager);
         mViewPager.setCurrentItem(0);

@@ -1,9 +1,14 @@
 package com.jerey.keepgank.fragment;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
-import android.widget.Toolbar;
 
 import com.jerey.keepgank.R;
 
@@ -21,18 +26,18 @@ public class WebFragment extends BaseFragment {
     public static final String DATA_TYPE = "data_type";
     public static final String DATA_WHO = "data_who";
 
-    @Bind(R.id.toolbar)
-    Toolbar mToolBar;
     @Bind(R.id.progress_bar)
     ProgressBar mProgressBar;
     @Bind(R.id.web_view)
     android.webkit.WebView mWebView;
 
+    Toolbar mToolBar;
     private String mId;
     private String mTitle;
     private String mURl;
     private String mType;
     private String mWho;
+
     public static WebFragment newInstance(String id, String title, String url, String type, String who) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(DATA_ID, id);
@@ -53,16 +58,47 @@ public class WebFragment extends BaseFragment {
 
     @Override
     protected void afterCreate(Bundle savedInstanceState) {
-        if(savedInstanceState != null){
-            Log.d(TAG,"afterCreate have savedInstanceState ");
-            mId = getArguments().getString(DATA_ID);
-            mTitle = getArguments().getString(DATA_TITLE);
-            mType = getArguments().getString(DATA_TYPE);
-            mURl = getArguments().getString(DATA_URL);
-            mWho = getArguments().getString(DATA_WHO);
-        }
+        Log.d(TAG, "afterCreate");
+        mToolBar = (Toolbar) mContainView.findViewById(R.id.toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolBar);
+        mId = getArguments().getString(DATA_ID);
+        mTitle = getArguments().getString(DATA_TITLE);
+        mType = getArguments().getString(DATA_TYPE);
+        mURl = getArguments().getString(DATA_URL);
+        initWebView();
+        mWebView.loadUrl(mURl);
+    }
 
+    private void initWebView() {
+        mWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(android.webkit.WebView view, String url) {
+                //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
+                view.loadUrl(url);
+                return true;
+            }
+        });
+        mWebView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(android.webkit.WebView view, int newProgress) {
+                if (newProgress == 100) {
+                    // 网页加载完成
+                    if (mProgressBar != null) {
+                        mProgressBar.setVisibility(View.GONE);
+                        mProgressBar.setProgress(0);
+                    }
+                } else {
+                    // 加载中
+                    if (mProgressBar != null) {
+                        mProgressBar.setVisibility(View.VISIBLE);
+                        mProgressBar.setProgress(newProgress);
+                    }
+                }
+            }
+        });
         mWebView.getSettings().setJavaScriptEnabled(true);
-
+        mWebView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        mWebView.getSettings().setSupportZoom(true);
+        mWebView.getSettings().setDisplayZoomControls(true);
     }
 }
