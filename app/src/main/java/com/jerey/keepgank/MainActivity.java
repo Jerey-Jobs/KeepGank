@@ -2,6 +2,8 @@ package com.jerey.keepgank;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -15,10 +17,13 @@ import com.jerey.keepgank.fragment.TodayFragment;
 import com.jerey.keepgank.fragment.WebView;
 import com.orhanobut.logger.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private int mCurrentUIIndex = 0;
     private static final int INDEX_HOME = 0;
@@ -44,21 +49,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    private void updateUI(){
-        if(mDrawerLayout.isDrawerOpen(GravityCompat.START)){
+    Fragment mHomeFragment;
+    Fragment mBlogFragment;
+    Fragment mTodayFragment;
+    Fragment mCurrentFragment;
+    List<Fragment> mFragmentList = new ArrayList<>(5);
+
+    private void updateUI() {
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         }
-        switch (mCurrentUIIndex){
+        switch (mCurrentUIIndex) {
             case INDEX_HOME:
-                getSupportFragmentManager().beginTransaction().replace(R.id.content,new HomeFragment()).commit();
+                if (mHomeFragment == null) {
+                    mHomeFragment = new HomeFragment();
+                }
+                switchFragment(mHomeFragment);
+
                 break;
             case INDEX_COLLECTION:
                 break;
             case INDEX_Blog:
-                getSupportFragmentManager().beginTransaction().replace(R.id.content,new WebView()).commit();
+                if (mBlogFragment == null){
+                    mBlogFragment = new WebView();
+                }
+                switchFragment(mBlogFragment);
+
                 break;
             case INDEX_TODAY:
-                getSupportFragmentManager().beginTransaction().replace(R.id.content,new TodayFragment()).commit();
+                if (mTodayFragment == null){
+                    mTodayFragment = new TodayFragment();
+                }
+                switchFragment(mTodayFragment);
                 break;
         }
     }
@@ -101,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     /**
      * 监听按钮，在Drawer打开状态下，若不监听，按下返回键则会退出该界面
+     *
      * @param keyCode
      * @param event
      * @return
@@ -108,14 +131,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-            if(mDrawerLayout.isDrawerOpen(GravityCompat.START)){
+            if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
                 mDrawerLayout.closeDrawer(GravityCompat.START);
-            }else{
+            } else {
                 finish();
                 overridePendingTransition(0, R.anim.out_to_bottom);
             }
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    private void switchFragment(Fragment fragment) {
+        FragmentTransaction fragmentTransaction;
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        if(mCurrentFragment != null){
+            fragmentTransaction.hide(mCurrentFragment);
+        }
+        if (fragment.isAdded()) {
+            fragmentTransaction.show(fragment);
+        } else {
+            fragmentTransaction.add(R.id.content, fragment);
+        }
+        fragmentTransaction.commit();
+        mCurrentFragment = fragment;
     }
 }
