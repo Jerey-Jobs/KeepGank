@@ -59,7 +59,6 @@ public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                     showSnackbar(R.string.no_more);
                 }
                 if (isLoadingMore) {
-                    currentPager++;
                     mAdapter.addData(goodsResult.getResults());
                 } else if (isLoadingNewData) {
                     isALlLoad = false;

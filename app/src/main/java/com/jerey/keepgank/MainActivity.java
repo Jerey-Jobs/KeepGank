@@ -13,6 +13,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.jerey.keepgank.fragment.HomeFragment;
+import com.jerey.keepgank.fragment.MeiziFragment;
 import com.jerey.keepgank.fragment.TodayFragment;
 import com.jerey.keepgank.fragment.WebView;
 import com.orhanobut.logger.Logger;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Fragment mHomeFragment;
     Fragment mBlogFragment;
     Fragment mTodayFragment;
+    Fragment mMeiziFragment;
     Fragment mCurrentFragment;
 
     private void updateUI() {
@@ -64,6 +66,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 break;
             case INDEX_COLLECTION:
+                if(mMeiziFragment == null){
+                    mMeiziFragment = new MeiziFragment();
+                }
+                switchFragment(mMeiziFragment);
                 break;
             case INDEX_Blog:
                 if (mBlogFragment == null){

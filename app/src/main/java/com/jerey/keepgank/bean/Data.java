@@ -52,4 +52,8 @@ public class Data {
         this.results = results;
     }
 
+    @Override
+    public String toString() {
+        return results.toString();
+    }
 }

@@ -22,5 +22,5 @@ public class Config {
     public static final String TYPE_GIRL = "福利";
     public static final String TYPE_RESOURCES = "拓展资源";
 
-    public static final String[] TYPES = {TYPE_ANDROID,TYPE_IOS,TYPE_FRONT_END,TYPE_RECOMMEND,TYPE_VIDEO,TYPE_GIRL,TYPE_RESOURCES};
+    public static final String[] TYPES = {TYPE_ANDROID,TYPE_IOS,TYPE_FRONT_END,TYPE_RECOMMEND,TYPE_VIDEO,TYPE_RESOURCES};
 }

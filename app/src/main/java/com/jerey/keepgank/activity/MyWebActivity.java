@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Window;
 
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.base.SingleFragmentActivity;
@@ -26,6 +28,12 @@ public class MyWebActivity extends SingleFragmentActivity {
             mWebFragment = new WebFragment();
         }
         return mWebFragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
     }
 
     @Override

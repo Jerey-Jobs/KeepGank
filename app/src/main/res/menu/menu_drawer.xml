@@ -16,7 +16,7 @@
         <item
             android:id="@+id/nav_collection"
             android:icon="@drawable/ic_bookmark_grey600_24dp"
-            android:title="@string/action_collection" />
+            android:title="@string/girl" />
 
         <item
             android:id="@+id/my_blog"

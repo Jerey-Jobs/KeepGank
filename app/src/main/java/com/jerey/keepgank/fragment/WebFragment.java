@@ -1,9 +1,15 @@
 package com.jerey.keepgank.fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.ClipboardManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -100,5 +106,35 @@ public class WebFragment extends BaseFragment {
         mWebView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         mWebView.getSettings().setSupportZoom(true);
         mWebView.getSettings().setDisplayZoomControls(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.menu_web, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_copy_the_url:
+                ClipboardManager c = (ClipboardManager) getActivity().getSystemService(getActivity().CLIPBOARD_SERVICE);
+                c.setText(mURl);
+                break;
+            case R.id.action_open_in_browser:
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mURl));
+                getActivity().startActivity(intent);
+                break;
+            case R.id.action_share:
+                Intent intent1 = new Intent(Intent.ACTION_SEND);
+                intent1.setType("text/plain");
+                intent1.putExtra(Intent.EXTRA_TEXT, mURl);
+                intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getActivity().startActivity(Intent.createChooser(intent1, mTitle));
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

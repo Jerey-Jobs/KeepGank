@@ -212,6 +212,7 @@ public class Result implements Serializable {
     @Override
     public String toString() {
         return "who:" + who
-                + "desc:" + desc ;
+                + "desc:" + desc
+                + " url: " + url;
     }
 }
