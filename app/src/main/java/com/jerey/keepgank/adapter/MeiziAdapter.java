@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.bean.Result;
 
@@ -52,7 +53,8 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.ViewHolder> 
             Glide.with(mContext)
                     .load(data.getUrl())
                     .error(R.drawable.jay)
-                    .placeholder(R.drawable.jay)
+                    .placeholder(R.drawable.bg_cyan)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.imageView);
         }else {
             holder.imageView.setImageResource(R.drawable.jay);
@@ -79,7 +81,7 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.ViewHolder> 
     public void addData(List<Result> datas) {
         this.mDatas.addAll(datas);
         for (int i = 0; i <mDatas.size(); i++) {
-            int height = new Random().nextInt(100) + 300;//[100,300)的随机数
+            int height = new Random().nextInt(200) + 250;//[100,300)的随机数
             heightList.add(height);
         }
     }
@@ -87,7 +89,7 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.ViewHolder> 
     public void setData(List<Result> datas) {
         this.mDatas = datas;
         for (int i = 0; i <mDatas.size(); i++) {
-            int height = new Random().nextInt(100) + 300;//[100,300)的随机数
+            int height = new Random().nextInt(200) + 250;//[100,300)的随机数
             heightList.add(height);
         }
     }
