@@ -21,6 +21,7 @@
         </activity>
 
         <activity android:name=".activity.MyWebActivity" />
+        <activity android:name=".activity.PhotoActivity"/>
     </application>
 
 </manifest>
