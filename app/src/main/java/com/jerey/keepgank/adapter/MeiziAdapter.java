@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.jerey.keepgank.R;
+import com.jerey.keepgank.activity.PhotoActivity;
 import com.jerey.keepgank.bean.Result;
 
 import java.util.ArrayList;
@@ -58,7 +59,14 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.ViewHolder> 
                     .into(holder.imageView);
         }else {
             holder.imageView.setImageResource(R.drawable.jay);
+
         }
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PhotoActivity.startActivity(mContext);
+            }
+        });
         holder.textView.setText(data.getDesc());
     }
 

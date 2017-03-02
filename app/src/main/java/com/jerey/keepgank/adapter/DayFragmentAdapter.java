@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jerey.keepgank.R;
+import com.jerey.keepgank.activity.MyWebActivity;
 import com.jerey.keepgank.bean.GankDayResults;
 import com.jerey.keepgank.bean.Result;
 
@@ -27,7 +28,8 @@ public class DayFragmentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private List<ViewItem> mList;
     private Context mContext;
-    private class ViewItem{
+
+    private class ViewItem {
         String title;
         String url;
         int type;
@@ -44,7 +46,7 @@ public class DayFragmentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    public DayFragmentAdapter(Context context){
+    public DayFragmentAdapter(Context context) {
         mContext = context;
         mList = new ArrayList<ViewItem>();
     }
@@ -53,11 +55,11 @@ public class DayFragmentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        if(viewType == TYPE_DISC){
-            view = inflater.inflate(R.layout.item_gank,parent, false);
+        if (viewType == TYPE_DISC) {
+            view = inflater.inflate(R.layout.item_gank, parent, false);
             return new DescViewHolder(view);
         } else {
-            view = inflater.inflate(R.layout.item_gank_title,parent, false);
+            view = inflater.inflate(R.layout.item_gank_title, parent, false);
             return new TitleViewHolder(view);
         }
     }
@@ -67,9 +69,9 @@ public class DayFragmentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         if (holder instanceof TitleViewHolder) {
             TitleViewHolder titleViewHolder = (TitleViewHolder) holder;
             titleViewHolder.setResult(mList.get(position));
-        } else if(holder instanceof DescViewHolder) {
-                DescViewHolder descViewHolder = (DescViewHolder) holder;
-                descViewHolder.setResult(mList.get(position));
+        } else if (holder instanceof DescViewHolder) {
+            DescViewHolder descViewHolder = (DescViewHolder) holder;
+            descViewHolder.setResult(mList.get(position));
         }
     }
 
@@ -86,20 +88,23 @@ public class DayFragmentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public class TitleViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
         private ViewItem result;
+
         public TitleViewHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.tv_title);
         }
 
-        public void setResult(ViewItem item){
+        public void setResult(ViewItem item) {
             result = item;
             textView.setText(item.title);
         }
     }
 
-    public class DescViewHolder extends RecyclerView.ViewHolder{
+    public class DescViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
         private ViewItem result;
+        private String url;
+
         public DescViewHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.tv_desc);
@@ -107,7 +112,10 @@ public class DayFragmentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 @Override
                 public void onClick(View v) {
 //                    if(GankApplication.getOpenUrl()== GeneralPrefs.OPEN_URL_WEB_VIEW){
-//                        WebActivity.startWebActivity(mContext, result);
+                    Result r = new Result();
+                    r.setDesc(result.title);
+                    r.setUrl(result.url);
+                    MyWebActivity.startWebActivity(mContext, r);
 //                    }else{
 //                    SystemUtils.openUrlByBrowser(mContext, result.url);
 //                    }
@@ -116,46 +124,46 @@ public class DayFragmentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             });
         }
 
-        public void setResult(ViewItem item){
-            result = item;
+        public void setResult(ViewItem item) {
+            this.result = item;
             textView.setText(item.title);
         }
     }
 
-    public void setData(GankDayResults results){
+    public void setData(GankDayResults results) {
         mList.clear();
-        if (results.Android != null){
-            mList.add(new ViewItem("Android",null,TYPE_TITLE));
-            for (Result r: results.Android){
-                mList.add(new ViewItem(r.getDesc(),r.getUrl(),TYPE_DISC));
+        if (results.Android != null) {
+            mList.add(new ViewItem("Android", null, TYPE_TITLE));
+            for (Result r : results.Android) {
+                mList.add(new ViewItem(r.getDesc(), r.getUrl(), TYPE_DISC));
             }
         }
-        if(results.iOS != null){
-            mList.add(new ViewItem("iOS",null,TYPE_TITLE));
-            for (Result r: results.iOS){
-                mList.add(new ViewItem(r.getDesc(),r.getUrl(),TYPE_DISC));
+        if (results.iOS != null) {
+            mList.add(new ViewItem("iOS", null, TYPE_TITLE));
+            for (Result r : results.iOS) {
+                mList.add(new ViewItem(r.getDesc(), r.getUrl(), TYPE_DISC));
             }
         }
-        if(results.App != null){
-            mList.add(new ViewItem("App",null,TYPE_TITLE));
-            for (Result r: results.App){
-                mList.add(new ViewItem(r.getDesc(),r.getUrl(),TYPE_DISC));
+        if (results.App != null) {
+            mList.add(new ViewItem("App", null, TYPE_TITLE));
+            for (Result r : results.App) {
+                mList.add(new ViewItem(r.getDesc(), r.getUrl(), TYPE_DISC));
             }
         }
-        if(results.瞎推荐 != null){
-            mList.add(new ViewItem("瞎推荐",null,TYPE_TITLE));
-            for (Result r: results.瞎推荐){
-                mList.add(new ViewItem(r.getDesc(),r.getUrl(),TYPE_DISC));
+        if (results.瞎推荐 != null) {
+            mList.add(new ViewItem("瞎推荐", null, TYPE_TITLE));
+            for (Result r : results.瞎推荐) {
+                mList.add(new ViewItem(r.getDesc(), r.getUrl(), TYPE_DISC));
             }
         }
-        if(results.休息视频 != null){
-            mList.add(new ViewItem("休息视频",null,TYPE_TITLE));
-            for (Result r: results.休息视频){
-                mList.add(new ViewItem(r.getDesc(),r.getUrl(),TYPE_DISC));
+        if (results.休息视频 != null) {
+            mList.add(new ViewItem("休息视频", null, TYPE_TITLE));
+            for (Result r : results.休息视频) {
+                mList.add(new ViewItem(r.getDesc(), r.getUrl(), TYPE_DISC));
             }
         }
 
-        for (ViewItem v : mList){
+        for (ViewItem v : mList) {
             Log.d(TAG, v.toString());
         }
 
