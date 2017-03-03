@@ -18,7 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:navigationIcon="@mipmap/ic_menu"/>
     </android.support.design.widget.AppBarLayout>
 
     <com.jerey.keepgank.View.SwipeToRefreshLayout

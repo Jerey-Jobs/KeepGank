@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -157,5 +158,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         fragmentTransaction.commit();
         mCurrentFragment = fragment;
+    }
+
+    public void openDrawer(){
+        if(!mDrawerLayout.isDrawerOpen(GravityCompat.START)){
+            mDrawerLayout.openDrawer(GravityCompat.START);
+        }
+    }
+
+    /**
+     * 无需在子Fragment中设置该点击事件响应,只要
+     * ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+     * 就OK
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            Logger.d("onOptionsItemSelected android.R.id.home");
+            openDrawer();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
