@@ -1,23 +1,29 @@
 package com.jerey.keepgank;
 
+import android.Manifest;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.cn.jerey.permissiontools.Callback.PermissionCallbacks;
+import com.cn.jerey.permissiontools.PermissionTools;
 import com.jerey.keepgank.fragment.HomeFragment;
 import com.jerey.keepgank.fragment.MeiziFragment;
 import com.jerey.keepgank.fragment.TodayFragment;
 import com.jerey.keepgank.fragment.WebView;
 import com.orhanobut.logger.Logger;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,11 +35,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int INDEX_COLLECTION = 1;
     private static final int INDEX_Blog = 2;
     private static final int INDEX_TODAY = 3;
+    private static final int REQUEST_CODE = 111;
 
     @Bind(R.id.drawer)
     DrawerLayout mDrawerLayout;
     @Bind(R.id.nav_view)
     NavigationView mNavigationView;
+    PermissionTools permissionTools;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +51,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mNavigationView.setNavigationItemSelectedListener(this);
         ImageView drawHeaderImageView = (ImageView) mNavigationView.getHeaderView(0);
         Glide.with(this).load(R.drawable.captain_android).into(drawHeaderImageView);
+        permissionTools = new PermissionTools.Builder(this)
+                .setOnPermissionCallbacks(new PermissionCallbacks() {
+                    @Override
+                    public void onPermissionsGranted(int requestCode, List<String> perms) {
+                        Toast.makeText(MainActivity.this, "权限申请通过", Toast.LENGTH_SHORT).show();
+                    }
 
+                    @Override
+                    public void onPermissionsDenied(int requestCode, List<String> perms) {
+                        Toast.makeText(MainActivity.this, "权限申请被拒绝", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setRequestCode(REQUEST_CODE)
+                .build();
+        permissionTools.requestPermissions(Manifest.permission.INTERNET
+                , Manifest.permission.READ_EXTERNAL_STORAGE
+                , Manifest.permission.ACCESS_NETWORK_STATE);
         updateUI();
     }
 
@@ -67,20 +91,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 break;
             case INDEX_COLLECTION:
-                if(mMeiziFragment == null){
+                if (mMeiziFragment == null) {
                     mMeiziFragment = new MeiziFragment();
                 }
                 switchFragment(mMeiziFragment);
                 break;
             case INDEX_Blog:
-                if (mBlogFragment == null){
+                if (mBlogFragment == null) {
                     mBlogFragment = new WebView();
                 }
                 switchFragment(mBlogFragment);
 
                 break;
             case INDEX_TODAY:
-                if (mTodayFragment == null){
+                if (mTodayFragment == null) {
                     mTodayFragment = new TodayFragment();
                 }
                 switchFragment(mTodayFragment);
@@ -148,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void switchFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction;
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        if(mCurrentFragment != null){
+        if (mCurrentFragment != null) {
             fragmentTransaction.hide(mCurrentFragment);
         }
         if (fragment.isAdded()) {
@@ -160,8 +184,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mCurrentFragment = fragment;
     }
 
-    public void openDrawer(){
-        if(!mDrawerLayout.isDrawerOpen(GravityCompat.START)){
+    public void openDrawer() {
+        if (!mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.openDrawer(GravityCompat.START);
         }
     }
@@ -170,6 +194,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 无需在子Fragment中设置该点击事件响应,只要
      * ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
      * 就OK
+     *
      * @param item
      * @return
      */
@@ -180,5 +205,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             openDrawer();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        permissionTools.onRequestPermissionsResult(requestCode,permissions,grantResults);
     }
 }

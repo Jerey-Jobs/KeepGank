@@ -38,6 +38,7 @@ public final class ImageSaveUtil {
             e.printStackTrace();
         }
 
+
         // 其次把文件插入到系统图库
         try {
             MediaStore.Images.Media.insertImage(context.getContentResolver(),

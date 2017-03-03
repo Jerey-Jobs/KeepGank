@@ -60,4 +60,6 @@ dependencies {
     compile 'com.android.support:palette-v7:25.1.0'
 
     compile 'com.wdullaer:materialdatetimepicker:3.1.2'
+    //我的权限库
+    compile 'com.cn.jerey:permissiontools:1.3'
 }
