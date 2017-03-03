@@ -49,11 +49,12 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.ViewHolder> 
         layoutParams.height = heightList.get(position);
         layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
         holder.imageView.setLayoutParams(layoutParams);
-        Result data = mDatas.get(position);
+        final Result data = mDatas.get(position);
         if(data.getUrl() != null) {
             Glide.with(mContext)
                     .load(data.getUrl())
                     .error(R.drawable.jay)
+                    .centerCrop()
                     .placeholder(R.drawable.bg_cyan)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.imageView);
@@ -64,7 +65,7 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.ViewHolder> 
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PhotoActivity.startActivity(mContext);
+                PhotoActivity.startActivity(mContext,data.getUrl());
             }
         });
         holder.textView.setText(data.getDesc());
