@@ -22,10 +22,12 @@ import com.jerey.keepgank.View.SlideInOutRightItemAnimator;
 import com.jerey.keepgank.adapter.DayFragmentAdapter;
 import com.jerey.keepgank.bean.GankDay;
 import com.jerey.keepgank.net.GankApi;
+import com.jerey.lruCache.DiskLruCacheManager;
 import com.orhanobut.logger.Logger;
 import com.trello.rxlifecycle.FragmentEvent;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -41,7 +43,7 @@ import static com.jerey.keepgank.R.id.toolbar;
  */
 
 public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDateSetListener {
-
+    private static final String TAG = "TodayFragment";
     @Bind(toolbar)
     Toolbar mToolbar;
     @Bind(R.id.toolbar_layout)
@@ -60,6 +62,7 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
     int year;
     int month;
     int day;
+    private DiskLruCacheManager mDiskLruCacheManager;
 
     @Override
     protected int returnLayoutID() {
@@ -71,6 +74,7 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
 
         initUI();
+
         mAdapter = new DayFragmentAdapter(getActivity());
         Calendar c = null;
         java.util.Calendar calendar = java.util.Calendar.getInstance();
@@ -82,6 +86,18 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
         load(year, month, day - 1);
         //再加载今天的
         load(year, month, day);
+        try {
+            mDiskLruCacheManager = new DiskLruCacheManager(getActivity(), "xiamin");
+            Log.i(TAG, "DiskLruCacheManager 创建");
+            GankDay gankDay = mDiskLruCacheManager.getAsSerializable(TAG);
+            Log.i(TAG, "DiskLruCacheManager 读取数据 " + gankDay);
+            if(gankDay != null) {
+                loadUIByGankday(gankDay);
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "DiskLruCacheManager 创建失败");
+            e.printStackTrace();
+        }
     }
 
     private void initUI() {
@@ -154,15 +170,8 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
                         Logger.d(gankDay.toString());
                         if (gankDay != null && gankDay.results != null && gankDay.results.Android != null) {
                             mToolbarLayout.setTitle(year + "年" + month + "月" + day + "日");
-                            Logger.d(gankDay.results.福利.get(0).getUrl());
-                            Glide.with(TodayFragment.this)
-                                    .load(gankDay.results.福利.get(0).getUrl())
-                                    .override(300, 200)
-                                    .error(R.drawable.jay)
-                                    .into(mImageView);
-                            mAdapter.setData(gankDay.results);
-                            mRecyclerView.setAdapter(mAdapter);
-                            mRecyclerView.setItemAnimator(new SlideInOutRightItemAnimator(mRecyclerView));
+                            mDiskLruCacheManager.put(TAG, gankDay);
+                            loadUIByGankday(gankDay);
                         } else {
                             showSnackbar("该日可能没有更新哦");
                         }
@@ -170,9 +179,26 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
                 });
     }
 
+    private void loadUIByGankday(GankDay gankDay){
+        Logger.d(gankDay.results.福利.get(0).getUrl());
+        Glide.with(TodayFragment.this)
+                .load(gankDay.results.福利.get(0).getUrl())
+                .override(300, 200)
+                .error(R.drawable.jay)
+                .into(mImageView);
+        mAdapter.setData(gankDay.results);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setItemAnimator(new SlideInOutRightItemAnimator(mRecyclerView));
+    }
+
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         Log.d("###", "DatePickerDialog" + year + "-" + monthOfYear + "-" + dayOfMonth);
         load(year, monthOfYear + 1, dayOfMonth);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }

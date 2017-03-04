@@ -1,11 +1,12 @@
 package com.jerey.keepgank.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by sunfusheng on 2017/1/17.
  */
-public class GankDayResults {
+public class GankDayResults implements Serializable{
 
     public List<Result> 福利;
     public List<Result> Android;
