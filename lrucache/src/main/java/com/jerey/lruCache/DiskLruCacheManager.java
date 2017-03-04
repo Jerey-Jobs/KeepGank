@@ -4,13 +4,21 @@ import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Serializable;
 
 import static com.jerey.lruCache.DiskLruCache.TAG;
 
@@ -186,4 +194,189 @@ public class DiskLruCacheManager {
         }
         return str;
     }
+
+    /******************************************************
+     * 重载支持 Json数据读写
+     ****************************************************/
+    public void put(String key, JSONObject jsonObject) {
+        put(key, jsonObject.toString());
+    }
+
+    public JSONObject getAsJson(String key) {
+        String val = getAsString(key);
+        try {
+            if (val != null)
+                return new JSONObject(val);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /******************************************************
+     * 重载支持 JSONArray 读写
+     ****************************************************/
+    public void put(String key, JSONArray jsonArray) {
+        put(key, jsonArray.toString());
+    }
+
+    public JSONArray getAsJSONArray(String key) {
+        String JSONString = getAsString(key);
+        try {
+            JSONArray obj = new JSONArray(JSONString);
+            return obj;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /******************************************************
+     * 重载支持 byte 读写
+     ****************************************************/
+    public void put(String key, byte[] value) {
+        OutputStream outputStream = null;
+        DiskLruCache.Editor editor = null;
+
+        editor = editor(key);
+        if (editor == null) return;
+        try {
+            outputStream = editor.newOutputStream(0);
+            outputStream.write(value);
+            outputStream.flush();
+            editor.commit();
+        } catch (IOException e) {
+            e.printStackTrace();
+            try {
+                editor.abort();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        } finally {
+            if (outputStream != null) {
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public byte[] getAsBytes(String key) {
+        byte[] ret = null;
+        InputStream inputStram = get(key);
+        if (inputStram == null) return null;
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        try {
+            byte[] buf = new byte[1024];
+            int len = 0;
+            while ((len = inputStram.read(buf)) != -1) {
+                byteArrayOutputStream.write(buf, 0, len);
+            }
+            ret = byteArrayOutputStream.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                inputStram.close();
+                byteArrayOutputStream.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+        return ret;
+    }
+
+    /******************************************************
+     * 重载支持 Serializable 读写
+     ****************************************************/
+    public void put(String key, Serializable value) {
+        ObjectOutputStream outputStream = null;
+        DiskLruCache.Editor editor = null;
+
+        editor = editor(key);
+        if (editor == null) return;
+        try {
+            outputStream = new ObjectOutputStream(editor.newOutputStream(0));
+            outputStream.writeObject(value);
+            outputStream.flush();
+            editor.commit();
+        } catch (IOException e) {
+            e.printStackTrace();
+            try {
+                editor.abort();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        } finally {
+            if (outputStream != null) {
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public <T> T getAsSerializable(String key) {
+        T ret = null;
+        InputStream inputStream = get(key);
+        if (inputStream == null) return ret;
+        ObjectInputStream objInputStream = null;
+        try {
+            objInputStream = new ObjectInputStream(inputStream);
+            ret = (T) objInputStream.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                objInputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return ret;
+    }
+
+    public void close() throws IOException {
+        mDiskLruCache.close();
+    }
+
+    public void delete() throws IOException {
+        mDiskLruCache.delete();
+    }
+
+    public void flush() throws IOException {
+        mDiskLruCache.flush();
+    }
+
+    public boolean isClosed() {
+        return mDiskLruCache.isClosed();
+    }
+
+    public long size() {
+        return mDiskLruCache.size();
+    }
+
+    public void setMaxSize(long maxSize) {
+        mDiskLruCache.setMaxSize(maxSize);
+    }
+
+    public File getDirectory() {
+        return mDiskLruCache.getDirectory();
+    }
+
+    public long getMaxSize() {
+        return mDiskLruCache.getMaxSize();
+    }
+
+    public DiskLruCache getDiskLruCache() {
+        return mDiskLruCache;
+    }
+
 }
