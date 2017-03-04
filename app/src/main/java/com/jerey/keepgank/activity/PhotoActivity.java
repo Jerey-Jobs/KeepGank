@@ -17,7 +17,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.View.PinchImageView;
 import com.jerey.keepgank.base.AppSwipeBackActivity;
-import com.jerey.keepgank.utils.ImageSaveUtil;
+import com.jerey.keepgank.utils.ImageSave;
 import com.orhanobut.logger.Logger;
 
 import butterknife.Bind;
@@ -83,8 +83,22 @@ public class PhotoActivity extends AppSwipeBackActivity implements View.OnClickL
                 break;
             case R.id.btn_save:
                 Logger.d("点击保存,保存图片");
-                Toast.makeText(this,"保存图片",Toast.LENGTH_LONG).show();
-                ImageSaveUtil.saveImageToGallery(this,mBitmap);
+                for(int i = 0; i < 20; i++) {
+                    Toast.makeText(this, "保存图片", Toast.LENGTH_LONG).show();
+                    ImageSave.with(getApplicationContext())
+                            .save(mBitmap,mBitmap)
+                            .setImageSaveListener(new ImageSave.ImageSaveListener() {
+                                @Override
+                                public void onSuccess() {
+
+                                }
+
+                                @Override
+                                public void onError() {
+
+                                }
+                            });
+                }
                 break;
         }
     }

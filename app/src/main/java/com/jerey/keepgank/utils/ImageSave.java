@@ -20,73 +20,112 @@ import java.util.concurrent.ScheduledExecutorService;
 /**
  * Created by xiamin on 3/3/17.
  */
-
 public class ImageSave {
+    private static final String TAG = "ImageSave";
+    private static final String TYPE = ".jpg";
 
-    private ScheduledExecutorService mScheduledThreadPool;
+    private static ScheduledExecutorService mScheduledThreadPool;
+    //降低一下与context的耦合度,避免内存泄漏
     private WeakReference<Context> mContextWeakReference;
+    private ImageSaveListener mListener;
 
-    public ImageSave() {
-        mScheduledThreadPool = Executors.newScheduledThreadPool(4);
-    }
-
-    private static class SingletonHolder {
-        private final static ImageSave INSTANCE = new ImageSave();
-    }
-
-    public static ImageSave getInstance() {
-        return SingletonHolder.INSTANCE;
-    }
-
-    public void saveImageToGallery(Context context, Bitmap bmp) {
-        // 首先保存图片
-        File appDir = new File(Environment.getExternalStorageDirectory(), "Gank");
-        if (!appDir.exists()) {
-            appDir.mkdir();
+    private ImageSave(Context context) {
+        //双重校验锁,保证线程安全和惰加载
+        if (mScheduledThreadPool == null) {
+            synchronized (ImageSave.class) {
+                if (mScheduledThreadPool == null) {
+                    mScheduledThreadPool = Executors.newScheduledThreadPool(4);
+                }
+            }
         }
-        String fileName = System.currentTimeMillis() + ".jpg";
-        File file = new File(appDir, fileName);
-        try {
-            FileOutputStream fos = new FileOutputStream(file);
-            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-            fos.flush();
-            fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // 其次把文件插入到系统图库
-        try {
-            MediaStore.Images.Media.insertImage(context.getContentResolver(),
-                    file.getAbsolutePath(), fileName, null);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        // 最后通知图库更新
-        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + Environment.getExternalStorageDirectory())));
+        mContextWeakReference = new WeakReference<Context>(context);
     }
 
-    private static class SaveTask extends AsyncTask<Bitmap,Void,Boolean>{
+
+    private class SaveTask extends AsyncTask<Bitmap, Void, Boolean> {
 
         @Override
         protected Boolean doInBackground(Bitmap... params) {
-            return null;
+            for (Bitmap bmp : params) {
+                // 首先保存图片
+                File appDir = new File(Environment.getExternalStorageDirectory(), TAG);
+                if (!appDir.exists()) {
+                    appDir.mkdir();
+                }
+                String fileName = System.currentTimeMillis() + TYPE;
+                File file = new File(appDir, fileName);
+                try {
+                    FileOutputStream fos = new FileOutputStream(file);
+                    bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                    fos.flush();
+                    fos.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    return false;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return false;
+                }
+
+                Context context = mContextWeakReference.get();
+                if (context != null) {
+                    // 其次把文件插入到系统图库
+                    try {
+                        MediaStore.Images.Media.insertImage(context.getContentResolver(),
+                                file.getAbsolutePath(), fileName, null);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                        return false;
+                    }
+                    // 最后通知图库更新
+                    context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                            Uri.parse("file://" + Environment.getExternalStorageDirectory())));
+                }
+            }
+            return true;
         }
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
+            if (mListener == null) {
+                return;
+            }
+            if (aBoolean == true) {
+                mListener.onSuccess();
+            } else {
+                mListener.onError();
+            }
         }
     }
 
-    public void save(Bitmap bitmap){
-        new SaveTask().executeOnExecutor(mScheduledThreadPool).execute(bitmap);
+    /**
+     * This method will be executed by a ThreadPool
+     *
+     * @param bitmaps
+     * @return
+     */
+    public ImageSave save(Bitmap... bitmaps) {
+        new SaveTask().executeOnExecutor(mScheduledThreadPool, bitmaps);
+        return this;
     }
 
-    public ImageSave with(Context context){
-        mContextWeakReference = new WeakReference<Context>(context);
-        return this;
+    public static ImageSave with(Context context) {
+        return new ImageSave(context);
+    }
+
+    public interface ImageSaveListener {
+        public void onSuccess();
+
+        public void onError();
+    }
+
+    /**
+     * The listener will be in UI thread, so you can do some UI hint;
+     *
+     * @param listener
+     */
+    public void setImageSaveListener(ImageSaveListener listener) {
+        mListener = listener;
     }
 }
