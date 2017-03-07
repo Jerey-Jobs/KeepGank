@@ -20,8 +20,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.MyWebActivity" />
-        <activity android:name=".activity.PhotoActivity"/>
+        <activity android:name=".activity.MyWebActivity"
+            android:theme="@style/AppTheme"/>
+        <activity android:name=".activity.PhotoActivity"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>
