@@ -9,6 +9,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.View.SlideInOutRightItemAnimator;
@@ -16,8 +17,11 @@ import com.jerey.keepgank.View.SwipeToRefreshLayout;
 import com.jerey.keepgank.adapter.MeiziAdapter;
 import com.jerey.keepgank.bean.Data;
 import com.jerey.keepgank.net.GankApi;
+import com.jerey.lruCache.DiskLruCacheManager;
 import com.orhanobut.logger.Logger;
 import com.trello.rxlifecycle.FragmentEvent;
+
+import java.io.IOException;
 
 import butterknife.Bind;
 import rx.Observer;
@@ -29,6 +33,8 @@ import rx.schedulers.Schedulers;
  */
 
 public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener{
+
+    private static final String TAG = "MeiziFragment";
 
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
@@ -48,7 +54,7 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
     //是否已经载入去全部
     private boolean isALlLoad = false;
     MeiziAdapter mAdapter;
-
+    private DiskLruCacheManager mDiskLruCacheManager;
     @Override
     protected int returnLayoutID() {
         return R.layout.fragment_meizi;
@@ -65,7 +71,22 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setItemAnimator(new SlideInOutRightItemAnimator(mRecyclerView));
         mRecyclerView.addOnScrollListener(mOnScrollListener);
+
+        try {
+            Log.i(TAG, "DiskLruCacheManager 创建");
+            mDiskLruCacheManager = new DiskLruCacheManager(getActivity());
+            Data data = mDiskLruCacheManager.getAsSerializable(TAG);
+            Log.i(TAG, "DiskLruCacheManager 读取");
+            if (data != null){
+                Log.i(TAG, "获取到缓存数据");
+                mAdapter.setData(data.getResults());
+                mAdapter.notifyDataSetChanged();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         onRefresh();
+
     }
 
     private void initRecyclerView(RecyclerView recyclerView) {
@@ -172,6 +193,8 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
                 } else if (isLoadingNewData) {
                     isALlLoad = false;
                     mAdapter.setData(data.getResults());
+                    Log.i(TAG, "DiskLruCacheManager 写入");
+                    mDiskLruCacheManager.put(TAG,data);
                 }
                 mAdapter.notifyDataSetChanged();
             }

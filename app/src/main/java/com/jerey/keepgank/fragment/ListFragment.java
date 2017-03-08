@@ -6,6 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.View.SlideInOutRightItemAnimator;
@@ -14,8 +15,11 @@ import com.jerey.keepgank.adapter.ListFragmentAdapter;
 import com.jerey.keepgank.bean.Data;
 import com.jerey.keepgank.net.Config;
 import com.jerey.keepgank.net.GankApi;
+import com.jerey.lruCache.DiskLruCacheManager;
 import com.orhanobut.logger.Logger;
 import com.trello.rxlifecycle.FragmentEvent;
+
+import java.io.IOException;
 
 import butterknife.Bind;
 import rx.Observer;
@@ -26,7 +30,8 @@ import rx.schedulers.Schedulers;
  * Created by Xiamin on 2017/2/12.
  */
 
-public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener{
+public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+    private static final String TAG = "ListFragment";
     public static final String KEY_TYPE = "type";
 
     @Bind(R.id.recycler_view)
@@ -47,7 +52,7 @@ public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     //类型
     private String mType = "Android";
 
-
+    private DiskLruCacheManager mDiskLruCacheManager;
 
     private Observer<Data> dataObserver = new Observer<Data>() {
         @Override
@@ -64,6 +69,8 @@ public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                     isALlLoad = false;
                     currentPager = 1;
                     mAdapter.setData(goodsResult.getResults());
+                    Log.i(TAG, "DiskLruCacheManager 写入");
+                    mDiskLruCacheManager.put(mType, goodsResult);
                 }
                 mAdapter.notifyDataSetChanged();
             }
@@ -101,6 +108,23 @@ public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setItemAnimator(new SlideInOutRightItemAnimator(mRecyclerView));
         mRecyclerView.addOnScrollListener(mOnScrollListener);
+
+        try {
+            Log.i(TAG, "DiskLruCacheManager 创建");
+            mDiskLruCacheManager = new DiskLruCacheManager(getActivity());
+            Data mData = mDiskLruCacheManager.getAsSerializable(mType);
+            Log.i(TAG, "DiskLruCacheManager 读取");
+            if (mData != null) {
+                Log.d(TAG, "获取缓存数据成功");
+                mAdapter.setData(mData.getResults());
+                mAdapter.notifyDataSetChanged();
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         requestRefresh();
     }
 
@@ -133,7 +157,7 @@ public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         swipeRefreshLayout.setOnRefreshListener(this);
     }
 
-    public static ListFragment getListFragment(String type){
+    public static ListFragment getListFragment(String type) {
         Bundle bundle = new Bundle();
         bundle.putString(KEY_TYPE, type);
         ListFragment fragment = new ListFragment();
@@ -168,6 +192,7 @@ public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(dataObserver);
     }
+
     private void requestRefresh() {
         mSwipeRefreshLayout.setRefreshing(true);
         isLoadingMore = false;
