@@ -21,7 +21,7 @@
         </activity>
 
         <activity android:name=".activity.MyWebActivity"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/WebTheme"/>
         <activity android:name=".activity.PhotoActivity"
             android:theme="@style/AppTheme"/>
     </application>

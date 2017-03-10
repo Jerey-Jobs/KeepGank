@@ -7,20 +7,23 @@
         <item name="android:windowBackground">@color/windowBackground</item>
         <!--供SipeBackActivity使用-->
         <item name="android:windowIsTranslucent">true</item>
-
         <item name="alertDialogTheme">@style/Theme.AppCompat.Light.Dialog.Alert</item>
     </style>
+
     <style name="MainTheme" parent="AppTheme">
 
     </style>
     <!-- 设置Toolbar 中的Spinner样式-->
     <style name="MyActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:colorBackground">@android:color/white</item>
-        <item name="android:textColorPrimaryDisableOnly">@color/primary_text_default_material_light</item>
+        <item name="android:textColorPrimaryDisableOnly">
+            @color/primary_text_default_material_light
+        </item>
     </style>
 
     <style name="WebTheme" parent="AppTheme">
         <item name="android:windowBackground">@color/web_background</item>
+        <item name="android:windowAnimationStyle">@style/Animation</item>
     </style>
 
     <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
@@ -31,6 +34,7 @@
         <item name="tabTextAppearance">@style/MyCustomTabTextAppearance</item>
         <item name="tabSelectedTextColor">@android:color/white</item>
     </style>
+
     <style name="MyCustomTabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">#99ffffff</item>
@@ -69,6 +73,22 @@
 
     <style name="ViewerTheme" parent="ViewerThemeBase" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Animation">
+        <item name="android:activityOpenEnterAnimation">@null</item>
+        <item name="android:activityOpenExitAnimation">@null</item>
+        <item name="android:activityCloseEnterAnimation">@null</item>
+        <item name="android:activityCloseExitAnimation">@null</item>
+        <item name="android:taskOpenEnterAnimation">@null</item>
+        <item name="android:taskOpenExitAnimation">@null</item>
+        <item name="android:taskCloseEnterAnimation">@null</item>
+        <item name="android:taskCloseExitAnimation">@null</item>
+        <item name="android:taskToFrontEnterAnimation">@null</item>
+        <item name="android:taskToFrontExitAnimation">@null</item>
+        <item name="android:taskToBackEnterAnimation">@null</item>
+        <item name="android:taskToBackExitAnimation">@null</item>
+    </style>
 </resources>

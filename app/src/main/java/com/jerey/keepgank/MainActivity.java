@@ -57,12 +57,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .setOnPermissionCallbacks(new PermissionCallbacks() {
                     @Override
                     public void onPermissionsGranted(int requestCode, List<String> perms) {
-                        Toast.makeText(MainActivity.this, "权限申请通过", Toast.LENGTH_SHORT).show();
+                    //    Toast.makeText(MainActivity.this, "权限申请通过", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onPermissionsDenied(int requestCode, List<String> perms) {
-                        Toast.makeText(MainActivity.this, "权限申请被拒绝", Toast.LENGTH_SHORT).show();
+                    //    Toast.makeText(MainActivity.this, "权限申请被拒绝", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setRequestCode(REQUEST_CODE)
