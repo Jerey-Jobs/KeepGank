@@ -183,7 +183,8 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
         Logger.d(gankDay.results.福利.get(0).getUrl());
         Glide.with(TodayFragment.this)
                 .load(gankDay.results.福利.get(0).getUrl())
-                .override(300, 200)
+                .centerCrop()
+                .crossFade()
                 .error(R.drawable.jay)
                 .into(mImageView);
         mAdapter.setData(gankDay.results);
