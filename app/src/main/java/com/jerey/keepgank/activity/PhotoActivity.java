@@ -80,6 +80,7 @@ public class PhotoActivity extends AppSwipeBackActivity implements View.OnClickL
             case R.id.btn_back:
                 Logger.d("点击back,结束Activity");
                 finish();
+                overridePendingTransition(R.anim.out_to_bottom, 0);
                 break;
             case R.id.btn_save:
                 Logger.d("点击保存,保存图片");

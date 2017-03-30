@@ -26,7 +26,7 @@
         <activity android:name=".activity.MyWebActivity"
             android:theme="@style/WebTheme"/>
         <activity android:name=".activity.PhotoActivity"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/WebTheme"/>
 
         <meta-data android:value="58db11de6e27a4737b001422" android:name="UMENG_APPKEY"/>
         <meta-data android:value="1" android:name="UMENG_CHANNEL"/>
