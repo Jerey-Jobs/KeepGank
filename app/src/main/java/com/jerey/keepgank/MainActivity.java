@@ -1,5 +1,24 @@
 package com.jerey.keepgank;
-
+/**
+ *                    .::::.
+ *                  .::::::::.
+ *                 :::::::::::
+ *             ..:::::::::::'
+ *           '::::::::::::'
+ *             .::::::::::
+ *        '::::::::::::::..
+ *             ..::::::::::::.
+ *           ``::::::::::::::::
+ *            ::::``:::::::::'        .:::.
+ *           ::::'   ':::::'       .::::::::.
+ *         .::::'      ::::     .:::::::'::::.
+ *        .:::'       :::::  .:::::::::' ':::::.
+ *       .::'        :::::.:::::::::'      ':::::.
+ *      .::'         ::::::::::::::'         ``::::.
+ *  ...:::           ::::::::::::'              ``::.
+ * ```` ':.          ':::::::::'                  ::::..
+ *                    '.:::::'                    ':'````..
+ */
 import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,6 +42,7 @@ import com.jerey.keepgank.fragment.MeiziFragment;
 import com.jerey.keepgank.fragment.TodayFragment;
 import com.jerey.keepgank.fragment.WebView;
 import com.orhanobut.logger.Logger;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
 
@@ -62,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     @Override
                     public void onPermissionsDenied(int requestCode, List<String> perms) {
-                    //    Toast.makeText(MainActivity.this, "权限申请被拒绝", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "权限申请被拒绝", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setRequestCode(REQUEST_CODE)
@@ -73,6 +93,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         updateUI();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
 
     Fragment mHomeFragment;
     Fragment mBlogFragment;
