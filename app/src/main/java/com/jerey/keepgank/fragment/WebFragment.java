@@ -17,6 +17,8 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.jerey.keepgank.R;
+import com.jerey.keepgank.base.AppSwipeBackActivity;
+import com.orhanobut.logger.Logger;
 
 import butterknife.Bind;
 
@@ -133,8 +135,17 @@ public class WebFragment extends BaseFragment {
                 intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getActivity().startActivity(Intent.createChooser(intent1, mTitle));
                 break;
-        }
+            case android.R.id.home:
+                Logger.d("onOptionsItemSelected android.R.id.home");
+                if (mWebView != null && mWebView.canGoBack()) {
+                    mWebView.goBack();
+                } else {
+                    ((AppSwipeBackActivity) getActivity()).scrollToFinishActivity();
+                }
+                break;
 
+        }
         return super.onOptionsItemSelected(item);
     }
+
 }
