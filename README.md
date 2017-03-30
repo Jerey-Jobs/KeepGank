@@ -1,18 +1,22 @@
 ### KeepGank
 一款Gank客户端,希望大家保持学习的动力
 
-RxJava+Retrofit
+RxJava+Retrofit+DiskLruCache+Material Design
 
-目前计划功能有:
+目前功能有:
+
 - 主页为Gank分类<br>
 - 每日Gank<br>
 - 网页缓存(我的博客)<br>
-- 数据缓存，避免下次打开重新加载
+- Disk数据缓存，避免下次打开重新加载
 - 图片大图浏览效果
 - 内置浏览器
-- meiz
+- 瀑布流妹子
 
 
+![](/pic/pic4.jpg)
+![](/pic/pic8.jpg)
+![](/pic/pic10.jpg)
 
 
 目前用到的依赖有：
