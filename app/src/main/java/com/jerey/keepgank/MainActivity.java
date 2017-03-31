@@ -1,25 +1,23 @@
 package com.jerey.keepgank;
 /**
- *                    .::::.
- *                  .::::::::.
- *                 :::::::::::
- *             ..:::::::::::'
- *           '::::::::::::'
- *             .::::::::::
- *        '::::::::::::::..
- *             ..::::::::::::.
- *           ``::::::::::::::::
- *            ::::``:::::::::'        .:::.
- *           ::::'   ':::::'       .::::::::.
- *         .::::'      ::::     .:::::::'::::.
- *        .:::'       :::::  .:::::::::' ':::::.
- *       .::'        :::::.:::::::::'      ':::::.
- *      .::'         ::::::::::::::'         ``::::.
- *  ...:::           ::::::::::::'              ``::.
- * ```` ':.          ':::::::::'                  ::::..
- *                    '.:::::'                    ':'````..
+ * ┌───┐   ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
+ * │Esc│   │ F1│ F2│ F3│ F4│ │ F5│ F6│ F7│ F8│ │ F9│F10│F11│F12│ │P/S│S L│P/B│  ┌┐    ┌┐    ┌┐
+ * └───┘   └───┴───┴───┴───┘ └───┴───┴───┴───┘ └───┴───┴───┴───┘ └───┴───┴───┘  └┘    └┘    └┘
+ * ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───────┐ ┌───┬───┬───┐ ┌───┬───┬───┬───┐
+ * │~ `│! 1│@ 2│# 3│$ 4│% 5│^ 6│& 7│* 8│( 9│) 0│_ -│+ =│ BacSp │ │Ins│Hom│PUp│ │N L│ / │ * │ - │
+ * ├───┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─────┤ ├───┼───┼───┤ ├───┼───┼───┼───┤
+ * │ Tab │ Q │ W │ E │ R │ T │ Y │ U │ I │ O │ P │{ [│} ]│ | \ │ │Del│End│PDn│ │ 7 │ 8 │ 9 │   │
+ * ├─────┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴─────┤ └───┴───┴───┘ ├───┼───┼───┤ + │
+ * │ Caps │ A │ S │ D │ F │ G │ H │ J │ K │ L │: ;│" '│ Enter  │               │ 4 │ 5 │ 6 │   │
+ * ├──────┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴────────┤     ┌───┐     ├───┼───┼───┼───┤
+ * │ Shift  │ Z │ X │ C │ V │ B │ N │ M │< ,│> .│? /│  Shift   │     │ ↑ │     │ 1 │ 2 │ 3 │   │
+ * ├─────┬──┴─┬─┴──┬┴───┴───┴───┴───┴───┴──┬┴───┼───┴┬────┬────┤ ┌───┼───┼───┐ ├───┴───┼───┤ E││
+ * │ Ctrl│    │Alt │         Space         │ Alt│    │    │Ctrl│ │ ← │ ↓ │ → │ │   0   │ . │←─┘│
+ * └─────┴────┴────┴───────────────────────┴────┴────┴────┴────┘ └───┴───┴───┘ └───────┴───┴───┘
  */
+
 import android.Manifest;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -77,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .setOnPermissionCallbacks(new PermissionCallbacks() {
                     @Override
                     public void onPermissionsGranted(int requestCode, List<String> perms) {
-                    //    Toast.makeText(MainActivity.this, "权限申请通过", Toast.LENGTH_SHORT).show();
+                        //    Toast.makeText(MainActivity.this, "权限申请通过", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -180,9 +178,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return false;
     }
 
+    private long exitTime = 0;
 
     /**
-     * 监听按钮，在Drawer打开状态下，若不监听，按下返回键则会退出该界面
+     * 监听按钮，在Drawer打开状态下，若不监听，按下返回键则会做两次确认退出处理
      *
      * @param keyCode
      * @param event
@@ -194,8 +193,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
                 mDrawerLayout.closeDrawer(GravityCompat.START);
             } else {
-                finish();
-                overridePendingTransition(0, R.anim.out_to_bottom);
+                if ((System.currentTimeMillis() - exitTime) > 2000) {
+                    Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                    exitTime = System.currentTimeMillis();
+                } else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        finishAffinity();
+                    } else {
+                        finish();
+                    }
+                    overridePendingTransition(0, R.anim.out_to_bottom);
+                }
             }
             return true;
         }
@@ -243,6 +251,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        permissionTools.onRequestPermissionsResult(requestCode,permissions,grantResults);
+        permissionTools.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }

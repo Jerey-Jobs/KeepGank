@@ -2,7 +2,7 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/app_main_color</item>
-        <item name="colorPrimaryDark">@color/app_dark_color</item>
+        <item name="colorPrimaryDark">@color/app_main_color</item>
         <item name="colorAccent">@color/app_main_color</item>
         <item name="android:windowBackground">@color/windowBackground</item>
         <!--供SipeBackActivity使用-->
