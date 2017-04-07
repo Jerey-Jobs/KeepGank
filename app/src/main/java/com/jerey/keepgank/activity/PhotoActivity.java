@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -18,7 +20,7 @@ import com.jerey.keepgank.R;
 import com.jerey.keepgank.View.PinchImageView;
 import com.jerey.keepgank.base.AppSwipeBackActivity;
 import com.jerey.keepgank.utils.ImageSave;
-import com.orhanobut.logger.Logger;
+import com.jerey.loglib.LogTools;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -41,9 +43,22 @@ public class PhotoActivity extends AppSwipeBackActivity implements View.OnClickL
     private String mUrl;
     private Bitmap mBitmap;
 
-    public static void startActivity(Context context, String url) {
+    public static void startActivity(AppCompatActivity activity, String url, View transitionView) {
+        Intent intent = new Intent(activity, PhotoActivity.class);
+        intent.putExtra(URL, url);
+
+        // 这里指定了共享的视图元素
+        ActivityOptionsCompat options = ActivityOptionsCompat
+                .makeSceneTransitionAnimation(activity, transitionView, "image");
+
+        ActivityCompat.startActivity(activity, intent, options.toBundle());
+
+    }
+
+    public static void startActivity1(Context context, String url) {
         Intent intent = new Intent(context, PhotoActivity.class);
         intent.putExtra(URL, url);
+
         context.startActivity(intent);
         ((Activity) context).overridePendingTransition(R.anim.in_from_right, 0);
     }
@@ -57,7 +72,7 @@ public class PhotoActivity extends AppSwipeBackActivity implements View.OnClickL
         mBtnSave.setOnClickListener(this);
         Intent intent = getIntent();
         mUrl = intent.getStringExtra(URL);
-        Log.d(TAG, "url: " + mUrl);
+        LogTools.d(TAG, "url: " + mUrl);
         Glide.with(this)
                 .load(mUrl)
                 .asBitmap()
@@ -78,12 +93,12 @@ public class PhotoActivity extends AppSwipeBackActivity implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_back:
-                Logger.d("点击back,结束Activity");
+                LogTools.d("点击back,结束Activity");
                 finish();
                 overridePendingTransition(R.anim.out_to_bottom, 0);
                 break;
             case R.id.btn_save:
-                Logger.d("点击保存,保存图片");
+                LogTools.d("点击保存,保存图片");
                 Toast.makeText(this, "保存图片", Toast.LENGTH_SHORT).show();
                 ImageSave.with(getApplicationContext())
                         .save(mBitmap)

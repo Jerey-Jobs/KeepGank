@@ -55,6 +55,7 @@ dependencies {
     compile 'com.wdullaer:materialdatetimepicker:3.1.2'
     //我的权限库
     compile 'com.github.Jerey-Jobs:PermissionTools:1.5'
+    compile 'com.github.Jerey-Jobs:LogTools:0.1'
     compile project(':lrucache')
     //友盟统计
     compile 'com.umeng.analytics:analytics:latest.integration'

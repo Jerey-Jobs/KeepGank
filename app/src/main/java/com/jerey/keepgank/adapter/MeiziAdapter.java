@@ -1,6 +1,7 @@
 package com.jerey.keepgank.adapter;
 
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +45,7 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         ViewGroup.LayoutParams layoutParams = holder.imageView.getLayoutParams();
         layoutParams.height = heightList.get(position);
         layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
@@ -65,7 +66,7 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.ViewHolder> 
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PhotoActivity.startActivity(mContext,data.getUrl());
+                PhotoActivity.startActivity((AppCompatActivity) mContext,data.getUrl(),holder.imageView);
             }
         });
         holder.textView.setText(data.getDesc());

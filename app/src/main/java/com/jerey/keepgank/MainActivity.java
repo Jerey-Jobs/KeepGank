@@ -39,7 +39,7 @@ import com.jerey.keepgank.fragment.HomeFragment;
 import com.jerey.keepgank.fragment.MeiziFragment;
 import com.jerey.keepgank.fragment.TodayFragment;
 import com.jerey.keepgank.fragment.WebView;
-import com.orhanobut.logger.Logger;
+import com.jerey.loglib.LogTools;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
@@ -148,31 +148,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_home:
-                Logger.i("home被点击");
+                LogTools.d("home被点击");
                 item.setChecked(true);
                 mCurrentUIIndex = INDEX_HOME;
                 updateUI();
                 break;
             case R.id.nav_today:
-                Logger.i("今日被点击");
+                LogTools.d("今日被点击");
                 item.setChecked(true);
                 mCurrentUIIndex = INDEX_TODAY;
                 updateUI();
                 break;
             case R.id.nav_collection:
-                Logger.i("收藏被点击");
+                LogTools.d("收藏被点击");
                 item.setChecked(true);
                 mCurrentUIIndex = INDEX_COLLECTION;
                 updateUI();
                 break;
             case R.id.my_blog:
-                Logger.i("博客被点击");
+                LogTools.d("博客被点击");
                 item.setChecked(true);
                 mCurrentUIIndex = INDEX_Blog;
                 updateUI();
                 break;
             case R.id.nav_settings:
-                Logger.i("设置被点击");
+                LogTools.d("设置被点击");
                 break;
         }
         return false;
@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            Logger.d("onOptionsItemSelected android.R.id.home");
+            LogTools.d("onOptionsItemSelected android.R.id.home");
             openDrawer();
         }
         return super.onOptionsItemSelected(item);
