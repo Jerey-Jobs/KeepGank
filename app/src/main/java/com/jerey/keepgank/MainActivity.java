@@ -17,9 +17,12 @@ package com.jerey.keepgank;
  */
 
 import android.Manifest;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -28,17 +31,20 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.cn.jerey.permissiontools.Callback.PermissionCallbacks;
 import com.cn.jerey.permissiontools.PermissionTools;
 import com.jerey.keepgank.fragment.HomeFragment;
 import com.jerey.keepgank.fragment.MeiziFragment;
 import com.jerey.keepgank.fragment.TodayFragment;
 import com.jerey.keepgank.fragment.WebView;
+import com.jerey.keepgank.utils.BlurImageUtils;
 import com.jerey.loglib.LogTools;
 import com.umeng.analytics.MobclickAgent;
 
@@ -46,6 +52,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -60,17 +67,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DrawerLayout mDrawerLayout;
     @Bind(R.id.nav_view)
     NavigationView mNavigationView;
+
+    CircleImageView mUserimage;
+    View mHeadViewContainer;
     PermissionTools permissionTools;
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        mHeadViewContainer = mNavigationView.getHeaderView(0);
+        mUserimage = (CircleImageView) mHeadViewContainer.findViewById(R.id.userimage);
         mNavigationView.setNavigationItemSelectedListener(this);
-        ImageView drawHeaderImageView = (ImageView) mNavigationView.getHeaderView(0);
-        Glide.with(this).load(R.drawable.captain_android).into(drawHeaderImageView);
+        Glide.with(this)
+                .load(R.drawable.jay)
+                .asBitmap()
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        mUserimage.setImageBitmap(resource);
+                        Bitmap overlay = BlurImageUtils.blur(mUserimage, 3, 3);
+                        mHeadViewContainer.setBackground(new BitmapDrawable(getResources(), overlay));
+                    }
+                });
+
+
         permissionTools = new PermissionTools.Builder(this)
                 .setOnPermissionCallbacks(new PermissionCallbacks() {
                     @Override

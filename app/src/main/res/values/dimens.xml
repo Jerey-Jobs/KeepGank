@@ -12,4 +12,6 @@
     <dimen name="normal_icon_size">40dp</dimen>
 
     <dimen name="item_margin">72dp</dimen>
+    <dimen name="nav_header_height">240dp</dimen>
+    <dimen name="user_image_size">80dp</dimen>
 </resources>

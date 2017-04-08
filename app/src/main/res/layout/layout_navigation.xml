@@ -6,4 +6,7 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 app:itemBackground="@drawable/bg_drawer_item"
 app:headerLayout="@layout/layout_navigation_head"
-app:menu="@menu/menu_drawer" />
+app:menu="@menu/menu_drawer" >
+
+
+    </android.support.design.widget.NavigationView>
