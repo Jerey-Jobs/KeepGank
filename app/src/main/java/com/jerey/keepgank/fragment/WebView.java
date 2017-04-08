@@ -16,7 +16,7 @@ import butterknife.Bind;
  */
 
 public class WebView extends BaseFragment {
-    private static final String BLOG = "http://jerey.cn/portfolio/";
+    private static final String BLOG = "http://jerey.cn";
 
     @Bind(R.id.web_view)
     android.webkit.WebView mWebView;

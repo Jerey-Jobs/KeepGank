@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Glide.with(this)
                 .load(R.drawable.jay)
                 .asBitmap()
+                .centerCrop()
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
@@ -100,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     @Override
                     public void onPermissionsGranted(int requestCode, List<String> perms) {
                         //    Toast.makeText(MainActivity.this, "权限申请通过", Toast.LENGTH_SHORT).show();
+
                     }
 
                     @Override
@@ -197,6 +199,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_settings:
                 LogTools.d("设置被点击");
+                Toast.makeText(this, "稍后带来该功能", Toast.LENGTH_SHORT).show();
                 break;
         }
         return false;

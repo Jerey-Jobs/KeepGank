@@ -7,7 +7,8 @@
     android:layout_height="240dp"
     android:background="@drawable/captain_android"
     android:gravity="bottom"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:scaleType="centerCrop">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/userimage"
