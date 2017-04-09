@@ -5,23 +5,22 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="windowBackground">#eee</color>
-    <color name="expense_main_color">@color/red</color>
+    <color name="expense_main_color">@color/grey_900</color>
     <color name="expense_dark_color">@color/red_dark</color>
 
     <color name="income_main_color">@color/green</color>
     <color name="income_dark_color">@color/green_dark</color>
 
-    <color name="app_main_color">@color/red</color>
+    <color name="app_main_color">#35464e</color>
     <color name="app_dark_color">@color/red_dark</color>
 
-    <color name="normal_background">#fff</color>
-    <color name="normal_background_grey">@color/translucent_grey_300_96p</color>
-    <color name="normal_background_grey_200">@color/md_grey_200</color>
-    <color name="normal_text_color">#212121</color>
-    <color name="normal_drawable_color">#e53935</color>
+    <color name="normal_background">#212a2f</color>
+    <color name="normal_background_grey">@color/md_grey_700</color>
+    <color name="normal_background_grey_200">#2c383e</color>
+    <color name="normal_text_color">#7b7b7b</color>
+    <color name="normal_drawable_color">#2c383e</color>
     <color name="drawer_divider">#E0E0E0</color>
-    <color name="web_background">#9e9e9e</color>
-
+    <color name="web_background">#2c383e</color>
 
     <color name="green">#4caf50</color>
     <color name="green_dark">#43a047</color>

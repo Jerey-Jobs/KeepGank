@@ -15,6 +15,6 @@
         style="@style/MyCustomTabLayout"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="?attr/colorPrimary"
+        android:background="@color/app_main_color"
         app:tabMode="scrollable" />
 </android.support.design.widget.AppBarLayout>

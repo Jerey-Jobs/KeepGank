@@ -2,5 +2,5 @@
     android:useLevel="false">
     <corners
         android:radius="@dimen/space_small"/>
-    <solid android:color="#e53935" />
+    <solid android:color="@color/normal_drawable_color" />
 </shape>

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.NavigationView xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-android:id="@+id/nav_view"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-app:itemBackground="@drawable/bg_drawer_item"
-app:headerLayout="@layout/layout_navigation_head"
-app:menu="@menu/menu_drawer" >
-
-
-    </android.support.design.widget.NavigationView>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/normal_background_grey_200"
+    app:headerLayout="@layout/layout_navigation_head"
+    app:itemBackground="@drawable/bg_drawer_item"
+    app:menu="@menu/menu_drawer">
+</android.support.design.widget.NavigationView>

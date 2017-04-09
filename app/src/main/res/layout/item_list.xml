@@ -6,7 +6,7 @@
     android:id="@+id/swipe_ly"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#ffffff"
+    android:background="@color/normal_background"
     android:minHeight="75dp"
     android:layout_marginLeft="@dimen/space_normal"
     android:layout_marginRight="@dimen/space_normal"
@@ -27,7 +27,7 @@
         android:layout_marginBottom="2dp"
         android:layout_toRightOf="@id/icon"
         android:text="Title - 1 test test test test test test test test test "
-        android:textColor="#212121"
+        android:textColor="@color/normal_text_color"
         android:textSize="16sp" />
 
     <TextView

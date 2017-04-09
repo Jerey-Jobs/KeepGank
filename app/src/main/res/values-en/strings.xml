@@ -3,18 +3,18 @@
     <string name="study">KeepGank.IO</string>
     <string name="fun">开心每一天</string>
 
-    <string name="action_blog">作者博客</string>
+    <string name="action_blog">Blog</string>
     <string name="action_settings">Settings</string>
-    <string name="action_theme">切换主题</string>
-    <string name="action_home">主页</string>
-    <string name="action_today">今日Gank</string>
-    <string name="girl">妹子</string>
+    <string name="action_theme">Change Theme</string>
+    <string name="action_home">Home</string>
+    <string name="action_today">Today</string>
     <string name="action_collection">Collection</string>
     <string name="action_luck">Luck</string>
     <string name="android">Android</string>
     <string name="ios">iOS</string>
     <string name="front_end">Front end</string>
     <string name="video">Video</string>
+    <string name="girl">Girl</string>
     <string name="resources">Resources</string>
     <string name="latest">Latest</string>
     <string name="sort">Sort</string>

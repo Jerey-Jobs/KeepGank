@@ -26,7 +26,7 @@
         android:id="@+id/swipe_ly"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/translucent_grey_300_96p"
+        android:background="@color/normal_background_grey"
         android:layout_marginTop="?attr/actionBarSize">
 
         <android.support.v7.widget.RecyclerView

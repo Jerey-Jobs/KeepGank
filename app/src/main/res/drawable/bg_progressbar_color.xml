@@ -4,7 +4,7 @@
     <!-- 背景  -->
     <item android:id="@android:id/background">
         <shape>
-            <solid android:color="#fff" />
+            <solid android:color="@color/normal_background" />
         </shape>
     </item>
     <!-- 进度条 -->
