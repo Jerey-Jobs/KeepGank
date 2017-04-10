@@ -1,24 +1,27 @@
-### KeepGank
+## KeepGank
+
 一款Gank客户端,希望大家保持学习的动力
 
-### 主体
+---
+
+## 主体
 
 RxJava + Retrofit + Glide + DiskLruCache + Material-Design
 
-### 缘由
+## 缘由
 
 本着学习MD军火库的目的, 外加练习一下使用第三方框架, 毕竟在公司很少使用第三方的框架. 于是写了个Gank.io客户端. 本打算写一个笑话大全类的客户端, 想着代码家大神比那些第三方网站靠谱的多. 其实都一样. 不如写Gank.io了
 
 
-### 仓库 (希望大家多多Star)
+## 仓库 (希望大家多多Star)
 [https://github.com/Jerey-Jobs/KeepGank](https://github.com/Jerey-Jobs/KeepGank)
 
-### APK下载
+## APK下载
 
 [App下载链接](http://www.coolapk.com/apk/com.jerey.keepgank)
 
 
-### 当前功能
+## 当前功能
 
 - 主页为Gank分类
 - 每日Gank
@@ -38,7 +41,7 @@ RxJava + Retrofit + Glide + DiskLruCache + Material-Design
 
 总之我会一直更新下去的, 大家也可以fork, 多多帮我提建议.提PR
 
-### 预览
+## 预览
 
 ![](http://upload-images.jianshu.io/upload_images/2305881-d1346624ac99cba4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
