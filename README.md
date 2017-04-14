@@ -1,22 +1,74 @@
-### KeepGank
+## KeepGank
+
 一款Gank客户端,希望大家保持学习的动力
 
-RxJava+Retrofit+DiskLruCache+Material Design
+---
 
-目前功能有:
+## 主体
 
-- 主页为Gank分类<br>
-- 每日Gank<br>
-- 网页缓存(我的博客)<br>
-- Disk数据缓存，避免下次打开重新加载
+RxJava + Retrofit + Glide + DiskLruCache + Material-Design
+
+## 缘由
+
+本着学习MD军火库的目的, 外加练习一下使用第三方框架, 毕竟在公司很少使用第三方的框架. 于是写了个Gank.io客户端. 本打算写一个笑话大全类的客户端, 想着代码家大神比那些第三方网站靠谱的多. 其实都一样. 不如写Gank.io了
+
+
+## 仓库 (希望大家多多Star)
+[https://github.com/Jerey-Jobs/KeepGank](https://github.com/Jerey-Jobs/KeepGank)
+
+## APK下载
+
+[App下载链接](http://www.coolapk.com/apk/com.jerey.keepgank)
+
+
+## 当前功能
+
+- 主页为Gank分类
+- 每日Gank
+- 我的博客)
+- Disk数据缓存，避免下次打开时无网络, 加载老数据
 - 图片大图浏览效果
+- 图片保存
 - 内置浏览器
 - 瀑布流妹子
 - 内容分享
+- 夜间模式
 
-![](/pic/pic4.jpg)
-![](/pic/pic8.jpg)
-![](/pic/pic10.jpg)
+后续希望功能:
+- 图片分享
+- 浏览器设置
+等等各种App内置功能
+
+总之我会一直更新下去的, 大家也可以fork, 多多帮我提建议.提PR
+
+## 预览
+
+![](http://upload-images.jianshu.io/upload_images/2305881-d1346624ac99cba4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+
+![](http://upload-images.jianshu.io/upload_images/2305881-37903fe5fbd9fd9a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+夜间模式:
+
+![](http://upload-images.jianshu.io/upload_images/2305881-cde8d3f716d7202a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+### 总之, 希望大家多多star, 一起进步
+
+ps: 后续我可能还是会加上笑话大全功能
+
+
+----------
+本文作者：Anderson/Jerey_Jobs
+
+博客地址   ： [夏敏的博客/Anderson大码渣/Jerey_Jobs][1] <br>
+简书地址   :  [Anderson大码渣][2] <br>
+github地址 :  [Jerey_Jobs][3]
+
+
+
+[1]: http://jerey.cn/
+[2]: http://www.jianshu.com/users/016a5ba708a0/latest_articles
+[3]: https://github.com/Jerey-Jobs
 
 
 目前用到的依赖有：
