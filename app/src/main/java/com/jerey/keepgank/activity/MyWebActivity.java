@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 
+import com.jerey.animationlib.AnimationHelper;
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.base.SingleFragmentActivity;
 import com.jerey.keepgank.bean.Result;
@@ -63,5 +65,16 @@ public class MyWebActivity extends SingleFragmentActivity {
         intent.putExtra(WebFragment.DATA_WHO, result.getWho());
         context.startActivity(intent);
         ((Activity)context).overridePendingTransition(R.anim.in_from_right, 0);
+    }
+
+    public static void startWebActivity(Context context, Result result, View view) {
+        Intent intent = new Intent(context, MyWebActivity.class);
+        intent.putExtra(WebFragment.DATA_ID, result.getObjectId());
+        intent.putExtra(WebFragment.DATA_TITLE, result.getDesc());
+        intent.putExtra(WebFragment.DATA_TYPE, result.getType());
+        intent.putExtra(WebFragment.DATA_URL, result.getUrl());
+        intent.putExtra(WebFragment.DATA_WHO, result.getWho());
+//        context.startActivity(intent);
+        AnimationHelper.startActivity((Activity) context,intent,view,R.color.app_main_color);
     }
 }

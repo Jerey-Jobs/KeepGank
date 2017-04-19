@@ -142,7 +142,6 @@ public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         mLinearLayoutManager = new LinearLayoutManager(recyclerView.getContext());
         recyclerView.setLayoutManager(mLinearLayoutManager);
-
         //日期说明
         // recyclerView.addItemDecoration(new SectionsDecoration(true));
     }

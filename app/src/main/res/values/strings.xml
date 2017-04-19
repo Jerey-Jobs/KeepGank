@@ -43,7 +43,7 @@
     <string name="clear_the_cache">Clear the cache</string>
     <string name="empty">Empty</string>
     <string name="no_more">No more</string>
-    <string name="git_hub" translatable="false">GitHub</string>
+    <string name="git_hub">GitHub</string>
 
     <string name="error">错误</string>
     <string name="transitions_name">image</string>

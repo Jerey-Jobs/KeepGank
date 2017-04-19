@@ -1,6 +1,6 @@
 package com.jerey.keepgank.adapter;
 
-import android.content.Context;
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,9 +22,9 @@ import java.util.List;
 
 public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapter.ViewHolder> {
     private List<Result> mDatas;
-    private Context mContext;
+    private Activity mContext;
 
-    public ListFragmentAdapter(Context context) {
+    public ListFragmentAdapter(Activity context) {
         this.mContext = context;
         mDatas = new ArrayList<>();
     }
@@ -74,7 +74,8 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
                 @Override
                 public void onClick(View v) {
 //                    if(GankApplication.getOpenUrl()== GeneralPrefs.OPEN_URL_WEB_VIEW){
-                        MyWebActivity.startWebActivity(mContext, result);
+                    MyWebActivity.startWebActivity(mContext, result, iconView);
+
 //                    }else{
 //                    SystemUtils.openUrlByBrowser(mContext, result.getUrl());
 //                    }
