@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/translucent_grey_300_96p">
 
-    <android.support.design.widget.AppBarLayout
+    <com.bilibili.magicasakura.widgets.TintAppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
                 app:layout_collapseMode="pin"
                 app:navigationIcon="@mipmap/ic_menu"/>
         </android.support.design.widget.CollapsingToolbarLayout>
-    </android.support.design.widget.AppBarLayout>
+    </com.bilibili.magicasakura.widgets.TintAppBarLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/float_action_button"

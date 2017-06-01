@@ -75,6 +75,6 @@ public class MyWebActivity extends SingleFragmentActivity {
         intent.putExtra(WebFragment.DATA_URL, result.getUrl());
         intent.putExtra(WebFragment.DATA_WHO, result.getWho());
 //        context.startActivity(intent);
-        AnimationHelper.startActivity((Activity) context,intent,view,R.color.app_main_color);
+        AnimationHelper.startActivity((Activity) context,intent,view,R.color.theme_color_primary);
     }
 }

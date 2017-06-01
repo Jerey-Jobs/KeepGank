@@ -11,8 +11,9 @@
     <color name="income_main_color">@color/green</color>
     <color name="income_dark_color">@color/green_dark</color>
 
-    <color name="app_main_color">#35464e</color>
-    <color name="app_dark_color">@color/red_dark</color>
+    <color name="theme_color_primary">#35464e</color>
+    <color name="theme_color_primary_dark">@color/red_dark</color>
+    <color name="theme_color_primary_trans">#99f0486c</color>
 
     <color name="normal_background">#212a2f</color>
     <color name="normal_background_grey">@color/md_grey_700</color>

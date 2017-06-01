@@ -61,4 +61,6 @@ dependencies {
     compile project(':lrucache')
     //友盟统计
     compile 'com.umeng.analytics:analytics:latest.integration'
+    //主题切换
+    compile 'com.bilibili:magicasakura:0.1.6@aar'
 }

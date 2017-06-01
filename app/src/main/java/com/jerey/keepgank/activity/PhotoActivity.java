@@ -52,7 +52,7 @@ public class PhotoActivity extends AppSwipeBackActivity implements View.OnClickL
 //
 //        ActivityCompat.startActivity(activity, intent, options.toBundle());
         // 使用覆盖动画, 体验更好
-        AnimationHelper.startActivity(activity,intent,transitionView,R.color.app_main_color);
+        AnimationHelper.startActivity(activity,intent,transitionView,R.color.theme_color_primary);
     }
 
     public static void startActivity1(Context context, String url) {
