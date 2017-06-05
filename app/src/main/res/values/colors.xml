@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
@@ -12,9 +11,8 @@
     <color name="income_main_color">@color/green</color>
     <color name="income_dark_color">@color/green_dark</color>
 
-    <color name="theme_color_primary">@color/red</color>
-    <color name="theme_color_primary_dark">@color/red_dark</color>
-    <color name="theme_color_primary_trans">#99f0486c</color>
+    <color name="app_main_color">@color/red</color>
+    <color name="app_dark_color">@color/red_dark</color>
 
     <color name="normal_background">#fff</color>
     <color name="normal_background_grey">@color/translucent_grey_300_96p</color>

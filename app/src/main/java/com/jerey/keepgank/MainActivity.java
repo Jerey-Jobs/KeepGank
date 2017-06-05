@@ -17,8 +17,8 @@ package com.jerey.keepgank;
  */
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.ActivityManager;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
@@ -26,24 +26,24 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.bilibili.magicasakura.utils.ThemeUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.cn.jerey.permissiontools.Callback.PermissionCallbacks;
 import com.cn.jerey.permissiontools.PermissionTools;
+import com.jerey.keepgank.Constant.AppConstant;
 import com.jerey.keepgank.fragment.HomeFragment;
 import com.jerey.keepgank.fragment.MeiziFragment;
 import com.jerey.keepgank.fragment.TodayFragment;
@@ -82,9 +82,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // 透明状态栏
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getWindow().addFlags( WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             // 透明导航栏
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            getWindow().addFlags( WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -208,47 +208,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_settings:
                 LogTools.d("设置被点击");
-                ThemeUtils.refreshUI(MainActivity.this, new ThemeUtils.ExtraRefreshable() {
-                            @Override
-                            public void refreshGlobal(Activity activity) {
-                                //for global setting, just do once
-                                if (Build.VERSION.SDK_INT >= 21) {
-                                    LogTools.d("refreshGlobal");
-                                    final MainActivity context = MainActivity.this;
-                                    ActivityManager.TaskDescription taskDescription =
-                                            new ActivityManager.TaskDescription(null, null,
-                                                    ThemeUtils.getThemeAttrColor(context, android.R.attr.colorPrimary));
-                                    setTaskDescription(taskDescription);
-                                    getWindow().setStatusBarColor(
-                                            ThemeUtils.getColorById(context, R.color.theme_color_primary_dark));
-                                }
-                            }
-
-                            @Override
-                            public void refreshSpecificView(View view) {
-                                if (view instanceof TabLayout) {
-                                    LogTools.d("refreshSpecificView TabLayout");
-                                    final MainActivity context = MainActivity.this;
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                        view.setBackgroundColor(ThemeUtils.getColorById(context, R.color.theme_color_primary_dark));
-                                    }
-                                }
-                            }
-                        }
-                );
-
-
-//                SharedPreferences sp = getSharedPreferences(AppConstant.SP, MODE_PRIVATE);
-//                int mode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-//                if (mode == Configuration.UI_MODE_NIGHT_YES) {
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-//                    sp.edit().putBoolean(AppConstant.Theme, true).apply();
-//                } else if (mode == Configuration.UI_MODE_NIGHT_NO) {
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-//                    sp.edit().putBoolean(AppConstant.Theme, false).apply();
-//                }
-//                getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
-//                recreate();
+                SharedPreferences sp = getSharedPreferences(AppConstant.SP, MODE_PRIVATE);
+                int mode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+                if (mode == Configuration.UI_MODE_NIGHT_YES) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    sp.edit().putBoolean(AppConstant.Theme, true).apply();
+                } else if (mode == Configuration.UI_MODE_NIGHT_NO) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    sp.edit().putBoolean(AppConstant.Theme, false).apply();
+                }
+                getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
+                recreate();
                 break;
         }
         return false;
