@@ -15,8 +15,8 @@ import com.jerey.keepgank.adapter.ListFragmentAdapter;
 import com.jerey.keepgank.bean.Data;
 import com.jerey.keepgank.net.Config;
 import com.jerey.keepgank.net.GankApi;
+import com.jerey.loglib.LogTools;
 import com.jerey.lruCache.DiskLruCacheManager;
-import com.orhanobut.logger.Logger;
 import com.trello.rxlifecycle.FragmentEvent;
 
 import java.io.IOException;
@@ -78,7 +78,7 @@ public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
         @Override
         public void onCompleted() {
-            Logger.i("数据onCompleted 停止刷新");
+            LogTools.i("数据onCompleted 停止刷新");
             mSwipeRefreshLayout.setRefreshing(false);
             isLoadingNewData = false;
             isLoadingMore = false;
@@ -86,7 +86,7 @@ public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
         @Override
         public void onError(final Throwable error) {
-            Logger.i("onError 停止刷新");
+            LogTools.i("onError 停止刷新");
             mSwipeRefreshLayout.setRefreshing(false);
             isLoadingNewData = false;
             isLoadingMore = false;
@@ -130,7 +130,7 @@ public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onRefresh() {
-        Logger.i("开始刷新");
+        LogTools.i("开始刷新");
         mSwipeRefreshLayout.setRefreshing(true);
         isLoadingMore = false;
         isLoadingNewData = true;

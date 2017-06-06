@@ -17,8 +17,8 @@ import com.jerey.keepgank.View.SwipeToRefreshLayout;
 import com.jerey.keepgank.adapter.MeiziAdapter;
 import com.jerey.keepgank.bean.Data;
 import com.jerey.keepgank.net.GankApi;
+import com.jerey.loglib.LogTools;
 import com.jerey.lruCache.DiskLruCacheManager;
-import com.orhanobut.logger.Logger;
 import com.trello.rxlifecycle.FragmentEvent;
 
 import java.io.IOException;
@@ -109,7 +109,7 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
 
     @Override
     public void onRefresh() {
-        Logger.i("开始刷新");
+        LogTools.i("开始刷新");
         mSwipeRefreshLayout.setRefreshing(true);
         isLoadingMore = false;
         isLoadingNewData = true;
@@ -139,7 +139,7 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
     }
 
     private void requestMoreData(){
-        Logger.i("加载更多");
+        LogTools.i("加载更多");
         mSwipeRefreshLayout.setRefreshing(true);
         isLoadingMore = true;
         isLoadingNewData = false;
@@ -161,7 +161,7 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
 
         @Override
         public void onCompleted() {
-            Logger.i("数据onCompleted 停止刷新");
+            LogTools.i("数据onCompleted 停止刷新");
             mSwipeRefreshLayout.setRefreshing(false);
             isLoadingNewData = false;
             isLoadingMore = false;
@@ -169,7 +169,7 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
 
         @Override
         public void onError(Throwable e) {
-            Logger.i("onError 停止刷新");
+            LogTools.i("onError 停止刷新");
             mSwipeRefreshLayout.setRefreshing(false);
             isLoadingNewData = false;
             isLoadingMore = false;
@@ -178,7 +178,7 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
 
         @Override
         public void onNext(Data data) {
-            Logger.i("onNext " + data.toString());
+            LogTools.i("onNext " + data.toString());
             if(data != null && data.getResults() != null){
                 /**
                  * 没有更多数据

@@ -1,5 +1,6 @@
 package com.jerey.keepgank.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -11,7 +12,7 @@ import com.jerey.keepgank.MainActivity;
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.adapter.HomeFragmentPagerAdapter;
 import com.jerey.keepgank.net.Config;
-import com.orhanobut.logger.Logger;
+import com.jerey.loglib.LogTools;
 
 import butterknife.Bind;
 
@@ -36,8 +37,9 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void afterCreate(Bundle savedInstanceState) {
-
+        LogTools.i("afterCreate");
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+        dynamicAddView(mToolbar, "background", R.color.app_main_color);
         /**
          * 注: 在该Fragment设置mToolbar的onOptionsItemSelected是无效的
          */
@@ -56,4 +58,9 @@ public class HomeFragment extends BaseFragment {
         mViewPager.setCurrentItem(0);
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        LogTools.i("onAttach");
+    }
 }

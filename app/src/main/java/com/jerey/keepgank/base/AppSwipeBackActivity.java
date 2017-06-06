@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.jerey.themelib.base.SkinBaseActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
@@ -19,7 +20,7 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper;
  * Caused by: java.lang.ClassCastException: com.jerey.keepgank.activity.WebActivity
  * cannot be cast to android.support.v7.app.AppCompatActivity
  */
-public class AppSwipeBackActivity extends AppCompatActivity implements SwipeBackActivityBase {
+public class AppSwipeBackActivity extends SkinBaseActivity implements SwipeBackActivityBase {
     private SwipeBackActivityHelper mHelper;
 
     @Override

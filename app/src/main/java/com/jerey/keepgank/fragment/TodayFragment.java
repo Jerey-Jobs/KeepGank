@@ -22,8 +22,8 @@ import com.jerey.keepgank.View.SlideInOutRightItemAnimator;
 import com.jerey.keepgank.adapter.DayFragmentAdapter;
 import com.jerey.keepgank.bean.GankDay;
 import com.jerey.keepgank.net.GankApi;
+import com.jerey.loglib.LogTools;
 import com.jerey.lruCache.DiskLruCacheManager;
-import com.orhanobut.logger.Logger;
 import com.trello.rxlifecycle.FragmentEvent;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -167,7 +167,7 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
 
                     @Override
                     public void onNext(GankDay gankDay) {
-                        Logger.d(gankDay.toString());
+                        LogTools.d(gankDay.toString());
                         if (gankDay != null && gankDay.results != null && gankDay.results.Android != null) {
                             mToolbarLayout.setTitle(year + "年" + month + "月" + day + "日");
                             mDiskLruCacheManager.put(TAG, gankDay);
@@ -180,7 +180,7 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
     }
 
     private void loadUIByGankday(GankDay gankDay){
-        Logger.d(gankDay.results.福利.get(0).getUrl());
+        LogTools.d(gankDay.results.福利.get(0).getUrl());
         Glide.with(TodayFragment.this)
                 .load(gankDay.results.福利.get(0).getUrl())
                 .centerCrop()
@@ -194,7 +194,7 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        Log.d("###", "DatePickerDialog" + year + "-" + monthOfYear + "-" + dayOfMonth);
+        LogTools.d("DatePickerDialog" + year + "-" + monthOfYear + "-" + dayOfMonth);
         load(year, monthOfYear + 1, dayOfMonth);
     }
 

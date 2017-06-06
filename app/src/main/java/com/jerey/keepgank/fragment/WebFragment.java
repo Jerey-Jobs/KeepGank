@@ -18,7 +18,7 @@ import android.widget.ProgressBar;
 
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.base.AppSwipeBackActivity;
-import com.orhanobut.logger.Logger;
+import com.jerey.loglib.LogTools;
 
 import butterknife.Bind;
 
@@ -136,7 +136,7 @@ public class WebFragment extends BaseFragment {
                 getActivity().startActivity(Intent.createChooser(intent1, mTitle));
                 break;
             case android.R.id.home:
-                Logger.d("onOptionsItemSelected android.R.id.home");
+                LogTools.d("onOptionsItemSelected android.R.id.home");
                 if (mWebView != null && mWebView.canGoBack()) {
                     mWebView.goBack();
                 } else {

@@ -50,6 +50,9 @@ import com.jerey.keepgank.fragment.TodayFragment;
 import com.jerey.keepgank.fragment.WebView;
 import com.jerey.keepgank.utils.BlurImageUtils;
 import com.jerey.loglib.LogTools;
+import com.jerey.themelib.SkinLoaderListener;
+import com.jerey.themelib.base.SkinBaseActivity;
+import com.jerey.themelib.loader.SkinManager;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
@@ -58,7 +61,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends SkinBaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private int mCurrentUIIndex = 0;
     private static final int INDEX_HOME = 0;
@@ -100,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                         mUserimage.setImageBitmap(resource);
                         Bitmap overlay = BlurImageUtils.blur(mUserimage, 3, 3);
+
                         mHeadViewContainer.setBackground(new BitmapDrawable(getResources(), overlay));
                     }
                 });
@@ -193,11 +197,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 item.setChecked(true);
                 mCurrentUIIndex = INDEX_TODAY;
                 updateUI();
+                //TODO test
+                SkinManager.getInstance().loadFont("SSXHZT.ttf");
                 break;
             case R.id.nav_collection:
                 LogTools.d("收藏被点击");
                 item.setChecked(true);
                 mCurrentUIIndex = INDEX_COLLECTION;
+                SkinManager.getInstance().restoreDefaultTheme();
                 updateUI();
                 break;
             case R.id.my_blog:
@@ -208,17 +215,42 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_settings:
                 LogTools.d("设置被点击");
-                SharedPreferences sp = getSharedPreferences(AppConstant.SP, MODE_PRIVATE);
-                int mode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-                if (mode == Configuration.UI_MODE_NIGHT_YES) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    sp.edit().putBoolean(AppConstant.Theme, true).apply();
-                } else if (mode == Configuration.UI_MODE_NIGHT_NO) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    sp.edit().putBoolean(AppConstant.Theme, false).apply();
-                }
-                getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
-                recreate();
+//                SharedPreferences sp = getSharedPreferences(AppConstant.SP, MODE_PRIVATE);
+//                int mode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+//                if (mode == Configuration.UI_MODE_NIGHT_YES) {
+//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+//                    sp.edit().putBoolean(AppConstant.Theme, true).apply();
+//                } else if (mode == Configuration.UI_MODE_NIGHT_NO) {
+//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+//                    sp.edit().putBoolean(AppConstant.Theme, false).apply();
+//                }
+//                getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
+//                recreate();
+                SkinManager.getInstance().loadSkin("theme-night.skin",
+                        new SkinLoaderListener() {
+                            @Override
+                            public void onStart() {
+                                Toast.makeText(getApplicationContext(), "正在切换中", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onSuccess() {
+                                Toast.makeText(getApplicationContext(), "切换成功", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailed(String errMsg) {
+                                Toast.makeText(getApplicationContext(), "切换失败", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onProgress(int progress) {
+
+                            }
+
+                        }
+                );
+
                 break;
         }
         return false;
