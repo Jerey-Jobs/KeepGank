@@ -5,6 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/KeepGank.iml" filepath="$PROJECT_DIR$/KeepGank.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/lrucache/lrucache.iml" filepath="$PROJECT_DIR$/lrucache/lrucache.iml" />
+      <module fileurl="file://$PROJECT_DIR$/theme-night/theme-night.iml" filepath="$PROJECT_DIR$/theme-night/theme-night.iml" />
+      <module fileurl="file://$PROJECT_DIR$/themelib/themelib.iml" filepath="$PROJECT_DIR$/themelib/themelib.iml" />
     </modules>
   </component>
 </project>
