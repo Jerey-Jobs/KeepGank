@@ -1,1 +1,1 @@
-include ':app', ':lrucache'
+include ':app', ':lrucache', ':themelib', ':theme-night'
