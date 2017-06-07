@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:skin="http://schemas.android.com/android/skin"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -11,28 +12,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@null"
-        android:fitsSystemWindows="false">
+        android:fitsSystemWindows="false"
+        skin:enable="true">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
+            app:navigationIcon="@mipmap/ic_menu"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:navigationIcon="@mipmap/ic_menu"/>
+            skin:enable="true"/>
     </android.support.design.widget.AppBarLayout>
 
     <com.jerey.keepgank.View.SwipeToRefreshLayout
         android:id="@+id/swipe_ly"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/normal_background_grey"
-        android:layout_marginTop="?attr/actionBarSize">
+        android:layout_marginTop="?attr/actionBarSize"
+        android:background="@color/normal_background_grey">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            skin:enable="true"/>
 
     </com.jerey.keepgank.View.SwipeToRefreshLayout>
 </android.support.design.widget.CoordinatorLayout>

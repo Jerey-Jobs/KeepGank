@@ -198,7 +198,7 @@ public class MainActivity extends SkinBaseActivity implements NavigationView.OnN
                 mCurrentUIIndex = INDEX_TODAY;
                 updateUI();
                 //TODO test
-                SkinManager.getInstance().loadFont("SSXHZT.ttf");
+                SkinManager.getInstance().loadFont("WRYHZT.ttf");
                 break;
             case R.id.nav_collection:
                 LogTools.d("收藏被点击");

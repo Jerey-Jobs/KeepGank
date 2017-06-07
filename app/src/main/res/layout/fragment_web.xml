@@ -1,6 +1,7 @@
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:skin="http://schemas.android.com/android/skin"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -10,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@null"
-        android:fitsSystemWindows="false">
+        android:fitsSystemWindows="false"
+        skin:enable="true">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -22,9 +24,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                app:titleTextColor="@android:color/white"
                 app:navigationIcon="@drawable/ic_arrow_back"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:titleTextColor="@android:color/white"
+                skin:enable="true"/>
 
             <ProgressBar
                 android:id="@+id/progress_bar"
@@ -33,7 +36,8 @@
                 android:layout_height="2dp"
                 android:layout_gravity="bottom"
                 android:max="100"
-                android:progressDrawable="@drawable/bg_progressbar_color" />
+                android:progressDrawable="@drawable/bg_progressbar_color"
+                skin:enable="true"/>
         </FrameLayout>
     </android.support.design.widget.AppBarLayout>
 
@@ -46,6 +50,6 @@
         <WebView
             android:id="@+id/web_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>
