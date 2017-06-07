@@ -17,8 +17,7 @@ package com.jerey.keepgank;
  */
 
 import android.Manifest;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
@@ -30,8 +29,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,14 +40,13 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.cn.jerey.permissiontools.Callback.PermissionCallbacks;
 import com.cn.jerey.permissiontools.PermissionTools;
-import com.jerey.keepgank.Constant.AppConstant;
+import com.jerey.keepgank.activity.ThemeChooseActivity;
 import com.jerey.keepgank.fragment.HomeFragment;
 import com.jerey.keepgank.fragment.MeiziFragment;
 import com.jerey.keepgank.fragment.TodayFragment;
 import com.jerey.keepgank.fragment.WebView;
 import com.jerey.keepgank.utils.BlurImageUtils;
 import com.jerey.loglib.LogTools;
-import com.jerey.themelib.SkinLoaderListener;
 import com.jerey.themelib.base.SkinBaseActivity;
 import com.jerey.themelib.loader.SkinManager;
 import com.umeng.analytics.MobclickAgent;
@@ -85,9 +81,9 @@ public class MainActivity extends SkinBaseActivity implements NavigationView.OnN
         super.onCreate(savedInstanceState);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // 透明状态栏
-            getWindow().addFlags( WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             // 透明导航栏
-            getWindow().addFlags( WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -197,14 +193,11 @@ public class MainActivity extends SkinBaseActivity implements NavigationView.OnN
                 item.setChecked(true);
                 mCurrentUIIndex = INDEX_TODAY;
                 updateUI();
-                //TODO test
-                SkinManager.getInstance().loadFont("WRYHZT.ttf");
                 break;
             case R.id.nav_collection:
                 LogTools.d("收藏被点击");
                 item.setChecked(true);
                 mCurrentUIIndex = INDEX_COLLECTION;
-                SkinManager.getInstance().restoreDefaultTheme();
                 updateUI();
                 break;
             case R.id.my_blog:
@@ -214,7 +207,7 @@ public class MainActivity extends SkinBaseActivity implements NavigationView.OnN
                 updateUI();
                 break;
             case R.id.nav_settings:
-                LogTools.d("设置被点击");
+                LogTools.d("主题被点击");
 //                SharedPreferences sp = getSharedPreferences(AppConstant.SP, MODE_PRIVATE);
 //                int mode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 //                if (mode == Configuration.UI_MODE_NIGHT_YES) {
@@ -226,31 +219,11 @@ public class MainActivity extends SkinBaseActivity implements NavigationView.OnN
 //                }
 //                getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
 //                recreate();
-                SkinManager.getInstance().loadSkin("theme-night.skin",
-                        new SkinLoaderListener() {
-                            @Override
-                            public void onStart() {
-                                Toast.makeText(getApplicationContext(), "正在切换中", Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void onSuccess() {
-                                Toast.makeText(getApplicationContext(), "切换成功", Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void onFailed(String errMsg) {
-                                Toast.makeText(getApplicationContext(), "切换失败", Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void onProgress(int progress) {
-
-                            }
-
-                        }
-                );
-
+                Intent intent = new Intent(MainActivity.this, ThemeChooseActivity.class);
+                startActivity(intent);
+                if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    mDrawerLayout.closeDrawer(GravityCompat.START);
+                }
                 break;
         }
         return false;

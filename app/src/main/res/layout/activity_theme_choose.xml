@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"/>
 
             <RadioButton
-
+                android:id="@+id/theme_default"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="默认主题"/>
@@ -50,6 +50,7 @@
                 android:layout_height="wrap_content"/>
 
             <RadioButton
+                android:id="@+id/theme_night"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="夜间主题"/>
@@ -67,7 +68,7 @@
                 android:layout_height="wrap_content"/>
 
             <RadioButton
-
+                android:id="@+id/theme_ocean"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="海洋主题"/>
@@ -83,11 +84,13 @@
         android:layout_margin="10dp">
 
         <RadioButton
+            android:id="@+id/font_default"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="默认字体"/>
 
         <RadioButton
+            android:id="@+id/font_wryh"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="微软雅黑"/>

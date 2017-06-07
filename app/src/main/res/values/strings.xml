@@ -5,7 +5,7 @@
 
     <string name="action_blog">作者博客</string>
     <string name="action_settings">Settings</string>
-    <string name="action_theme">切换主题</string>
+    <string name="action_theme">主题设置</string>
     <string name="action_home">主页</string>
     <string name="action_today">今日Gank</string>
     <string name="girl">妹子</string>

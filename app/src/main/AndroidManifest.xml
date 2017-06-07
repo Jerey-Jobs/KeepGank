@@ -41,6 +41,7 @@
             android:value="1" />
 
         <activity android:name=".SplashActivity"></activity>
+        <activity android:name=".activity.ThemeChooseActivity"/>
     </application>
 
 </manifest>
