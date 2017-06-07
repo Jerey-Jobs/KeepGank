@@ -18,6 +18,7 @@
         android:padding="12dp"
         android:text="desc"
         android:textColor="@color/normal_text_color"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        skin:enable="true"/>
 
 </LinearLayout>

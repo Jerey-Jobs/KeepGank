@@ -2,11 +2,13 @@ package com.jerey.keepgank.activity;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.base.AppSwipeBackActivity;
+import com.jerey.loglib.LogTools;
 import com.jerey.themelib.SkinLoaderListener;
 import com.jerey.themelib.loader.SkinManager;
 
@@ -18,10 +20,8 @@ import butterknife.OnClick;
  * Created by xiamin on 6/7/17.
  */
 
-public class ThemeChooseActivity extends AppSwipeBackActivity {
+public class ThemeChooseActivity extends AppSwipeBackActivity{
 
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
     @Bind(R.id.theme_default)
     RadioButton themeDefault;
     @Bind(R.id.theme_night)
@@ -33,11 +33,15 @@ public class ThemeChooseActivity extends AppSwipeBackActivity {
     @Bind(R.id.font_wryh)
     RadioButton fontWryh;
 
+    Toolbar mToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_theme_choose);
         ButterKnife.bind(this);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
     }
 
     @OnClick(R.id.theme_default)
@@ -86,5 +90,18 @@ public class ThemeChooseActivity extends AppSwipeBackActivity {
     @OnClick(R.id.font_wryh)
     public void onFontWryhClicked() {
         SkinManager.getInstance().loadFont("WRYHZT.ttf");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                LogTools.i("android.R.id.home");
+                scrollToFinishActivity();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

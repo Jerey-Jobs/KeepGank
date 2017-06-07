@@ -31,7 +31,8 @@
         android:layout_toRightOf="@id/icon"
         android:text="Title - 1 test test test test test test test test test "
         android:textColor="@color/normal_text_color"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        skin:enable="true"/>
 
     <TextView
         android:id="@+id/who"

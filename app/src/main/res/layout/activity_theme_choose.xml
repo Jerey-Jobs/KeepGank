@@ -2,9 +2,12 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/normal_background"
+    skin:enable="true">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -13,7 +16,8 @@
         android:background="@color/app_main_color"
         app:navigationIcon="@drawable/ic_arrow_back"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:titleTextColor="@android:color/white"/>
+        app:titleTextColor="@android:color/white"
+        skin:enable="true"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,7 +39,9 @@
                 android:id="@+id/theme_default"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="默认主题"/>
+                android:text="默认主题"
+                android:textColor="@color/normal_text_color"
+                skin:enable="true"/>
         </LinearLayout>
 
         <LinearLayout
@@ -53,7 +59,9 @@
                 android:id="@+id/theme_night"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="夜间主题"/>
+                android:text="夜间主题"
+                android:textColor="@color/normal_text_color"
+                skin:enable="true"/>
         </LinearLayout>
 
         <LinearLayout
@@ -71,7 +79,9 @@
                 android:id="@+id/theme_ocean"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="海洋主题"/>
+                android:text="海洋主题"
+                android:textColor="@color/normal_text_color"
+                skin:enable="true"/>
         </LinearLayout>
 
 
@@ -87,13 +97,17 @@
             android:id="@+id/font_default"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="默认字体"/>
+            android:text="默认字体"
+            android:textColor="@color/normal_text_color"
+            skin:enable="true"/>
 
         <RadioButton
             android:id="@+id/font_wryh"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="微软雅黑"/>
+            android:text="微软雅黑"
+            android:textColor="@color/normal_text_color"
+            skin:enable="true"/>
     </RadioGroup>
 
 </LinearLayout>

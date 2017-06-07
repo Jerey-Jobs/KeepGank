@@ -32,7 +32,7 @@ import rx.schedulers.Schedulers;
  * Created by Xiamin on 2017/3/1.
  */
 
-public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener{
+public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = "MeiziFragment";
 
@@ -55,6 +55,7 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
     private boolean isALlLoad = false;
     MeiziAdapter mAdapter;
     private DiskLruCacheManager mDiskLruCacheManager;
+
     @Override
     protected int returnLayoutID() {
         return R.layout.fragment_meizi;
@@ -65,6 +66,7 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolBar);
         mToolBar.setTitle("妹子");
         mToolBar.setTitleTextColor(Color.WHITE);
+        dynamicAddView(mToolBar, "background", R.color.app_main_color);
         initRecyclerView(mRecyclerView);
         initSwipeRefreshLayout(mSwipeRefreshLayout);
         mAdapter = new MeiziAdapter(getActivity());
@@ -77,7 +79,7 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
             mDiskLruCacheManager = new DiskLruCacheManager(getActivity());
             Data data = mDiskLruCacheManager.getAsSerializable(TAG);
             Log.i(TAG, "DiskLruCacheManager 读取");
-            if (data != null){
+            if (data != null) {
                 Log.i(TAG, "获取到缓存数据");
                 mAdapter.setData(data.getResults());
                 mAdapter.notifyDataSetChanged();
@@ -138,7 +140,7 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
         return isLoadingMore || isLoadingNewData;
     }
 
-    private void requestMoreData(){
+    private void requestMoreData() {
         LogTools.i("加载更多");
         mSwipeRefreshLayout.setRefreshing(true);
         isLoadingMore = true;
@@ -149,7 +151,7 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
     private void loadData(int pager) {
         GankApi.getInstance()
                 .getWebService()
-                .getBenefitsGoods(GankApi.LOAD_LIMIT,pager)
+                .getBenefitsGoods(GankApi.LOAD_LIMIT, pager)
                 .compose(this.<Data>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
                 .cache()
                 .subscribeOn(Schedulers.io())
@@ -157,7 +159,7 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
                 .subscribe(dataObservable);
     }
 
-    private Observer<Data> dataObservable = new Observer<Data>(){
+    private Observer<Data> dataObservable = new Observer<Data>() {
 
         @Override
         public void onCompleted() {
@@ -179,7 +181,7 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
         @Override
         public void onNext(Data data) {
             LogTools.i("onNext " + data.toString());
-            if(data != null && data.getResults() != null){
+            if (data != null && data.getResults() != null) {
                 /**
                  * 没有更多数据
                  */
@@ -188,13 +190,13 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
                     showSnackbar(R.string.no_more);
                 }
 
-                if(isLoadingMore){
+                if (isLoadingMore) {
                     mAdapter.addData(data.getResults());
                 } else if (isLoadingNewData) {
                     isALlLoad = false;
                     mAdapter.setData(data.getResults());
                     Log.i(TAG, "DiskLruCacheManager 写入");
-                    mDiskLruCacheManager.put(TAG,data);
+                    mDiskLruCacheManager.put(TAG, data);
                 }
                 mAdapter.notifyDataSetChanged();
             }

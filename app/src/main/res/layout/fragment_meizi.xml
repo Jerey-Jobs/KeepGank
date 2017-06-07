@@ -5,7 +5,9 @@
     xmlns:skin="http://schemas.android.com/android/skin"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/normal_background"
+    skin:enable="true">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -30,7 +32,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"
-        android:background="@color/normal_background_grey">
+        android:background="@color/normal_background_grey"
+        skin:enable="true">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
