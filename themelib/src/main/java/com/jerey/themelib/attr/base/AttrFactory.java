@@ -1,6 +1,7 @@
 package com.jerey.themelib.attr.base;
 
 import com.jerey.themelib.attr.BackgroundAttr;
+import com.jerey.themelib.attr.CoordinatorLayoutAttr;
 import com.jerey.themelib.attr.ImageViewSrcAttr;
 import com.jerey.themelib.attr.TabLayoutIndicatorAttr;
 import com.jerey.themelib.attr.TextColorAttr;
@@ -17,6 +18,7 @@ public class AttrFactory {
         sSupportAttr.put("textColor", new TextColorAttr());
         sSupportAttr.put("src", new ImageViewSrcAttr());
         sSupportAttr.put("tabLayoutIndicator", new TabLayoutIndicatorAttr());
+        sSupportAttr.put("CoordinatorLayout", new CoordinatorLayoutAttr());
     }
 
 
@@ -32,7 +34,6 @@ public class AttrFactory {
 
     /**
      * check current attribute if can be support
-     *
      * @param attrName attribute name
      * @return true : supported <br>
      * false: not supported
@@ -43,7 +44,6 @@ public class AttrFactory {
 
     /**
      * add support's attribute
-     *
      * @param attrName attribute name
      * @param skinAttr skin attribute
      */
