@@ -39,7 +39,8 @@
                 android:background="@color/transparent"
                 android:fitsSystemWindows="true"
                 app:layout_collapseMode="pin"
-                app:navigationIcon="@mipmap/ic_menu"/>
+                app:navigationIcon="@mipmap/ic_menu"
+                skin:enable="true"/>
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 

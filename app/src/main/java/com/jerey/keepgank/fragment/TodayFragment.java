@@ -72,9 +72,8 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
     @Override
     protected void afterCreate(Bundle savedInstanceState) {
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
-
         initUI();
-
+        dynamicAddView(mToolbarLayout, "ContentScrimColor", R.color.app_main_color);
         mAdapter = new DayFragmentAdapter(getActivity());
         Calendar c = null;
         java.util.Calendar calendar = java.util.Calendar.getInstance();
@@ -91,7 +90,7 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
             Log.i(TAG, "DiskLruCacheManager 创建");
             GankDay gankDay = mDiskLruCacheManager.getAsSerializable(TAG);
             Log.i(TAG, "DiskLruCacheManager 读取数据 " + gankDay);
-            if(gankDay != null) {
+            if (gankDay != null) {
                 loadUIByGankday(gankDay);
             }
         } catch (IOException e) {
@@ -179,7 +178,7 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
                 });
     }
 
-    private void loadUIByGankday(GankDay gankDay){
+    private void loadUIByGankday(GankDay gankDay) {
         LogTools.d(gankDay.results.福利.get(0).getUrl());
         Glide.with(TodayFragment.this)
                 .load(gankDay.results.福利.get(0).getUrl())

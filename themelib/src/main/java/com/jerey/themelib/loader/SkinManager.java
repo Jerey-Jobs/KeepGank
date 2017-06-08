@@ -46,6 +46,10 @@ public class SkinManager implements ISkinLoader {
 
     }
 
+    /**
+     * 初始化字体
+     * @param ctx
+     */
     public void init(Context ctx) {
         context = ctx.getApplicationContext();
         TypefaceUtils.CURRENT_TYPEFACE = TypefaceUtils.getTypeface(context);

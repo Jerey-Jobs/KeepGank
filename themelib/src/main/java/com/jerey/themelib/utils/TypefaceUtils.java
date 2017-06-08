@@ -31,6 +31,12 @@ public class TypefaceUtils {
         return tf;
     }
 
+    /**
+     * 从sp中读取字体入路径加载, 若没有,则为默认
+     *
+     * @param context
+     * @return
+     */
     public static Typeface getTypeface(Context context) {
         String fontPath = SkinPreferencesUtils.getString(context, SkinConfig.PREF_FONT_PATH);
         Typeface tf;

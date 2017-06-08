@@ -1,6 +1,7 @@
 package com.jerey.themelib.attr.base;
 
 import com.jerey.themelib.attr.BackgroundAttr;
+import com.jerey.themelib.attr.ContentScrimColorAttr;
 import com.jerey.themelib.attr.CoordinatorLayoutAttr;
 import com.jerey.themelib.attr.ImageViewSrcAttr;
 import com.jerey.themelib.attr.NavigationIconAttr;
@@ -23,6 +24,7 @@ public class AttrFactory {
         sSupportAttr.put("CoordinatorLayout", new CoordinatorLayoutAttr());
         sSupportAttr.put("Toolbar", new ToolbarAttr());
         sSupportAttr.put("navigationIcon", new NavigationIconAttr());
+        sSupportAttr.put("ContentScrimColor", new ContentScrimColorAttr());
     }
 
 
