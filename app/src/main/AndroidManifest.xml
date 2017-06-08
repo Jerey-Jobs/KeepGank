@@ -19,7 +19,7 @@
             android:name=".MainActivity"
             android:label="@string/study"
             android:launchMode="singleTask"
-            android:theme="@style/MainTheme"
+            android:theme="@style/AppTheme"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

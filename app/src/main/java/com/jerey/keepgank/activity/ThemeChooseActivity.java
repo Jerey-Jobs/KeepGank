@@ -4,11 +4,15 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.jerey.keepgank.R;
+import com.jerey.keepgank.View.GlideRoundTransform;
 import com.jerey.keepgank.base.AppSwipeBackActivity;
+import com.jerey.keepgank.utils.SPUtils;
 import com.jerey.loglib.LogTools;
 import com.jerey.themelib.SkinLoaderListener;
 import com.jerey.themelib.loader.SkinManager;
@@ -22,6 +26,8 @@ import butterknife.OnClick;
  */
 
 public class ThemeChooseActivity extends AppSwipeBackActivity {
+    public static final String FONT_STRING = "current-font";
+    public static final String FONT_DEFAULT = "font_default";
 
     @Bind(R.id.theme_default)
     RadioButton mRadioThemeDefault;
@@ -33,6 +39,12 @@ public class ThemeChooseActivity extends AppSwipeBackActivity {
     RadioButton mRadioFontDefault;
     @Bind(R.id.font_wryh)
     RadioButton mRadioFontWryh;
+    @Bind(R.id.theme_default_img)
+    ImageView mThemeDefaultImg;
+    @Bind(R.id.theme_night_img)
+    ImageView mThemeNightImg;
+    @Bind(R.id.theme_ocean_img)
+    ImageView mThemeOceanImg;
 
     Toolbar mToolbar;
 
@@ -43,8 +55,26 @@ public class ThemeChooseActivity extends AppSwipeBackActivity {
         ButterKnife.bind(this);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+        Glide.with(this)
+                .load(R.drawable.theme_defalut)
+                .transform(new GlideRoundTransform(this, 5))
+                .into(mThemeDefaultImg);
+        Glide.with(this)
+                .load(R.drawable.theme_dark)
+                .transform(new GlideRoundTransform(this, 5))
+                .into(mThemeNightImg);
+        Glide.with(this)
+                .load(R.drawable.theme_ocean)
+                .transform(new GlideRoundTransform(this, 5))
+                .into(mThemeOceanImg);
         updateUI();
-
+        if (SPUtils.get(this, FONT_DEFAULT, true)) {
+            mRadioFontDefault.setChecked(true);
+            mRadioFontWryh.setChecked(false);
+        } else {
+            mRadioFontDefault.setChecked(false);
+            mRadioFontWryh.setChecked(true);
+        }
     }
 
     @OnClick(R.id.theme_default)
@@ -117,11 +147,17 @@ public class ThemeChooseActivity extends AppSwipeBackActivity {
     @OnClick(R.id.font_default)
     public void onFontDefaultClicked() {
         SkinManager.getInstance().loadFont("");
+        SPUtils.put(this, FONT_DEFAULT, true);
+        mRadioFontWryh.setChecked(false);
+        mRadioFontDefault.setChecked(true);
     }
 
     @OnClick(R.id.font_wryh)
     public void onFontWryhClicked() {
         SkinManager.getInstance().loadFont("WRYHZT.ttf");
+        SPUtils.put(this, FONT_DEFAULT, false);
+        mRadioFontWryh.setChecked(true);
+        mRadioFontDefault.setChecked(false);
     }
 
     @Override
@@ -142,6 +178,7 @@ public class ThemeChooseActivity extends AppSwipeBackActivity {
             theme = THEME_DEFAULT;
         }
         updateUIByName(theme);
+
     }
 
     private static final String THEME_NIGHT = "com.jerey.theme_night";
@@ -178,7 +215,5 @@ public class ThemeChooseActivity extends AppSwipeBackActivity {
                 onThemeOceanClicked();
                 break;
         }
-
-
     }
 }

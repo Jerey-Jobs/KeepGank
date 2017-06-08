@@ -35,6 +35,7 @@
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/theme_default_img"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:src="@drawable/theme_defalut"/>
@@ -58,6 +59,7 @@
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/theme_night_img"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:src="@drawable/theme_dark"/>
@@ -81,6 +83,7 @@
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/theme_ocean_img"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:src="@drawable/theme_ocean"
