@@ -75,7 +75,6 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
         initUI();
         dynamicAddView(mToolbarLayout, "ContentScrimColor", R.color.app_main_color);
         mAdapter = new DayFragmentAdapter(getActivity());
-        Calendar c = null;
         java.util.Calendar calendar = java.util.Calendar.getInstance();
         calendar.setTime(new Date());
         year = calendar.get(java.util.Calendar.YEAR);

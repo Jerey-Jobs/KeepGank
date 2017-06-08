@@ -120,7 +120,6 @@ public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                 mAdapter.notifyDataSetChanged();
             }
 
-
         } catch (IOException e) {
             e.printStackTrace();
         }
