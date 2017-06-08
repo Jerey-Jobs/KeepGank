@@ -62,6 +62,7 @@ public class SkinBaseActivity extends AppCompatActivity implements ISkinUpdate, 
         if (!SkinConfig.isCanChangeStatusColor()) {
             return;
         }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             int color = SkinManager.getInstance().getColorPrimaryDark();
             if (color != -1) {

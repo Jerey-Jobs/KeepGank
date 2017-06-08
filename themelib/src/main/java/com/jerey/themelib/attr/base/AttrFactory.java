@@ -3,8 +3,10 @@ package com.jerey.themelib.attr.base;
 import com.jerey.themelib.attr.BackgroundAttr;
 import com.jerey.themelib.attr.CoordinatorLayoutAttr;
 import com.jerey.themelib.attr.ImageViewSrcAttr;
+import com.jerey.themelib.attr.NavigationIconAttr;
 import com.jerey.themelib.attr.TabLayoutIndicatorAttr;
 import com.jerey.themelib.attr.TextColorAttr;
+import com.jerey.themelib.attr.ToolbarAttr;
 
 import java.util.HashMap;
 
@@ -19,6 +21,8 @@ public class AttrFactory {
         sSupportAttr.put("src", new ImageViewSrcAttr());
         sSupportAttr.put("tabLayoutIndicator", new TabLayoutIndicatorAttr());
         sSupportAttr.put("CoordinatorLayout", new CoordinatorLayoutAttr());
+        sSupportAttr.put("Toolbar", new ToolbarAttr());
+        sSupportAttr.put("navigationIcon", new NavigationIconAttr());
     }
 
 
@@ -34,6 +38,7 @@ public class AttrFactory {
 
     /**
      * check current attribute if can be support
+     *
      * @param attrName attribute name
      * @return true : supported <br>
      * false: not supported
@@ -44,6 +49,7 @@ public class AttrFactory {
 
     /**
      * add support's attribute
+     *
      * @param attrName attribute name
      * @param skinAttr skin attribute
      */
