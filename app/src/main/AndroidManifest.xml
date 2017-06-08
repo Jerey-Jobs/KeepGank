@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.jerey.keepgank">
+          package="com.jerey.keepgank">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
     <application
         android:name=".GankApp"
@@ -17,28 +17,30 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:launchMode="singleTask"
             android:label="@string/study"
+            android:launchMode="singleTask"
             android:theme="@style/MainTheme"
             >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
             android:name=".activity.MyWebActivity"
-            android:theme="@style/WebTheme" />
+            android:launchMode="singleTop"
+            android:theme="@style/WebTheme"/>
         <activity
             android:name=".activity.PhotoActivity"
-            android:theme="@style/PhotoActivity" />
+            android:launchMode="singleTop"
+            android:theme="@style/PhotoActivity"/>
 
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="58db11de6e27a4737b001422" />
+            android:value="58db11de6e27a4737b001422"/>
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="1" />
+            android:value="1"/>
 
         <activity android:name=".SplashActivity"></activity>
         <activity android:name=".activity.ThemeChooseActivity"/>

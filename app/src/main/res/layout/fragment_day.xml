@@ -50,7 +50,8 @@
         android:layout_margin="16dp"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@drawable/ic_today_white_36dp"/>
+        app:srcCompat="@drawable/ic_today_white_36dp"
+        skin:enable="true"/>
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"

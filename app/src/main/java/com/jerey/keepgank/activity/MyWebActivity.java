@@ -10,11 +10,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 
-import com.jerey.animationlib.AnimationHelper;
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.base.SingleFragmentActivity;
 import com.jerey.keepgank.bean.Result;
 import com.jerey.keepgank.fragment.WebFragment;
+import com.jerey.keepgank.utils.AnimationHelper;
+import com.jerey.loglib.LogTools;
+import com.jerey.themelib.loader.SkinManager;
 
 /**
  * Created by Xiamin on 2017/2/25.
@@ -26,7 +28,7 @@ public class MyWebActivity extends SingleFragmentActivity {
 
     @Override
     protected Fragment getFragment() {
-        if (mWebFragment == null){
+        if (mWebFragment == null) {
             mWebFragment = new WebFragment();
         }
         return mWebFragment;
@@ -46,7 +48,7 @@ public class MyWebActivity extends SingleFragmentActivity {
         String type = intent.getStringExtra(WebFragment.DATA_TYPE);
         String url = intent.getStringExtra(WebFragment.DATA_URL);
         String who = intent.getStringExtra(WebFragment.DATA_WHO);
-        Log.d(TAG,"id: " + id + " title: " + title + " url: "+ url);
+        Log.d(TAG, "id: " + id + " title: " + title + " url: " + url);
         Bundle bundle = new Bundle();
         bundle.putSerializable(WebFragment.DATA_ID, id);
         bundle.putSerializable(WebFragment.DATA_TITLE, title);
@@ -64,7 +66,7 @@ public class MyWebActivity extends SingleFragmentActivity {
         intent.putExtra(WebFragment.DATA_URL, result.getUrl());
         intent.putExtra(WebFragment.DATA_WHO, result.getWho());
         context.startActivity(intent);
-        ((Activity)context).overridePendingTransition(R.anim.in_from_right, 0);
+        ((Activity) context).overridePendingTransition(R.anim.in_from_right, 0);
     }
 
     public static void startWebActivity(Context context, Result result, View view) {
@@ -75,6 +77,10 @@ public class MyWebActivity extends SingleFragmentActivity {
         intent.putExtra(WebFragment.DATA_URL, result.getUrl());
         intent.putExtra(WebFragment.DATA_WHO, result.getWho());
 //        context.startActivity(intent);
-        AnimationHelper.startActivity((Activity) context,intent,view,R.color.app_main_color);
+        LogTools.d(SkinManager.getInstance().getColor(R.color.colorPrimary));
+        AnimationHelper.startActivity((Activity) context
+                , intent
+                , view
+                , R.color.colorPrimary);
     }
 }

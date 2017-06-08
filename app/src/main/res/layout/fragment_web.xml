@@ -4,7 +4,8 @@
     xmlns:skin="http://schemas.android.com/android/skin"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    skin:enable="true">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -17,7 +18,8 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:layout_scrollFlags="scroll|enterAlways">
+            app:layout_scrollFlags="scroll|enterAlways"
+            skin:enable="true">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"

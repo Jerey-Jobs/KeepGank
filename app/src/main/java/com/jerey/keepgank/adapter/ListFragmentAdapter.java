@@ -12,6 +12,7 @@ import com.jerey.keepgank.R;
 import com.jerey.keepgank.activity.MyWebActivity;
 import com.jerey.keepgank.bean.Result;
 import com.jerey.keepgank.utils.IconUtils;
+import com.jerey.themelib.loader.SkinManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,12 +74,7 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
             rootView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    if(GankApplication.getOpenUrl()== GeneralPrefs.OPEN_URL_WEB_VIEW){
                     MyWebActivity.startWebActivity(mContext, result, iconView);
-
-//                    }else{
-//                    SystemUtils.openUrlByBrowser(mContext, result.getUrl());
-//                    }
                 }
             });
         }
@@ -87,7 +83,9 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
             this.result = result;
             titleView.setText(result.getDesc());
             whoView.setText(result.getWho());
-            iconView.setImageResource(IconUtils.getIconRes(result.getUrl(), result.getType()));
+            iconView.setImageDrawable(
+                    SkinManager.getInstance().getDrawable(
+                            IconUtils.getIconRes(result.getUrl(), result.getType())));
 
         }
     }

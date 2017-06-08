@@ -14,12 +14,13 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.jerey.animationlib.AnimationHelper;
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.View.PinchImageView;
 import com.jerey.keepgank.base.AppSwipeBackActivity;
+import com.jerey.keepgank.utils.AnimationHelper;
 import com.jerey.keepgank.utils.ImageSave;
 import com.jerey.loglib.LogTools;
+import com.jerey.themelib.loader.SkinManager;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -52,7 +53,10 @@ public class PhotoActivity extends AppSwipeBackActivity implements View.OnClickL
 //
 //        ActivityCompat.startActivity(activity, intent, options.toBundle());
         // 使用覆盖动画, 体验更好
-        AnimationHelper.startActivity(activity,intent,transitionView,R.color.app_main_color);
+        AnimationHelper.startActivity(activity
+                , intent
+                , transitionView
+                , R.color.app_main_color);
     }
 
     public static void startActivity1(Context context, String url) {

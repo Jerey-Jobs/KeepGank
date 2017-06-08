@@ -69,6 +69,7 @@ public class WebFragment extends BaseFragment {
         Log.d(TAG, "afterCreate");
         mToolBar = (Toolbar) mContainView.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolBar);
+        dynamicAddView(mToolBar, "background", R.color.app_main_color);
         mId = getArguments().getString(DATA_ID);
         mTitle = getArguments().getString(DATA_TITLE);
         mType = getArguments().getString(DATA_TYPE);
