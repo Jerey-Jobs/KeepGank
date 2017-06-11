@@ -8,7 +8,9 @@ import com.jerey.themelib.utils.SkinListUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * 含有skin属性的bean
+ */
 public class SkinItem {
 
     public View view;

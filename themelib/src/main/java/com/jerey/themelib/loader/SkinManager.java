@@ -13,6 +13,10 @@ import android.os.AsyncTask;
 import android.support.annotation.RestrictTo;
 import android.support.v4.content.ContextCompat;
 
+import com.jerey.downloadmanager.DefaultRetryPolicy;
+import com.jerey.downloadmanager.DownloadRequest;
+import com.jerey.downloadmanager.DownloadStatusListenerV1;
+import com.jerey.downloadmanager.ThinDownloadManager;
 import com.jerey.themelib.ISkinUpdate;
 import com.jerey.themelib.SkinConfig;
 import com.jerey.themelib.SkinLoaderListener;
@@ -25,6 +29,7 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class SkinManager implements ISkinLoader {
     private static final String TAG = "SkinManager";
@@ -43,7 +48,6 @@ public class SkinManager implements ISkinLoader {
     private String skinPath;
 
     private SkinManager() {
-
     }
 
     /**
@@ -90,6 +94,7 @@ public class SkinManager implements ISkinLoader {
         skinPackageName = context.getPackageName();
         notifySkinUpdate();
     }
+
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     public static SkinManager getInstance() {
         if (mInstance == null) {
@@ -146,7 +151,6 @@ public class SkinManager implements ISkinLoader {
      * <p>
      * eg:theme.skin
      * </p>
-     *
      * @param skinName the name of skin(in assets/skin)
      * @param callback load Callback
      */
@@ -170,6 +174,9 @@ public class SkinManager implements ISkinLoader {
                         if (!file.exists()) {
                             return null;
                         }
+                        /**
+                         * 反射添加资源路径
+                         */
                         PackageManager mPm = context.getPackageManager();
                         PackageInfo mInfo = mPm.getPackageArchiveInfo(skinPkgPath, PackageManager.GET_ACTIVITIES);
                         skinPackageName = mInfo.packageName;
@@ -178,6 +185,7 @@ public class SkinManager implements ISkinLoader {
                         addAssetPath.invoke(assetManager, skinPkgPath);
                         Resources superRes = context.getResources();
                         Resources skinResource = ResourcesCompat.getResources(assetManager, superRes.getDisplayMetrics(), superRes.getConfiguration());
+                        // 保存皮肤路径
                         SkinConfig.saveSkinPath(context, params[0]);
 
                         skinPath = skinPkgPath;
@@ -207,59 +215,64 @@ public class SkinManager implements ISkinLoader {
     }
 
 
-//    /**
-//     * load skin form internet
-//     * <p>
-//     * eg:https://raw.githubusercontent.com/burgessjp/ThemeSkinning/master/app/src/main/assets/skin/theme.skin
-//     * </p>
-//     *
-//     * @param skinUrl  the url of skin
-//     * @param callback load Callback
-//     */
-//    public void loadSkinFromUrl(String skinUrl, final SkinLoaderListener callback) {
-//        String skinPath = SkinFileUtils.getSkinDir(context);
-//        final String skinName = skinUrl.substring(skinUrl.lastIndexOf("/") + 1);
-//        String skinFullName = skinPath + File.separator + skinName;
-//        File skinFile = new File(skinFullName);
-//        if (skinFile.exists()) {
-//            loadSkin(skinName, callback);
-//            return;
-//        }
-//
-//        Uri downloadUri = Uri.parse(skinUrl);
-//        Uri destinationUri = Uri.parse(skinFullName);
-//
-//        DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
-//                .setRetryPolicy(new DefaultRetryPolicy())
-//                .setDestinationURI(destinationUri)
-//                .setPriority(DownloadRequest.Priority.HIGH);
-//        callback.onStart();
-//        downloadRequest.setStatusListener(new DownloadStatusListenerV1() {
-//            @Override
-//            public void onDownloadComplete(DownloadRequest downloadRequest) {
-//                loadSkin(skinName, callback);
-//            }
-//
-//            @Override
-//            public void onDownloadFailed(DownloadRequest downloadRequest, int errorCode, String errorMessage) {
-//                callback.onFailed(errorMessage);
-//            }
-//
-//            @Override
-//            public void onProgress(DownloadRequest downloadRequest, long totalBytes, long downloadedBytes, int progress) {
-//                callback.onProgress(progress);
-//            }
-//        });
-//
-//        ThinDownloadManager manager = new ThinDownloadManager();
-//        manager.add(downloadRequest);
-//    }
+    /**
+     * 加载网络皮肤
+     * @param skinUrl  the url of skin
+     * @param callback load Callback
+     */
+    public void loadSkinFromUrl(String skinUrl, final SkinLoaderListener callback) {
+        String skinPath = SkinFileUtils.getSkinDir(context);
+        final String skinName = skinUrl.substring(skinUrl.lastIndexOf("/") + 1);
+        String skinFullName = skinPath + File.separator + skinName;
+        File skinFile = new File(skinFullName);
+        if (skinFile.exists()) {
+            loadSkin(skinName, callback);
+            return;
+        }
 
+        Uri downloadUri = Uri.parse(skinUrl);
+        Uri destinationUri = Uri.parse(skinFullName);
+
+        DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
+                .setRetryPolicy(new DefaultRetryPolicy())
+                .setDestinationURI(destinationUri)
+                .setPriority(DownloadRequest.Priority.HIGH);
+        callback.onStart();
+        downloadRequest.setStatusListener(new DownloadStatusListenerV1() {
+            @Override
+            public void onDownloadComplete(DownloadRequest downloadRequest) {
+                loadSkin(skinName, callback);
+            }
+
+            @Override
+            public void onDownloadFailed(DownloadRequest downloadRequest, int errorCode, String errorMessage) {
+                callback.onFailed(errorMessage);
+            }
+
+            @Override
+            public void onProgress(DownloadRequest downloadRequest, long totalBytes, long downloadedBytes, int progress) {
+                callback.onProgress(progress);
+            }
+        });
+
+        ThinDownloadManager manager = new ThinDownloadManager();
+        manager.add(downloadRequest);
+    }
+
+    /**
+     * 加载字体
+     * @param fontName ：""为默认字体， 其他则为其他应用
+     */
     public void loadFont(String fontName) {
         Typeface tf = TypefaceUtils.createTypeface(context, fontName);
         TextViewRepository.applyFont(tf);
     }
 
+    /**
+     * 从皮肤包里面获取color
+     * @param resId
+     * @return
+     */
     public int getColor(int resId) {
         int originColor = ContextCompat.getColor(context, resId);
         if (mResources == null || isDefaultSkin) {
@@ -280,7 +293,6 @@ public class SkinManager implements ISkinLoader {
 
     /**
      * get drawable from specific directory
-     *
      * @param resId res id
      * @param dir   res directory
      * @return drawable
@@ -305,6 +317,11 @@ public class SkinManager implements ISkinLoader {
         return trueDrawable;
     }
 
+    /**
+     * 从资源包中获取Drawable
+     * @param resId
+     * @return
+     */
     public Drawable getDrawable(int resId) {
         Drawable originDrawable = ContextCompat.getDrawable(context, resId);
         if (mResources == null || isDefaultSkin) {
@@ -331,7 +348,6 @@ public class SkinManager implements ISkinLoader {
     /**
      * 加载指定资源颜色drawable,转化为ColorStateList，保证selector类型的Color也能被转换。
      * 无皮肤包资源返回默认主题颜色
-     *
      * @param resId resources id
      * @return ColorStateList
      * @author pinotao

@@ -10,9 +10,7 @@ import java.io.File;
 
 
 /**
- * Created by _SOLID
- * Date:2016/7/13
- * Time:10:50
+ * 加载字体工具类
  */
 public class TypefaceUtils {
 
@@ -33,7 +31,6 @@ public class TypefaceUtils {
 
     /**
      * 从sp中读取字体入路径加载, 若没有,则为默认
-     *
      * @param context
      * @return
      */

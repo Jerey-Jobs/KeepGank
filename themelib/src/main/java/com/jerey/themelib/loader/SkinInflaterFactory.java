@@ -26,12 +26,7 @@ import java.util.Map;
 import static android.R.attr.textColor;
 
 /**
- * Created by _SOLID
- * Date:2016/4/13
- * Time:21:19
- * <p></p>
  * 自定义的InflaterFactory，用来代替默认的LayoutInflaterFactory
- * 参考链接：http://willowtreeapps.com/blog/app-development-how-to-get-the-right-layoutinflater/
  */
 public class SkinInflaterFactory implements LayoutInflaterFactory {
 
@@ -42,6 +37,14 @@ public class SkinInflaterFactory implements LayoutInflaterFactory {
     private Map<View, SkinItem> mSkinItemMap = new HashMap<>();
     private AppCompatActivity mAppCompatActivity;
 
+    /**
+     * 入口方法，在Activcity创建view的时候会走该方法获取view
+     * @param parent
+     * @param name
+     * @param context
+     * @param attrs
+     * @return
+     */
     @Override
     public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
 
@@ -49,10 +52,11 @@ public class SkinInflaterFactory implements LayoutInflaterFactory {
         AppCompatDelegate delegate = mAppCompatActivity.getDelegate();
         View view = delegate.createView(parent, name, context, attrs);
 
+        // 此处供改变字体使用,建立对出现的TextView的引用
         if (view instanceof TextView && SkinConfig.isCanChangeFont()) {
             TextViewRepository.add((TextView) view);
         }
-
+        // 此处判断是否可以切换view, 可以则解析皮肤属性
         if (isSkinEnable || SkinConfig.isGlobalSkinApply()) {
             if (view == null) {
                 view = ViewProducer.createViewFromTag(context, name, attrs);
@@ -78,7 +82,7 @@ public class SkinInflaterFactory implements LayoutInflaterFactory {
         for (int i = 0; i < attrs.getAttributeCount(); i++) {//遍历当前View的属性
             String attrName = attrs.getAttributeName(i);//属性名
             String attrValue = attrs.getAttributeValue(i);//属性值
-            SkinL.i(TAG, "    AttributeName:" + attrName + "|attrValue:" + attrValue);
+            SkinL.i(TAG, "********AttributeName:" + attrName + "| attrValue: " + attrValue);
             //region  style
             if ("style".equals(attrName)) {//style theme
                 String styleName = attrValue.substring(attrValue.indexOf("/") + 1);
@@ -123,7 +127,7 @@ public class SkinInflaterFactory implements LayoutInflaterFactory {
             if (AttrFactory.isSupportedAttr(attrName) && attrValue.startsWith("@")) {//也就是引用类型，形如@color/red
                 try {
                     int id = Integer.parseInt(attrValue.substring(1));//资源的id
-                    if (id==0) continue;
+                    if (id == 0) continue;
                     String entryName = context.getResources().getResourceEntryName(id);//入口名，例如text_color_selector
                     String typeName = context.getResources().getResourceTypeName(id);//类型名，例如color、drawable
                     SkinAttr mSkinAttr = AttrFactory.get(attrName, id, entryName, typeName);
@@ -142,6 +146,7 @@ public class SkinInflaterFactory implements LayoutInflaterFactory {
                 }
             }
         }
+        // 若皮肤属性不为空，则进入
         if (!SkinListUtils.isEmpty(viewAttrs)) {
             SkinItem skinItem = new SkinItem();
             skinItem.view = view;
@@ -153,6 +158,10 @@ public class SkinInflaterFactory implements LayoutInflaterFactory {
         }
     }
 
+    /**
+     * 在Activity收到主题更新的回调时调用
+     * 遍历集合，应用皮肤
+     */
     public void applySkin() {
         if (mSkinItemMap.isEmpty()) {
             return;
@@ -197,7 +206,7 @@ public class SkinInflaterFactory implements LayoutInflaterFactory {
 
     /**
      * 动态添加那些有皮肤更改需求的View，及其对应的属性
-     *
+     * 将其添加到mSkinItemMap中
      * @param context        context
      * @param view           added view
      * @param attrName       attribute name
@@ -218,7 +227,6 @@ public class SkinInflaterFactory implements LayoutInflaterFactory {
 
     /**
      * 动态添加那些有皮肤更改需求的View，及其对应的属性集合
-     *
      * @param context
      * @param view
      * @param attrs
@@ -241,7 +249,10 @@ public class SkinInflaterFactory implements LayoutInflaterFactory {
         addSkinView(skinItem);
     }
 
-
+    /**
+     * 动态添加可以修改字体格式的TextView
+     * @param textView
+     */
     public void dynamicAddFontEnableView(TextView textView) {
         TextViewRepository.add(textView);
     }

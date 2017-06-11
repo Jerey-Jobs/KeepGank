@@ -13,6 +13,6 @@ public class GankApp extends SkinBaseApplication {
         super.onCreate();
         SkinConfig.setCanChangeStatusColor(true);
         SkinConfig.setCanChangeFont(true);
-        SkinConfig.setDebug(false);
+        SkinConfig.setDebug(true);
     }
 }

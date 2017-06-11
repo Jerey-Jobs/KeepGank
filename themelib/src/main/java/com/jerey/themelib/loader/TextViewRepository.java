@@ -8,7 +8,6 @@ import com.jerey.themelib.utils.TypefaceUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 字体改变工厂

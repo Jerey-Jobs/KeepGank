@@ -1,10 +1,7 @@
 package com.jerey.themelib;
 
 /**
- * Created by _SOLID
- * Date:2016/4/13
- * Time:21:07
- * Desc:
+ * 皮肤加载监听器
  */
 public interface SkinLoaderListener {
     void onStart();
