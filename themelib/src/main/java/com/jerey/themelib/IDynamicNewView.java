@@ -9,9 +9,7 @@ import java.util.List;
 
 
 /**
- * Created by _SOLID
- * Date:2016/4/14
- * Time:10:26
+ * 动态添加View接口
  */
 public interface IDynamicNewView {
     void dynamicAddView(View view, List<DynamicAttr> pDAttrs);

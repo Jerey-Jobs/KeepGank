@@ -1,9 +1,11 @@
 package com.jerey.themelib.base;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.AttributeSet;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -92,4 +94,8 @@ public class SkinBaseActivity extends AppCompatActivity implements ISkinUpdate, 
         mSkinInflaterFactory.removeSkinView(v);
     }
 
+    @Override
+    public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+        return super.onCreateView(parent, name, context, attrs);
+    }
 }

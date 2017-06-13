@@ -13,14 +13,12 @@ import android.os.AsyncTask;
 import android.support.annotation.RestrictTo;
 import android.support.v4.content.ContextCompat;
 
-import com.jerey.downloadmanager.DefaultRetryPolicy;
 import com.jerey.downloadmanager.DownloadHelper;
 import com.jerey.downloadmanager.DownloadRequest;
 import com.jerey.downloadmanager.DownloadStatusListenerV1;
 import com.jerey.themelib.ISkinUpdate;
 import com.jerey.themelib.SkinConfig;
 import com.jerey.themelib.SkinLoaderListener;
-import com.jerey.themelib.utils.ResourcesCompat;
 import com.jerey.themelib.utils.SkinFileUtils;
 import com.jerey.themelib.utils.SkinL;
 import com.jerey.themelib.utils.TypefaceUtils;
@@ -52,7 +50,6 @@ public class SkinManager implements ISkinLoader {
 
     /**
      * 初始化字体
-     *
      * @param ctx
      */
     public void init(Context ctx) {
@@ -152,7 +149,6 @@ public class SkinManager implements ISkinLoader {
      * <p>
      * eg:theme.skin
      * </p>
-     *
      * @param skinName the name of skin(in assets/skin)
      * @param callback load Callback
      */
@@ -178,20 +174,33 @@ public class SkinManager implements ISkinLoader {
                         }
                         /**
                          * 反射添加资源路径
+                         * 1.通过 PackageManager拿皮肤包名
+                         * 2.拿到皮肤包里面的Resource
                          */
                         PackageManager mPm = context.getPackageManager();
                         PackageInfo mInfo = mPm.getPackageArchiveInfo(skinPkgPath, PackageManager.GET_ACTIVITIES);
                         skinPackageName = mInfo.packageName;
+                        /**
+                         * AssetManager assetManager = new AssetManager();
+                         * 这个方法被@ hide了。。我们只能通过反射newInstance
+                         */
                         AssetManager assetManager = AssetManager.class.newInstance();
+                        /**
+                         * addAssetPath同样被系统给hide了
+                         */
                         Method addAssetPath = assetManager.getClass().getMethod("addAssetPath", String.class);
                         addAssetPath.invoke(assetManager, skinPkgPath);
                         Resources superRes = context.getResources();
-                        Resources skinResource = ResourcesCompat.getResources(assetManager, superRes.getDisplayMetrics(), superRes.getConfiguration());
-                        // 保存皮肤路径
+                        Resources skinResource = new Resources(assetManager, superRes.getDisplayMetrics(), superRes.getConfiguration());
+                        /**
+                         * 讲皮肤路径保存，并设置不是默认皮肤
+                         */
                         SkinConfig.saveSkinPath(context, params[0]);
-
                         skinPath = skinPkgPath;
                         isDefaultSkin = false;
+                        /**
+                         * 到此，我们拿到了外置皮肤包的资源
+                         */
                         return skinResource;
                     }
                     return null;
@@ -202,6 +211,9 @@ public class SkinManager implements ISkinLoader {
             }
 
             protected void onPostExecute(Resources result) {
+                /**
+                 * 非常重要的一步，将我们的外部皮肤资源，赋值为全局资源
+                 */
                 mResources = result;
 
                 if (mResources != null) {
@@ -219,7 +231,6 @@ public class SkinManager implements ISkinLoader {
 
     /**
      * 加载网络皮肤
-     *
      * @param skinUrl  the url of skin
      * @param callback load Callback
      */
@@ -262,7 +273,6 @@ public class SkinManager implements ISkinLoader {
 
     /**
      * 加载字体
-     *
      * @param fontName ：""为默认字体， 其他则为其他应用
      */
     public void loadFont(String fontName) {
@@ -272,16 +282,23 @@ public class SkinManager implements ISkinLoader {
 
     /**
      * 从皮肤包里面获取color
-     *
      * @param resId
      * @return
      */
     public int getColor(int resId) {
         int originColor = ContextCompat.getColor(context, resId);
+        /**
+         * 如果皮肤资源包不存在，直接加载
+         */
         if (mResources == null || isDefaultSkin) {
             return originColor;
         }
-
+        /**
+         * 每个皮肤包里面的id是不一样的，只能通过名字来拿，id值是不一样的。
+         * 1. 获取默认资源的名称
+         * 2. 根据名称从全局mResources里面获取值
+         * 3. 若获取到了，则获取颜色返回，若获取不到，老老实实使用原来的
+         */
         String resName = context.getResources().getResourceEntryName(resId);
 
         int trueResId = mResources.getIdentifier(resName, "color", skinPackageName);
@@ -296,7 +313,6 @@ public class SkinManager implements ISkinLoader {
 
     /**
      * get drawable from specific directory
-     *
      * @param resId res id
      * @param dir   res directory
      * @return drawable
@@ -323,7 +339,6 @@ public class SkinManager implements ISkinLoader {
 
     /**
      * 从资源包中获取Drawable
-     *
      * @param resId
      * @return
      */
@@ -353,7 +368,6 @@ public class SkinManager implements ISkinLoader {
     /**
      * 加载指定资源颜色drawable,转化为ColorStateList，保证selector类型的Color也能被转换。
      * 无皮肤包资源返回默认主题颜色
-     *
      * @param resId resources id
      * @return ColorStateList
      * @author pinotao

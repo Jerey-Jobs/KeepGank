@@ -32,7 +32,7 @@ public class SkinInflaterFactory implements LayoutInflaterFactory {
 
     private static final String TAG = "SkinInflaterFactory";
     /**
-     * 存储那些有皮肤更改需求的View及其对应的属性的集合
+     * 存储那些有皮肤更改需求的View及其对应的属性的集合，
      */
     private Map<View, SkinItem> mSkinItemMap = new HashMap<>();
     private AppCompatActivity mAppCompatActivity;
@@ -59,6 +59,7 @@ public class SkinInflaterFactory implements LayoutInflaterFactory {
         // 此处判断是否可以切换view, 可以则解析皮肤属性
         if (isSkinEnable || SkinConfig.isGlobalSkinApply()) {
             if (view == null) {
+                // 根据名字来创建View
                 view = ViewProducer.createViewFromTag(context, name, attrs);
             }
             if (view == null) {
@@ -74,16 +75,22 @@ public class SkinInflaterFactory implements LayoutInflaterFactory {
     }
 
     /**
-     * collect skin view
+     * 根据attrs判断
      */
     private void parseSkinAttr(Context context, AttributeSet attrs, View view) {
         List<SkinAttr> viewAttrs = new ArrayList<>();//存储View可更换皮肤属性的集合
         SkinL.i(TAG, "viewName:" + view.getClass().getSimpleName());
         for (int i = 0; i < attrs.getAttributeCount(); i++) {//遍历当前View的属性
+            /**
+             * 拿到attrName和value
+             * 拿到的value是R.id
+             */
             String attrName = attrs.getAttributeName(i);//属性名
             String attrValue = attrs.getAttributeValue(i);//属性值
             SkinL.i(TAG, "********AttributeName:" + attrName + "| attrValue: " + attrValue);
-            //region  style
+            /**
+             * 如果拿到的是style属性，处理style的类型
+             */
             if ("style".equals(attrName)) {//style theme
                 String styleName = attrValue.substring(attrValue.indexOf("/") + 1);
                 int styleID = context.getResources().getIdentifier(styleName, "style", context.getPackageName());
@@ -123,13 +130,26 @@ public class SkinInflaterFactory implements LayoutInflaterFactory {
                 a.recycle();
                 continue;
             }
-            //endregion
-            if (AttrFactory.isSupportedAttr(attrName) && attrValue.startsWith("@")) {//也就是引用类型，形如@color/red
+            /**
+             * 如果拿到的是我们AttryFactory支持的类型，并且使用的是引用类型而不是写死的，我们就进入替换
+             * 注: 引用类型，形如@color/red
+             */
+            if (AttrFactory.isSupportedAttr(attrName) && attrValue.startsWith("@")) {
                 try {
+                    /**
+                     * 我们拿到的是 @12435324，我们需要先把@去掉
+                     */
                     int id = Integer.parseInt(attrValue.substring(1));//资源的id
-                    if (id == 0) continue;
+
+                    if (id == 0) {
+                        continue;
+                    }
+
                     String entryName = context.getResources().getResourceEntryName(id);//入口名，例如text_color_selector
                     String typeName = context.getResources().getResourceTypeName(id);//类型名，例如color、drawable
+                    /**
+                     * 从我们AttryFactory中，拿到我们SkinAttr的实现类
+                     */
                     SkinAttr mSkinAttr = AttrFactory.get(attrName, id, entryName, typeName);
                     SkinL.w(TAG, "    " + attrName + " is supported:" + "\n" +
                             "    resource id:" + id + "\n" +
@@ -146,13 +166,16 @@ public class SkinInflaterFactory implements LayoutInflaterFactory {
                 }
             }
         }
-        // 若皮肤属性不为空，则进入
+        /**
+         * 若最终解析下来，需要换肤的属性不为空，我们将其存储到需要换肤的集合中，以便通知Activity主题更新时，统一换肤
+         */
         if (!SkinListUtils.isEmpty(viewAttrs)) {
             SkinItem skinItem = new SkinItem();
             skinItem.view = view;
             skinItem.attrs = viewAttrs;
             mSkinItemMap.put(skinItem.view, skinItem);
-            if (SkinManager.getInstance().isExternalSkin()) {//如果当前皮肤来自于外部
+            //走到最后了，判断一下如果当前皮肤不是自带皮肤，apply加载一下
+            if (SkinManager.getInstance().isExternalSkin()) {
                 skinItem.apply();
             }
         }

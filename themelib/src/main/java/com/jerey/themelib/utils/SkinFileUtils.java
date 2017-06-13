@@ -11,12 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-
-/**
- * Created by _SOLID
- * Date:2016/7/5
- * Time:10:17
- */
 public class SkinFileUtils {
 
     /**

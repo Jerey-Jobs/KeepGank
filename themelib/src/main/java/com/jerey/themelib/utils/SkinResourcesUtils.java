@@ -5,11 +5,8 @@ import android.graphics.drawable.Drawable;
 
 import com.jerey.themelib.loader.SkinManager;
 
-
 /**
- * Created by _SOLID
- * Date:2016/7/9
- * Time:13:56
+ * 从插件皮肤包中获取资源工具类
  */
 public class SkinResourcesUtils {
 

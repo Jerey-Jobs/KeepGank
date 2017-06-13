@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * 含有skin属性的bean
+ * View与attr是一对多的关系
  */
 public class SkinItem {
 
@@ -21,6 +22,9 @@ public class SkinItem {
         attrs = new ArrayList<>();
     }
 
+    /**
+     * 对我们每个需要修改的attrs,都需要apply一下
+     */
     public void apply() {
         if (SkinListUtils.isEmpty(attrs)) {
             return;

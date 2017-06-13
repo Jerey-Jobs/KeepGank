@@ -2,22 +2,17 @@ package com.jerey.themelib.attr.base;
 
 import android.view.View;
 
-/**
- * Created by _SOLID
- * Date:2016/4/13
- * Time:21:38
- */
 public abstract class SkinAttr implements Cloneable {
     protected static final String RES_TYPE_NAME_COLOR = "color";
     protected static final String RES_TYPE_NAME_DRAWABLE = "drawable";
     protected static final String RES_TYPE_NAME_MIPMAP = "mipmap";
     /**
-     * attribute name, eg: background、textColor
+     * Value的名字比如: background、textColor
      */
     public String attrName;
 
     /**
-     * attribute reference id
+     * 在R文件中表示的ID值
      */
     public int attrValueRefId;
 
@@ -33,7 +28,6 @@ public abstract class SkinAttr implements Cloneable {
 
     /**
      * Use to apply view with new TypedValue
-     *
      * @param view
      */
     public abstract void apply(View view);
