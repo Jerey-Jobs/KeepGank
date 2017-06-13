@@ -4,7 +4,7 @@ import android.os.Handler;
 
 import java.security.InvalidParameterException;
 
-public class ThinDownloadManager implements DownloadManager {
+public class DownloadHelper implements DownloadManager {
 
     /**
      * Download request queue takes care of handling the request based on priority.
@@ -14,15 +14,14 @@ public class ThinDownloadManager implements DownloadManager {
     /**
      * Default constructor
      */
-    public ThinDownloadManager()
-    {
+    private DownloadHelper() {
         this(true);
     }
 
     /**
      * Construct with logging Enabled.
      */
-    public ThinDownloadManager(boolean loggingEnabled) {
+    public DownloadHelper(boolean loggingEnabled) {
         mRequestQueue = new DownloadRequestQueue();
         mRequestQueue.start();
         setLoggingEnabled(loggingEnabled);
@@ -33,7 +32,7 @@ public class ThinDownloadManager implements DownloadManager {
      *
      * @param callbackHandler
      */
-    public ThinDownloadManager(Handler callbackHandler) throws InvalidParameterException {
+    public DownloadHelper(Handler callbackHandler) throws InvalidParameterException {
         mRequestQueue = new DownloadRequestQueue(callbackHandler);
         mRequestQueue.start();
         setLoggingEnabled(true);
@@ -42,11 +41,11 @@ public class ThinDownloadManager implements DownloadManager {
     /**
      * Constructor taking MAX THREAD POOL SIZE  Allows maximum of 4 threads.
      * Any number higher than four or less than one wont be respected.
-     *
+     * <p>
      * Deprecated use Default Constructor. As the thread pool size will not respected anymore through this constructor.
      * Thread pool size is determined with the number of available processors on the device.
      **/
-    public ThinDownloadManager(int threadPoolSize) {
+    public DownloadHelper(int threadPoolSize) {
         mRequestQueue = new DownloadRequestQueue(threadPoolSize);
         mRequestQueue.start();
         setLoggingEnabled(true);
@@ -113,6 +112,19 @@ public class ThinDownloadManager implements DownloadManager {
 
     private static void setLoggingEnabled(boolean enabled) {
         Log.setEnabled(enabled);
+    }
+
+    private static volatile DownloadHelper instance;
+
+    public static DownloadHelper getInstance() {
+        if (instance == null) {
+            synchronized (DownloadHelper.class) {
+                if (instance == null) {
+                    instance = new DownloadHelper();
+                }
+            }
+        }
+        return instance;
     }
 }
 

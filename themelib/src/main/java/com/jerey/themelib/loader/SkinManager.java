@@ -14,9 +14,9 @@ import android.support.annotation.RestrictTo;
 import android.support.v4.content.ContextCompat;
 
 import com.jerey.downloadmanager.DefaultRetryPolicy;
+import com.jerey.downloadmanager.DownloadHelper;
 import com.jerey.downloadmanager.DownloadRequest;
 import com.jerey.downloadmanager.DownloadStatusListenerV1;
-import com.jerey.downloadmanager.ThinDownloadManager;
 import com.jerey.themelib.ISkinUpdate;
 import com.jerey.themelib.SkinConfig;
 import com.jerey.themelib.SkinLoaderListener;
@@ -52,6 +52,7 @@ public class SkinManager implements ISkinLoader {
 
     /**
      * 初始化字体
+     *
      * @param ctx
      */
     public void init(Context ctx) {
@@ -151,6 +152,7 @@ public class SkinManager implements ISkinLoader {
      * <p>
      * eg:theme.skin
      * </p>
+     *
      * @param skinName the name of skin(in assets/skin)
      * @param callback load Callback
      */
@@ -217,6 +219,7 @@ public class SkinManager implements ISkinLoader {
 
     /**
      * 加载网络皮肤
+     *
      * @param skinUrl  the url of skin
      * @param callback load Callback
      */
@@ -234,7 +237,6 @@ public class SkinManager implements ISkinLoader {
         Uri destinationUri = Uri.parse(skinFullName);
 
         DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
-                .setRetryPolicy(new DefaultRetryPolicy())
                 .setDestinationURI(destinationUri)
                 .setPriority(DownloadRequest.Priority.HIGH);
         callback.onStart();
@@ -255,12 +257,12 @@ public class SkinManager implements ISkinLoader {
             }
         });
 
-        ThinDownloadManager manager = new ThinDownloadManager();
-        manager.add(downloadRequest);
+        DownloadHelper.getInstance().add(downloadRequest);
     }
 
     /**
      * 加载字体
+     *
      * @param fontName ：""为默认字体， 其他则为其他应用
      */
     public void loadFont(String fontName) {
@@ -270,6 +272,7 @@ public class SkinManager implements ISkinLoader {
 
     /**
      * 从皮肤包里面获取color
+     *
      * @param resId
      * @return
      */
@@ -293,6 +296,7 @@ public class SkinManager implements ISkinLoader {
 
     /**
      * get drawable from specific directory
+     *
      * @param resId res id
      * @param dir   res directory
      * @return drawable
@@ -319,6 +323,7 @@ public class SkinManager implements ISkinLoader {
 
     /**
      * 从资源包中获取Drawable
+     *
      * @param resId
      * @return
      */
@@ -348,6 +353,7 @@ public class SkinManager implements ISkinLoader {
     /**
      * 加载指定资源颜色drawable,转化为ColorStateList，保证selector类型的Color也能被转换。
      * 无皮肤包资源返回默认主题颜色
+     *
      * @param resId resources id
      * @return ColorStateList
      * @author pinotao
