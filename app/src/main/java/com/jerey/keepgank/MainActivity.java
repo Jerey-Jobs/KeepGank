@@ -32,7 +32,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -40,6 +39,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.cn.jerey.permissiontools.Callback.PermissionCallbacks;
 import com.cn.jerey.permissiontools.PermissionTools;
+import com.jerey.keepgank.activity.PhotoChoose.PhotoChooseActivity;
 import com.jerey.keepgank.activity.ThemeChooseActivity;
 import com.jerey.keepgank.fragment.HomeFragment;
 import com.jerey.keepgank.fragment.MeiziFragment;
@@ -48,7 +48,6 @@ import com.jerey.keepgank.fragment.WebView;
 import com.jerey.keepgank.utils.BlurImageUtils;
 import com.jerey.loglib.LogTools;
 import com.jerey.themelib.base.SkinBaseActivity;
-import com.jerey.themelib.loader.SkinManager;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
@@ -89,6 +88,12 @@ public class MainActivity extends SkinBaseActivity implements NavigationView.OnN
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         mHeadViewContainer = mNavigationView.getHeaderView(0);
+        mHeadViewContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, PhotoChooseActivity.class));
+            }
+        });
         mUserimage = (CircleImageView) mHeadViewContainer.findViewById(R.id.userimage);
         mNavigationView.setNavigationItemSelectedListener(this);
         Glide.with(this)
