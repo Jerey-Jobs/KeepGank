@@ -86,7 +86,7 @@ public class PhotoChooseActivity extends AppSwipeBackActivity {
         mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mViewpager.setPageTransformer(false, new CustomViewPagerTransformer(this));
         mViewpager.setAdapter(mAdapter);
-        mViewpager.setOffscreenPageLimit(5);
+        mViewpager.setOffscreenPageLimit(2);
         mViewpager.setOverScrollMode(ViewPager.OVER_SCROLL_NEVER);
         mViewpager.addOnPageChangeListener(mOnPageChangeListener);
         //  mIndicatorView.setUpWithViewPager(mViewpager);
@@ -186,7 +186,6 @@ public class PhotoChooseActivity extends AppSwipeBackActivity {
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-
                         ObjectAnimator animator = ObjectAnimator.ofFloat(mActivityBg, "alpha", 1f, 0.5f);
                         animator.setDuration(300);
                         animator.start();
@@ -201,6 +200,7 @@ public class PhotoChooseActivity extends AppSwipeBackActivity {
 
     @Override
     protected void onDestroy() {
+        LogTools.d("onDestroy");
         super.onDestroy();
         RxBus.get().unregister(this);
     }
@@ -261,6 +261,20 @@ public class PhotoChooseActivity extends AppSwipeBackActivity {
                         }
                     });
             // mPolygonView.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.captain_android));
+        }
+
+        @Override
+        public void onDestroyView() {
+            LogTools.d("onDestroyView");
+            mPolygonView.recycle();
+            mPolygonView = null;
+            super.onDestroyView();
+        }
+
+        @Override
+        public void onDestroy() {
+            LogTools.d("onDestroy");
+            super.onDestroy();
         }
     }
 

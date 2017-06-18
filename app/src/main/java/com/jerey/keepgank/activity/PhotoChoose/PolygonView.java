@@ -73,7 +73,7 @@ public class PolygonView extends ImageView {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         mWidth = getMeasuredWidth();
         mHeight = getMeasuredHeight();
- //       LogTools.d("mWidth " + mWidth + " mHeight " + mHeight);
+        //       LogTools.d("mWidth " + mWidth + " mHeight " + mHeight);
         mMaskBitmap = getMaskBitmap();
     }
 
@@ -104,7 +104,9 @@ public class PolygonView extends ImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-
+        if (mBitmap == null) {
+            return;
+        }
         canvas.save();
 
         canvas.drawBitmap(mMaskBitmap, 0, 0, mBorderPaint);
@@ -184,5 +186,10 @@ public class PolygonView extends ImageView {
         return null;
     }
 
+    public void recycle() {
+        if (mBitmap != null && !mBitmap.isRecycled()) {
+            mBitmap.recycle();
+        }
+    }
 
 }

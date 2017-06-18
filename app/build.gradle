@@ -27,6 +27,7 @@ android {
 }
 
 dependencies {
+    compile project(':themelib')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -64,7 +65,10 @@ dependencies {
     compile 'com.github.Jerey-Jobs:PermissionTools:1.5'
     compile 'com.github.Jerey-Jobs:LogTools:0.1'
     compile project(':lrucache')
-    //友盟统计
+    //友盟统计 crash日志
     compile 'com.umeng.analytics:analytics:latest.integration'
-    compile project(':themelib')
+    //查找内存泄露 临时调试用
+//    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+//    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+//    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
 }
