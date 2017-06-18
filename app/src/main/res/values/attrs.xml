@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CircleIndicatorView">
+        <attr name="indicatorRadius" format="dimension"/>
+        <attr name="indicatorBorderWidth" format="dimension"/>
+        <attr name="indicatorSpace" format="dimension"/>
+        <attr name="indicatorTextColor" format="color"/>
+        <attr name="indicatorColor" format="color"/>
+        <attr name="indicatorSelectColor" format="color"/>
+        <attr name="enableIndicatorSwitch" format="boolean"/>
+        <attr name="fill_mode">
+            <enum name="letter" value="0"/>
+            <enum name="number" value="1"/>
+            <enum name="none" value="2"/>
+        </attr>
+    </declare-styleable>
+</resources>

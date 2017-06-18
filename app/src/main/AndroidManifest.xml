@@ -47,6 +47,7 @@
             android:name=".activity.ThemeChooseActivity"
             android:theme="@style/WebTheme"/>
         <activity android:name=".activity.PhotoChoose.PhotoChooseActivity"
+
             />
     </application>
 

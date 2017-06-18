@@ -7,20 +7,24 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.jerey.keepgank.utils.DisplayUtils;
 import com.jerey.loglib.LogTools;
 
 
-public class PolygonView extends AppCompatImageView {
+public class PolygonView extends ImageView {
     private int mWidth = 0;
     private int mHeight = 0;
     private Paint mPaint;
@@ -69,7 +73,7 @@ public class PolygonView extends AppCompatImageView {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         mWidth = getMeasuredWidth();
         mHeight = getMeasuredHeight();
-        LogTools.d("mWidth " + mWidth + " mHeight " + mHeight);
+ //       LogTools.d("mWidth " + mWidth + " mHeight " + mHeight);
         mMaskBitmap = getMaskBitmap();
     }
 
@@ -77,14 +81,25 @@ public class PolygonView extends AppCompatImageView {
     public void setImageResource(@DrawableRes int resId) {
         super.setImageResource(resId);
         mBitmap = BitmapFactory.decodeResource(getResources(), resId);
-        invalidate();
+        postInvalidate();
+    }
+
+    @Override
+    public void setImageDrawable(@Nullable Drawable drawable) {
+        super.setImageDrawable(drawable);
+        mBitmap = Bitmap.createBitmap(
+                drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(),
+                drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
+                        : Bitmap.Config.RGB_565);
+        postInvalidate();
     }
 
     @Override
     public void setImageBitmap(Bitmap bm) {
         super.setImageBitmap(bm);
         mBitmap = bm;
-        invalidate();
+        postInvalidate();
     }
 
     @Override
@@ -99,16 +114,16 @@ public class PolygonView extends AppCompatImageView {
         canvas.drawBitmap(bitmap, 0, 0, mPaint);
         mPaint.setXfermode(null);
         canvas.restore();
-
-
     }
 
     private Bitmap getMaskBitmap() {
 //        if (mWidth <= 0 || mHeight <= 0) {
+//            postInvalidate();
 //            return null;
 //        }
 
         Bitmap bm = Bitmap.createBitmap(mWidth, mHeight, Bitmap.Config.ARGB_8888);
+        //      Bitmap bm = mBitmap;
         Canvas c = new Canvas(bm);
 
         Point point1 = new Point(0, 30);

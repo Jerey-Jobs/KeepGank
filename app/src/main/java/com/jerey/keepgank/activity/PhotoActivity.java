@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -20,7 +22,6 @@ import com.jerey.keepgank.base.AppSwipeBackActivity;
 import com.jerey.keepgank.utils.AnimationHelper;
 import com.jerey.keepgank.utils.ImageSave;
 import com.jerey.loglib.LogTools;
-import com.jerey.themelib.loader.SkinManager;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -70,6 +71,12 @@ public class PhotoActivity extends AppSwipeBackActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            // 透明状态栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            // 透明导航栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
         setContentView(R.layout.activity_photo);
         ButterKnife.bind(this);
         mBtnBack.setOnClickListener(this);

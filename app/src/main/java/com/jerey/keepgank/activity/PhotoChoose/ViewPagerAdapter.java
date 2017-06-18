@@ -10,30 +10,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 class ViewPagerAdapter extends FragmentPagerAdapter {
-        private List<Result> mDatas;
+    private List<Result> mDatas;
 
-        public ViewPagerAdapter(FragmentManager fm) {
-            super(fm);
-            mDatas = new ArrayList<>();
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return PhotoChooseActivity.PhotoItemFragment.newInstance(mDatas.get(position).getUrl());
-        }
-
-        @Override
-        public int getCount() {
-            return mDatas.size();
-        }
-
-        public void addData(List<Result> datas) {
-            this.mDatas.addAll(datas);
-            notifyDataSetChanged();
-        }
-
-        public void setData(List<Result> datas) {
-            this.mDatas = datas;
-            notifyDataSetChanged();
-        }
+    public ViewPagerAdapter(FragmentManager fm) {
+        super(fm);
+        mDatas = new ArrayList<>();
     }
+
+    @Override
+    public Fragment getItem(int position) {
+        return PhotoChooseActivity.PhotoItemFragment.newInstance(mDatas.get(position).getUrl());
+    }
+
+    @Override
+    public int getCount() {
+        return mDatas.size();
+    }
+
+    public void addData(List<Result> datas) {
+        this.mDatas.addAll(datas);
+        notifyDataSetChanged();
+    }
+
+    public void setData(List<Result> datas) {
+        this.mDatas = datas;
+        notifyDataSetChanged();
+    }
+
+    public Result getItemData(int positon) {
+        return mDatas.get(positon);
+    }
+}
