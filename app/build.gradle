@@ -9,6 +9,9 @@ android {
         targetSdkVersion 25
         versionCode 3
         versionName "1.2"
+//        jackOptions {
+//            enabled true
+//        }
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -17,6 +20,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+//    compileOptions {
+//        targetCompatibility 1.8
+//        sourceCompatibility 1.8
+//    }
 }
 
 dependencies {
@@ -37,6 +44,7 @@ dependencies {
     //图片加载库
     compile 'com.github.bumptech.glide:glide:3.5.2'
     compile 'io.reactivex:rxandroid:0.24.0'
+    compile 'com.hwangjr.rxbus:rxbus:1.0.5'
     //严格控制由于发布了一个订阅后，由于没有及时取消，导致Activity/Fragment无法销毁导致的内存泄露的库
     //http://www.jianshu.com/p/a3ad9dd20655
     compile 'com.trello:rxlifecycle:0.3.0'

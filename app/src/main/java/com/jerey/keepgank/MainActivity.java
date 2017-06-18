@@ -29,6 +29,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,13 +40,19 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.cn.jerey.permissiontools.Callback.PermissionCallbacks;
 import com.cn.jerey.permissiontools.PermissionTools;
+import com.hwangjr.rxbus.RxBus;
+import com.hwangjr.rxbus.annotation.Subscribe;
+import com.hwangjr.rxbus.annotation.Tag;
+import com.hwangjr.rxbus.thread.EventThread;
 import com.jerey.keepgank.activity.PhotoChoose.PhotoChooseActivity;
 import com.jerey.keepgank.activity.ThemeChooseActivity;
+import com.jerey.keepgank.data.Constants;
 import com.jerey.keepgank.fragment.HomeFragment;
 import com.jerey.keepgank.fragment.MeiziFragment;
 import com.jerey.keepgank.fragment.TodayFragment;
 import com.jerey.keepgank.fragment.WebView;
 import com.jerey.keepgank.utils.BlurImageUtils;
+import com.jerey.keepgank.utils.SPUtils;
 import com.jerey.loglib.LogTools;
 import com.jerey.themelib.base.SkinBaseActivity;
 import com.umeng.analytics.MobclickAgent;
@@ -78,6 +85,7 @@ public class MainActivity extends SkinBaseActivity implements NavigationView.OnN
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        RxBus.get().register(this);
         // TODO 此透明状态栏会引起主题切换时systemUI的bug
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 //            // 透明状态栏
@@ -96,20 +104,8 @@ public class MainActivity extends SkinBaseActivity implements NavigationView.OnN
         });
         mUserimage = (CircleImageView) mHeadViewContainer.findViewById(R.id.userimage);
         mNavigationView.setNavigationItemSelectedListener(this);
-        Glide.with(this)
-                .load(R.drawable.jay)
-                .asBitmap()
-                .centerCrop()
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        mUserimage.setImageBitmap(resource);
-                        Bitmap overlay = BlurImageUtils.blur(mUserimage, 3, 3);
 
-                        mHeadViewContainer.setBackground(new BitmapDrawable(getResources(), overlay));
-                    }
-                });
-
+        loadHead(SPUtils.get(this, Constants.HEAD_URL, ""));
 
         permissionTools = new PermissionTools.Builder(this)
                 .setOnPermissionCallbacks(new PermissionCallbacks() {
@@ -142,6 +138,12 @@ public class MainActivity extends SkinBaseActivity implements NavigationView.OnN
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RxBus.get().unregister(this);
     }
 
     Fragment mHomeFragment;
@@ -214,17 +216,6 @@ public class MainActivity extends SkinBaseActivity implements NavigationView.OnN
                 break;
             case R.id.nav_settings:
                 LogTools.d("主题被点击");
-//                SharedPreferences sp = getSharedPreferences(AppConstant.SP, MODE_PRIVATE);
-//                int mode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-//                if (mode == Configuration.UI_MODE_NIGHT_YES) {
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-//                    sp.edit().putBoolean(AppConstant.Theme, true).apply();
-//                } else if (mode == Configuration.UI_MODE_NIGHT_NO) {
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-//                    sp.edit().putBoolean(AppConstant.Theme, false).apply();
-//                }
-//                getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
-//                recreate();
                 Intent intent = new Intent(MainActivity.this, ThemeChooseActivity.class);
                 startActivity(intent);
                 if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -239,7 +230,6 @@ public class MainActivity extends SkinBaseActivity implements NavigationView.OnN
 
     /**
      * 监听按钮，在Drawer打开状态下，若不监听，按下返回键则会做两次确认退出处理
-     *
      * @param keyCode
      * @param event
      * @return
@@ -288,11 +278,27 @@ public class MainActivity extends SkinBaseActivity implements NavigationView.OnN
         }
     }
 
+    private void loadHead(final String url) {
+        Glide.with(this)
+                .load(TextUtils.isEmpty(url) ? R.drawable.jay : url)
+                .asBitmap()
+                .centerCrop()
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        mUserimage.setImageBitmap(resource);
+                        Bitmap overlay = BlurImageUtils.blur(mUserimage, 3, 3);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            mHeadViewContainer.setBackground(new BitmapDrawable(getResources(), overlay));
+                        }
+                    }
+                });
+    }
+
     /**
      * 无需在子Fragment中设置该点击事件响应,只要
      * ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
      * 就OK
-     *
      * @param item
      * @return
      */
@@ -309,5 +315,18 @@ public class MainActivity extends SkinBaseActivity implements NavigationView.OnN
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         permissionTools.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Subscribe(
+            thread = EventThread.MAIN_THREAD,
+            tags = {
+                    @Tag("Photo_URL")
+            }
+    )
+    public void onHeadPicSelected(String url) {
+        LogTools.i("threadid: " + Thread.currentThread().getId());
+        LogTools.w(url);
+        SPUtils.put(this, Constants.HEAD_URL, url);
+        loadHead(url);
     }
 }

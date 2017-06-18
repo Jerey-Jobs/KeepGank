@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.hwangjr.rxbus.RxBus;
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.base.AppSwipeBackActivity;
 import com.jerey.keepgank.bean.Data;
@@ -71,6 +72,7 @@ public class PhotoChooseActivity extends AppSwipeBackActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        RxBus.get().register(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // 透明状态栏
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -197,13 +199,23 @@ public class PhotoChooseActivity extends AppSwipeBackActivity {
                 });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RxBus.get().unregister(this);
+    }
+
     @OnClick(R.id.m_choose_btn)
     public void onViewClicked() {
-        if (mAdapter.getCount() < mPicCount){
+        if (mAdapter.getCount() < mPicCount) {
             return;
         }
         String url = mAdapter.getItemData(mPicCount).getUrl();
-
+        /**
+         * 选中之后，发送头像URL，结束界面
+         */
+        RxBus.get().post("Photo_URL", url);
+        scrollToFinishActivity();
     }
 
     public static class PhotoItemFragment extends Fragment {
@@ -235,6 +247,7 @@ public class PhotoChooseActivity extends AppSwipeBackActivity {
         public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
             String url = getArguments().getString(URL);
+            mPolygonView.setImageResource(R.drawable.meizi_grey_on);
             Glide.with(this).
                     load(url)
                     .asBitmap()
@@ -260,7 +273,7 @@ public class PhotoChooseActivity extends AppSwipeBackActivity {
             default:
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
+
 }
