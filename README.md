@@ -21,36 +21,48 @@ RxJava + Retrofit + Glide + DiskLruCache + Material-Design
 [App下载链接](http://www.coolapk.com/apk/com.jerey.keepgank)
 
 
-## 当前功能
+版本记录
+---
+#### 1.0
+1. 主页为Gank分类
+2. 每日Gank
+3. 我的博客)
+4. Disk数据缓存，避免下次打开时无网络, 加载老数据
+5. 图片大图浏览效果
+6. 图片保存
+7. 瀑布流妹子浏览
+8. 内容分享
+9. 夜间模式
 
-- 主页为Gank分类
-- 每日Gank
-- 我的博客)
-- Disk数据缓存，避免下次打开时无网络, 加载老数据
-- 图片大图浏览效果
-- 图片保存
-- 内置浏览器
-- 瀑布流妹子
-- 内容分享
-- 夜间模式
+#### 1.1
+1. 增加揭面水波动画
 
-后续希望功能:
-- 图片分享
-- 浏览器设置
-等等各种App内置功能
+#### 1.2
+1. 增加多主题框架，并内置了两个主题包
+2. 增加字体选择，应用内支持微软雅黑
+3. 启动模式不再白屏
+4. 主题切换不再有过渡动画
 
-总之我会一直更新下去的, 大家也可以fork, 多多帮我提建议.提PR
+#### 1.3
+1. 增加头像选择功能， 滑动浏览
 
-## 预览
-
+### 预览
+---
 ![](http://upload-images.jianshu.io/upload_images/2305881-d1346624ac99cba4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
 ![](http://upload-images.jianshu.io/upload_images/2305881-37903fe5fbd9fd9a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-夜间模式:
+### 多主题：
 
-![](http://upload-images.jianshu.io/upload_images/2305881-cde8d3f716d7202a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![](pic/theme_choose.jpg)
+![](pic/themedark.jpg)
+![](pic/theme_blue.jpg)
+![](pic/themedefalut.jpg)
+
+### 头像选择
+
+![](pic/choose_head.gif)
 
 ### 总之, 希望大家多多star, 一起进步
 
