@@ -4,6 +4,9 @@ import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
+/**
+ * ViewPager转场动画
+ */
 public class CustomViewPagerTransformer implements ViewPager.PageTransformer {
     private int maxTranslateOffsetX;
     private ViewPager viewPager;

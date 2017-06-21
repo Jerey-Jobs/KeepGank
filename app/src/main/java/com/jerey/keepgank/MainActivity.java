@@ -317,11 +317,13 @@ public class MainActivity extends SkinBaseActivity implements NavigationView.OnN
         permissionTools.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
+    /**
+     * RxBus, 主线程, 接收Photo_URL的TAG的String类方法
+     * @param url
+     */
     @Subscribe(
             thread = EventThread.MAIN_THREAD,
-            tags = {
-                    @Tag("Photo_URL")
-            }
+            tags = {@Tag("Photo_URL")}
     )
     public void onHeadPicSelected(String url) {
         LogTools.i("threadid: " + Thread.currentThread().getId());

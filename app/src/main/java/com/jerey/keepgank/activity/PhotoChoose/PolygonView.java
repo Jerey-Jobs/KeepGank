@@ -23,8 +23,10 @@ import android.widget.ImageView;
 import com.jerey.keepgank.utils.DisplayUtils;
 import com.jerey.loglib.LogTools;
 
-
-public class PolygonView extends ImageView {
+/**
+ * 必须预设图片,不然getWidth为空导致崩溃
+ */
+public class PolygonView extends AppCompatImageView {
     private int mWidth = 0;
     private int mHeight = 0;
     private Paint mPaint;
