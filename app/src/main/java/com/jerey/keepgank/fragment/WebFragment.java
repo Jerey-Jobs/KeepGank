@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.base.AppSwipeBackActivity;
+import com.jerey.keepgank.utils.ApplicationUtils;
 import com.jerey.loglib.LogTools;
 
 import butterknife.Bind;
@@ -106,7 +107,17 @@ public class WebFragment extends BaseFragment {
             }
         });
         mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        /**
+         * 根据网络状态,设置浏览器的缓存策略
+         */
+        if (ApplicationUtils.isNetworkAvailable(getContext())) {
+            mWebView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
+        } else {
+            //只要本地有，无论是否过期，或者no-cache，都使用缓存中的数据。
+            LogTools.w("无网络,加载缓存网页");
+            showSnackbar("无网络,加载缓存网页");
+            mWebView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        }
         mWebView.getSettings().setSupportZoom(true);
         mWebView.getSettings().setDisplayZoomControls(true);
     }

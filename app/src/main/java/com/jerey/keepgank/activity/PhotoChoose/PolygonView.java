@@ -12,21 +12,19 @@ import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.jerey.keepgank.utils.DisplayUtils;
-import com.jerey.loglib.LogTools;
 
 /**
  * 必须预设图片,不然getWidth为空导致崩溃
  */
 public class PolygonView extends AppCompatImageView {
+    public static final String TAG = PolygonView.class.getSimpleName();
     private int mWidth = 0;
     private int mHeight = 0;
     private Paint mPaint;
