@@ -22,6 +22,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
@@ -80,6 +81,7 @@ public class MainActivity extends SkinBaseActivity implements NavigationView.OnN
     CircleImageView mUserimage;
     View mHeadViewContainer;
     PermissionTools permissionTools;
+    Handler mHander;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -95,6 +97,7 @@ public class MainActivity extends SkinBaseActivity implements NavigationView.OnN
 //        }
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        mHander = new Handler();
         mHeadViewContainer = mNavigationView.getHeaderView(0);
         mHeadViewContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -218,9 +221,17 @@ public class MainActivity extends SkinBaseActivity implements NavigationView.OnN
                 LogTools.d("主题被点击");
                 Intent intent = new Intent(MainActivity.this, ThemeChooseActivity.class);
                 startActivity(intent);
-                if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    mDrawerLayout.closeDrawer(GravityCompat.START);
-                }
+                /**
+                 * 延时收回Drawer,使得后台收回,解决打开Theme界面时,低端手机上卡顿问题
+                 */
+                mHander.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+                            mDrawerLayout.closeDrawer(GravityCompat.START);
+                        }
+                    }
+                }, 1500);
                 break;
         }
         return false;
@@ -230,6 +241,7 @@ public class MainActivity extends SkinBaseActivity implements NavigationView.OnN
 
     /**
      * 监听按钮，在Drawer打开状态下，若不监听，按下返回键则会做两次确认退出处理
+     *
      * @param keyCode
      * @param event
      * @return
@@ -299,6 +311,7 @@ public class MainActivity extends SkinBaseActivity implements NavigationView.OnN
      * 无需在子Fragment中设置该点击事件响应,只要
      * ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
      * 就OK
+     *
      * @param item
      * @return
      */
@@ -319,6 +332,7 @@ public class MainActivity extends SkinBaseActivity implements NavigationView.OnN
 
     /**
      * RxBus, 主线程, 接收Photo_URL的TAG的String类方法
+     *
      * @param url
      */
     @Subscribe(
