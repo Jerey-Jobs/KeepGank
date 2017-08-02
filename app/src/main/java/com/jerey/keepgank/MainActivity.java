@@ -20,6 +20,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -64,7 +65,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends SkinBaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends SkinBaseActivity implements NavigationView
+                                                                      .OnNavigationItemSelectedListener {
 
     private int mCurrentUIIndex = 0;
     private static final int INDEX_HOME = 0;
@@ -89,12 +91,12 @@ public class MainActivity extends SkinBaseActivity implements NavigationView.OnN
         super.onCreate(savedInstanceState);
         RxBus.get().register(this);
         // TODO 此透明状态栏会引起主题切换时systemUI的bug
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//            // 透明状态栏
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//            // 透明导航栏
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-//        }
+        //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        //            // 透明状态栏
+        //            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        //            // 透明导航栏
+        //            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        //        }
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         mHander = new Handler();
@@ -114,7 +116,8 @@ public class MainActivity extends SkinBaseActivity implements NavigationView.OnN
                 .setOnPermissionCallbacks(new PermissionCallbacks() {
                     @Override
                     public void onPermissionsGranted(int requestCode, List<String> perms) {
-                        //    Toast.makeText(MainActivity.this, "权限申请通过", Toast.LENGTH_SHORT).show();
+                        //    Toast.makeText(MainActivity.this, "权限申请通过", Toast.LENGTH_SHORT)
+                        // .show();
 
                     }
 
@@ -135,6 +138,14 @@ public class MainActivity extends SkinBaseActivity implements NavigationView.OnN
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
+        Uri uri = getIntent().getData();
+        if (uri != null) {
+            // 完整的url信息
+            String url = uri.toString();
+            String uesername = uri.getQueryParameter("username");
+            LogTools.d(url);
+            Toast.makeText(this, "userName = " + uesername, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -241,7 +252,6 @@ public class MainActivity extends SkinBaseActivity implements NavigationView.OnN
 
     /**
      * 监听按钮，在Drawer打开状态下，若不监听，按下返回键则会做两次确认退出处理
-     *
      * @param keyCode
      * @param event
      * @return
@@ -292,26 +302,27 @@ public class MainActivity extends SkinBaseActivity implements NavigationView.OnN
 
     private void loadHead(final String url) {
         Glide.with(this)
-                .load(TextUtils.isEmpty(url) ? R.drawable.jay : url)
-                .asBitmap()
-                .centerCrop()
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        mUserimage.setImageBitmap(resource);
-                        Bitmap overlay = BlurImageUtils.blur(mUserimage, 3, 3);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            mHeadViewContainer.setBackground(new BitmapDrawable(getResources(), overlay));
-                        }
-                    }
-                });
+             .load(TextUtils.isEmpty(url) ? R.drawable.jay : url)
+             .asBitmap()
+             .centerCrop()
+             .into(new SimpleTarget<Bitmap>() {
+                 @Override
+                 public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap>
+                         glideAnimation) {
+                     mUserimage.setImageBitmap(resource);
+                     Bitmap overlay = BlurImageUtils.blur(mUserimage, 3, 3);
+                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                         mHeadViewContainer.setBackground(new BitmapDrawable(getResources(),
+                                 overlay));
+                     }
+                 }
+             });
     }
 
     /**
      * 无需在子Fragment中设置该点击事件响应,只要
      * ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
      * 就OK
-     *
      * @param item
      * @return
      */
@@ -325,14 +336,14 @@ public class MainActivity extends SkinBaseActivity implements NavigationView.OnN
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         permissionTools.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     /**
      * RxBus, 主线程, 接收Photo_URL的TAG的String类方法
-     *
      * @param url
      */
     @Subscribe(
