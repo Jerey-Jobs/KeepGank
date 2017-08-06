@@ -37,6 +37,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -47,7 +48,6 @@ import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.jerey.keepgank.activity.PhotoChoose.PhotoChooseActivity;
-import com.jerey.keepgank.activity.ThemeChooseActivity;
 import com.jerey.keepgank.data.Constants;
 import com.jerey.keepgank.fragment.HomeFragment;
 import com.jerey.keepgank.fragment.MeiziFragment;
@@ -230,8 +230,9 @@ public class MainActivity extends SkinBaseActivity implements NavigationView
                 break;
             case R.id.nav_settings:
                 LogTools.d("主题被点击");
-                Intent intent = new Intent(MainActivity.this, ThemeChooseActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(MainActivity.this, ThemeChooseActivity.class);
+//                startActivity(intent);
+                ARouter.getInstance().build("/activity/ThemeChooseActivity").navigation();
                 /**
                  * 延时收回Drawer,使得后台收回,解决打开Theme界面时,低端手机上卡顿问题
                  */

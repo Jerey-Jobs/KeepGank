@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.bumptech.glide.Glide;
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.View.GlideRoundTransform;
@@ -24,7 +25,7 @@ import butterknife.OnClick;
 /**
  * Created by xiamin on 6/7/17.
  */
-
+@Route(path = "/activity/ThemeChooseActivity")
 public class ThemeChooseActivity extends AppSwipeBackActivity {
     public static final String FONT_STRING = "current-font";
     public static final String FONT_DEFAULT = "font_default";
