@@ -7,6 +7,7 @@ import com.jerey.loglib.LogTools;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.util.Map;
 
 public class SPUtils {
@@ -29,10 +30,8 @@ public class SPUtils {
         LogTools.i("put :" + object);
         if (object instanceof Double) {
             LogTools.i("put defaultObject instanceof Double");
-            editor.putFloat(key, new Float((Double) object));
-        }
-
-        if (object instanceof String) {
+            editor.putString(key, object.toString());
+        } else if (object instanceof String) {
             editor.putString(key, (String) object);
         } else if (object instanceof Integer) {
             editor.putInt(key, (Integer) object);
@@ -71,13 +70,17 @@ public class SPUtils {
             LogTools.i("defaultObject instanceof Float");
             return (T) new Float(sp.getFloat(key, (Float) defaultObject));
         } else if (defaultObject instanceof Double) {
-            LogTools.i("defaultObject instanceof double");
-            return (T) new Double(sp.getFloat(key, Float.parseFloat(defaultObject.toString())));
+            LogTools.i("defaultObject instanceof double:" + defaultObject);
+            String ret = sp.getString(key, defaultObject.toString());
+            double d = Double.parseDouble(ret);
+            LogTools.i("get:" + d);
+            return (T) new Double(d);
         } else if (defaultObject instanceof Long) {
             return (T) new Long(sp.getLong(key, (Long) defaultObject));
+        } else {
+            String ret = sp.getString(key, defaultObject.toString());
+            return (T) ret;
         }
-
-        return null;
     }
 
     /**
