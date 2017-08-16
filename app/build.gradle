@@ -13,6 +13,11 @@ android {
 //            enabled true
 //        }
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [ moduleName : project.getName() ]
+            }
+        }
     }
     buildTypes {
         release {
@@ -71,4 +76,6 @@ dependencies {
 //    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
 //    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
 //    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+    compile 'com.alibaba:arouter-api:1.2.1.1'
+    annotationProcessor 'com.alibaba:arouter-compiler:1.1.2.1'
 }

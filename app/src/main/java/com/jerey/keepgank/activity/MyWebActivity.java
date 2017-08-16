@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.base.SingleFragmentActivity;
 import com.jerey.keepgank.bean.Result;
@@ -21,7 +22,7 @@ import com.jerey.themelib.loader.SkinManager;
 /**
  * Created by Xiamin on 2017/2/25.
  */
-
+@Route(path = "/activity/MyWebActivity")
 public class MyWebActivity extends SingleFragmentActivity {
     private static final String TAG = "MyWebActivity";
     private WebFragment mWebFragment;
