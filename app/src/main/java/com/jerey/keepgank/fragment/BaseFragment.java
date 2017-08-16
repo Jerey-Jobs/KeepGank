@@ -50,7 +50,6 @@ public abstract class BaseFragment extends RxFragment implements IDynamicNewView
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         afterCreate(savedInstanceState);
-
     }
 
     @Override
