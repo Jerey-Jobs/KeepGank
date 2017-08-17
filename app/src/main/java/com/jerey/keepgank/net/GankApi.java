@@ -140,19 +140,6 @@ public class GankApi {
         return mWebService;
     }
 
-    class HttpInterceptor implements Interceptor {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Request request = chain.request();
-            //打印请求链接
-            String TAG_REQUEST = "request";
-            Log.e(TAG_REQUEST, "request" + request.url().toString());
-            Response response = chain.proceed(request);
-            //打印返回的message
-            //  Log.e(TAG_REQUEST, "response" + response.toString());
-            return response;
-        }
-    }
 
 
 }
