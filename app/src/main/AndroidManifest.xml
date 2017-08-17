@@ -23,8 +23,11 @@
             >
             <intent-filter>
                 <!--协议部分，随便设置-->
-                <data android:scheme="xl" android:host="login" android:path="/loginActivity"
-                      android:port="8888"/>
+                <data
+                    android:host="login"
+                    android:path="/loginActivity"
+                    android:port="8888"
+                    android:scheme="xl"/>
                 <!--下面这几行也必须得设置-->
                 <category android:name="android.intent.category.DEFAULT"/>
                 <action android:name="android.intent.action.VIEW"/>
@@ -48,6 +51,7 @@
         <activity
             android:name=".activity.PhotoChoose.PhotoChooseActivity"
             android:theme="@style/WebTheme"/>
+        <activity android:name=".douban.DoubanActivity"/>
 
         <meta-data
             android:name="UMENG_APPKEY"
