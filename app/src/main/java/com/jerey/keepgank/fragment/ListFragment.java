@@ -22,7 +22,9 @@ import com.trello.rxlifecycle.FragmentEvent;
 import java.io.IOException;
 
 import butterknife.Bind;
+import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -109,20 +111,53 @@ public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         mRecyclerView.setItemAnimator(new SlideInOutRightItemAnimator(mRecyclerView));
         mRecyclerView.addOnScrollListener(mOnScrollListener);
 
-        try {
-            Log.i(TAG, "DiskLruCacheManager 创建");
-            mDiskLruCacheManager = new DiskLruCacheManager(getActivity());
-            Data mData = mDiskLruCacheManager.getAsSerializable(mType);
-            Log.i(TAG, "DiskLruCacheManager 读取");
-            if (mData != null) {
-                Log.d(TAG, "获取缓存数据成功");
-                mAdapter.setData(mData.getResults());
-                mAdapter.notifyDataSetChanged();
+        Observable.create(new Observable.OnSubscribe<Data>() {
+            @Override
+            public void call(Subscriber<? super Data> subscriber) {
+                try {
+                    mDiskLruCacheManager = new DiskLruCacheManager(getActivity());
+                    Data mData = mDiskLruCacheManager.getAsSerializable(mType);
+                    Log.i(TAG, "DiskLruCacheManager 读取");
+                    subscriber.onNext(mData);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Data>() {
+                    @Override
+                    public void onCompleted() {
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Data data) {
+                        if (data != null) {
+                            Log.d(TAG, "获取缓存数据成功");
+                            mAdapter.setData(data.getResults());
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    }
+                });
+        //        try {
+        //            Log.i(TAG, "DiskLruCacheManager 创建");
+        //            mDiskLruCacheManager = new DiskLruCacheManager(getActivity());
+        //            Data mData = mDiskLruCacheManager.getAsSerializable(mType);
+        //            Log.i(TAG, "DiskLruCacheManager 读取");
+        //            if (mData != null) {
+        //                Log.d(TAG, "获取缓存数据成功");
+        //                mAdapter.setData(mData.getResults());
+        //                mAdapter.notifyDataSetChanged();
+        //            }
+        //        } catch (IOException e) {
+        //            e.printStackTrace();
+        //        }
 
         requestRefresh();
     }
