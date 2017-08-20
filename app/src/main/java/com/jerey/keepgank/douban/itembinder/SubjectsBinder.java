@@ -5,32 +5,89 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.jerey.keepgank.R;
 import com.jerey.keepgank.douban.bean.SubjectsBean;
 import com.jerey.keepgank.multitype.ItemViewBinder;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * @author xiamin
  * @date 8/17/17.
  */
-public class SubjectsBinder extends ItemViewBinder<SubjectsBean,SubjectsBinder.ViewHolder> {
+public class SubjectsBinder extends ItemViewBinder<SubjectsBean, SubjectsBinder.ViewHolder> {
 
 
     @NonNull
     @Override
-    protected ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        return null;
+    protected ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup
+            parent) {
+        View view = inflater.inflate(R.layout.item_subject, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull SubjectsBean item) {
+        if (item == null) return;
+        /** 图片，影片名 */
+        Glide.with(holder.mItemImageView.getContext())
+                .load(item.getImages().getMedium())
+                .centerCrop()
+                .placeholder(R.drawable.bg_grey)
+                .into(holder.mItemImageView);
+        holder.mItemName.setText(item.getTitle());
+        holder.mItemRating.setText("评分：" + item.getRating().getAverage());
+        StringBuilder stringBuilder = new StringBuilder("导演：");
 
+        /** 导演 */
+        if (item.getDirectors() == null) {
+            return;
+        }
+
+        for (int i = 0; i < item.getDirectors().size(); i++) {
+            if (i == 0) {
+                stringBuilder.append(item.getDirectors().get(i).getName());
+            } else {
+                stringBuilder.append("/" + item.getDirectors().get(i).getName());
+            }
+        }
+        holder.mItemDirector.setText(stringBuilder.toString());
+        /** 演员 */
+        if (item.getCasts() == null) {
+            return;
+        }
+
+        StringBuilder actorBuilder = new StringBuilder("主演：");
+        for (int i = 0; i < item.getCasts().size(); i++) {
+            if (i == 0) {
+                actorBuilder.append(item.getCasts().get(i).getName());
+            } else {
+                actorBuilder.append("/" + item.getCasts().get(i).getName());
+            }
+        }
+        holder.mItemActor.setText(actorBuilder.toString());
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.item_imageView)
+        ImageView mItemImageView;
+        @Bind(R.id.item_name)
+        TextView mItemName;
+        @Bind(R.id.item_rating)
+        TextView mItemRating;
+        @Bind(R.id.item_director)
+        TextView mItemDirector;
+        @Bind(R.id.item_actor)
+        TextView mItemActor;
 
-        public ViewHolder(View itemView) {
-            super(itemView);
+        ViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
         }
     }
 }

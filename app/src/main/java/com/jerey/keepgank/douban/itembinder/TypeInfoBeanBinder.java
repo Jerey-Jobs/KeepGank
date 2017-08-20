@@ -37,12 +37,15 @@ public class TypeInfoBeanBinder extends ItemViewBinder<TypeInfoBean, TypeInfoBea
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull TypeInfoBean item) {
+        if (item == null) return;
+
         LogTools.i("Title：" + item.getTitle());
         holder.mTextView.setText(item.getTitle());
         holder.mRecyclerView.setLayoutManager(
-                new LinearLayoutManager(holder.mRecyclerView.getContext(),LinearLayoutManager
-                        .HORIZONTAL,false));
+                new LinearLayoutManager(holder.mRecyclerView.getContext(), LinearLayoutManager
+                        .HORIZONTAL, false));
         holder.mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        holder.mRecyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
         TypeItemAdapter adapter = new TypeItemAdapter(item);
         holder.mRecyclerView.setAdapter(adapter);
     }
@@ -50,17 +53,20 @@ public class TypeInfoBeanBinder extends ItemViewBinder<TypeInfoBean, TypeInfoBea
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView mTextView;
         RecyclerView mRecyclerView;
+        ImageView mImageViewMore;
 
         public ViewHolder(View itemView) {
             super(itemView);
             mTextView = (TextView) itemView.findViewById(R.id.item_title);
             mRecyclerView = (RecyclerView) itemView.findViewById(R.id.item_recyclerView);
+            mImageViewMore = (ImageView) itemView.findViewById(R.id.iv_more);
         }
     }
 
     class TypeItemAdapter extends RecyclerView.Adapter<TypeItemAdapter.ItemViewHolder> {
 
         TypeInfoBean mTypeInfoBean;
+
         public TypeItemAdapter(TypeInfoBean typeInfoBean) {
             mTypeInfoBean = typeInfoBean;
         }
@@ -75,18 +81,35 @@ public class TypeInfoBeanBinder extends ItemViewBinder<TypeInfoBean, TypeInfoBea
         @Override
         public void onBindViewHolder(ItemViewHolder holder, int position) {
             SubjectsBean subject = mTypeInfoBean.getSubjects().get(position);
-            Glide.with(holder.mItemImageView.getContext())
-                    .load(subject.getImages().getSmall())
-                    .centerCrop()
-                    .placeholder(R.drawable.bg_grey)
-                    .into(holder.mItemImageView);
-            holder.mItemName.setText(subject.getTitle());
-            holder.mItemRating.setText("" + subject.getRating());
+            LogTools.d("subject:" + subject.toString());
+            LogTools.d("subject:" + subject.getTitle() + subject.getRating());
+            if (subject.getTitle() != null) {
+                holder.mItemName.setText(subject.getTitle().toString());
+            }
+            if (subject.getRating() != null) {
+                holder.mItemRating.setText("" + subject.getRating().getAverage());
+            }
+            if (subject.getImages() != null) {
+                String url = null;
+                if (subject.getImages().getMedium() != null) {
+                    url = subject.getImages().getMedium();
+                } else if (subject.getImages().getLarge() != null) {
+                    url = subject.getImages().getLarge();
+                }
+                Glide.with(holder.mItemImageView.getContext())
+                        .load(url)
+                        .centerCrop()
+                        .placeholder(R.drawable.bg_grey)
+                        .into(holder.mItemImageView);
+            }
         }
 
         @Override
         public int getItemCount() {
-            return mTypeInfoBean.getSubjects().size();
+            if (mTypeInfoBean != null && mTypeInfoBean.getSubjects() != null) {
+                return mTypeInfoBean.getSubjects().size();
+            }
+            return 0;
         }
 
         class ItemViewHolder extends RecyclerView.ViewHolder {
@@ -96,6 +119,7 @@ public class TypeInfoBeanBinder extends ItemViewBinder<TypeInfoBean, TypeInfoBea
             TextView mItemName;
             @Bind(R.id.item_rating)
             TextView mItemRating;
+
             public ItemViewHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);

@@ -51,7 +51,9 @@
         <activity
             android:name=".activity.PhotoChoose.PhotoChooseActivity"
             android:theme="@style/WebTheme"/>
-        <activity android:name=".douban.DoubanActivity"/>
+        <activity
+            android:name=".douban.DoubanActivity"
+            android:theme="@style/WebTheme"/>
 
         <meta-data
             android:name="UMENG_APPKEY"

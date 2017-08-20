@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +25,7 @@ import butterknife.ButterKnife;
 
 public abstract class BaseFragment extends RxFragment implements IDynamicNewView {
 
+
     protected View mContainView;
     private IDynamicNewView mIDynamicNewView;
 
@@ -38,7 +38,8 @@ public abstract class BaseFragment extends RxFragment implements IDynamicNewView
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+            savedInstanceState) {
         if (mContainView == null) {
             mContainView = inflater.inflate(returnLayoutID(), container, false);
         }
@@ -116,6 +117,14 @@ public abstract class BaseFragment extends RxFragment implements IDynamicNewView
     public void onDestroyView() {
         removeAllView(getView());
         super.onDestroyView();
+    }
+
+    public View getContainView() {
+        return mContainView;
+    }
+
+    public void setContainView(View containView) {
+        mContainView = containView;
     }
 
     private final void removeAllView(View v) {

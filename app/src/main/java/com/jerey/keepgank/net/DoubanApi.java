@@ -3,6 +3,7 @@ package com.jerey.keepgank.net;
 
 import com.jerey.keepgank.douban.bean.MovieInfoBean;
 import com.jerey.keepgank.douban.bean.TypeInfoBean;
+import com.jerey.keepgank.douban.bean.USBean;
 
 import java.util.concurrent.TimeUnit;
 
@@ -75,7 +76,7 @@ public class DoubanApi {
          * 欧美热映
          */
         @GET("/v2/movie/us_box")
-        Observable<TypeInfoBean> getUSMovie();
+        Observable<USBean> getUSMovie();
 
         /**
          * http://api.douban.com/v2/movie/in_theaters?start=10&count=10

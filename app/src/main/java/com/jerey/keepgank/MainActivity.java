@@ -232,7 +232,20 @@ public class MainActivity extends SkinBaseActivity implements NavigationView
                 LogTools.d("主题被点击");
 //                Intent intent = new Intent(MainActivity.this, ThemeChooseActivity.class);
 //                startActivity(intent);
-           //     ARouter.getInstance().build("/activity/ThemeChooseActivity").navigation();
+                ARouter.getInstance().build("/activity/ThemeChooseActivity").navigation();
+                /**
+                 * 延时收回Drawer,使得后台收回,解决打开Theme界面时,低端手机上卡顿问题
+                 */
+                mHander.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+                            mDrawerLayout.closeDrawer(GravityCompat.START);
+                        }
+                    }
+                }, 1500);
+                break;
+            case R.id.nav_movie:
                 ARouter.getInstance().build("/douban/DoubanActivity").navigation();
                 /**
                  * 延时收回Drawer,使得后台收回,解决打开Theme界面时,低端手机上卡顿问题
