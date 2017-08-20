@@ -45,24 +45,26 @@ RxJava + Retrofit + Glide + DiskLruCache + Material-Design
 
 #### 1.3
 1. 增加头像选择功能， 滑动浏览
+2. 使用多类型扩展Adapter增加豆瓣电影界面
 
 ### 预览
 ---
-![](http://upload-images.jianshu.io/upload_images/2305881-d1346624ac99cba4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+<a><img src="pic/pic0.jpg" width="32%"/></a>
+<a><img src="pic/pic1.jpg" width="32%"/></a>
+<a><img src="pic/pic3.jpg" width="32%"/></a>
+<a><img src="pic/pic5.jpg" width="32%"/></a>
+<a><img src="pic/pic11.jpg" width="32%"/></a>
+<a><img src="pic/pic4.jpg" width="32%"/></a>
+<a><img src="pic/pic6.jpg" width="32%"/></a>
+<a><img src="pic/pic7.jpg" width="32%"/></a>
+<a><img src="pic/pic8.jpg" width="32%"/></a>
+<a><img src="pic/pic9.jpg" width="32%"/></a>
+<a><img src="pic/pic2.jpg" width="32%"/></a>
+<a><img src="pic/pic10.jpg" width="32%"/></a>
 
-
-![](http://upload-images.jianshu.io/upload_images/2305881-37903fe5fbd9fd9a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-### 多主题：
-
-![](pic/theme_choose.jpg)
-![](pic/themedark.jpg)
-![](pic/theme_blue.jpg)
-![](pic/themedefalut.jpg)
 
 ### 头像选择
-
-![](pic/choose_head.gif)
+<a><img src="pic/choose_head.gif" width="32%"/></a>
 
 ### 总之, 希望大家多多star, 一起进步
 
