@@ -1,5 +1,6 @@
 package com.jerey.keepgank.douban.itembinder;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,8 +11,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.jerey.keepgank.R;
+import com.jerey.keepgank.douban.MovieListActivity;
 import com.jerey.keepgank.douban.bean.SubjectsBean;
 import com.jerey.keepgank.douban.bean.TypeInfoBean;
 import com.jerey.keepgank.multitype.ItemViewBinder;
@@ -36,7 +39,8 @@ public class TypeInfoBeanBinder extends ItemViewBinder<TypeInfoBean, TypeInfoBea
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull TypeInfoBean item) {
+    protected void onBindViewHolder(@NonNull final ViewHolder holder, @NonNull final TypeInfoBean
+            item) {
         if (item == null) return;
 
         LogTools.i("Title：" + item.getTitle());
@@ -48,6 +52,24 @@ public class TypeInfoBeanBinder extends ItemViewBinder<TypeInfoBean, TypeInfoBea
         holder.mRecyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
         TypeItemAdapter adapter = new TypeItemAdapter(item);
         holder.mRecyclerView.setAdapter(adapter);
+        holder.mImageViewMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(MovieListActivity.TAG, item);
+                /**
+                 * Arouter
+                 */
+                ARouter.getInstance().build("/douban/MovieListActivity")
+                        .withTransition(R.anim.in_from_right, 0)
+                        .withBundle(MovieListActivity.TAG, bundle)
+                        .navigation(holder.mImageViewMore.getContext());
+                /**
+                 * 传统方式
+                 */
+                //MovieListActivity.startActivity(holder.mImageViewMore.getContext(), item);
+            }
+        });
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

@@ -57,7 +57,19 @@ public class DoubanApi {
         doubanInterface = retrofit.create(DoubanInterface.class);
     }
 
+    public class MOVIE_TYPE {
+        public static final String TYPE_TOP250 = "top250";
+        public static final String TYPE_CommingSoon = "coming_soon";
+        public static final String TYPE_UsMovie = "us_box";
+        public static final String TYPE_in_theaters = "in_theaters";
+    }
+
     public interface DoubanInterface {
+        @GET("/v2/movie/{type}")
+        Observable<TypeInfoBean> getTypeData(@Path("type") String type,
+                                             @Query("start") int start,
+                                             @Query("count") int count);
+
         //http://api.douban.com/v2/movie/top250?start=10&count=10
         @GET("/v2/movie/top250")
         Observable<TypeInfoBean> getTop250(@Query("start") int start,
@@ -82,9 +94,9 @@ public class DoubanApi {
          * http://api.douban.com/v2/movie/in_theaters?start=10&count=10
          * 正在上映的电影
          */
-        @GET("/v2/movie/coming_soon")
+        @GET("/v2/movie/in_theaters")
         Observable<TypeInfoBean> getInTheaters(@Query("start") int start,
-                                                @Query("count") int count);
+                                               @Query("count") int count);
 
         /**
          * http://api.douban.com/v2/movie/subject/26363254
@@ -98,5 +110,4 @@ public class DoubanApi {
     public DoubanInterface getDoubanInterface() {
         return doubanInterface;
     }
-
 }

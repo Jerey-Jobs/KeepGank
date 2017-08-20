@@ -81,7 +81,7 @@ public class DoubanFragment extends BaseFragment {
     private void getHead() {
         DoubanApi.getInstance()
                 .getDoubanInterface()
-                .getInTheaters(0, 6)
+                .getTypeData(DoubanApi.MOVIE_TYPE.TYPE_in_theaters, 0, 6)
                 .compose(this.<TypeInfoBean>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -99,6 +99,7 @@ public class DoubanFragment extends BaseFragment {
                     @Override
                     public void onNext(TypeInfoBean typeInfoBean) {
                         LogTools.w(typeInfoBean.toString());
+                        typeInfoBean.setType(DoubanApi.MOVIE_TYPE.TYPE_in_theaters);
                         items.set(0, new BannerBean(typeInfoBean.getSubjects()));
                         LogTools.w("itemsize:" + items.size());
                         for (SubjectsBean s : typeInfoBean.getSubjects()) {
@@ -134,6 +135,7 @@ public class DoubanFragment extends BaseFragment {
                     @Override
                     public void onNext(TypeInfoBean typeInfoBean) {
                         LogTools.w(typeInfoBean.toString());
+                        typeInfoBean.setType(DoubanApi.MOVIE_TYPE.TYPE_TOP250);
                         items.set(1, typeInfoBean);
                         adapter.setItems(items);
                         adapter.notifyDataSetChanged();
@@ -160,6 +162,7 @@ public class DoubanFragment extends BaseFragment {
                     @Override
                     public void onNext(TypeInfoBean typeInfoBean) {
                         LogTools.w(typeInfoBean.toString());
+                        typeInfoBean.setType(DoubanApi.MOVIE_TYPE.TYPE_CommingSoon);
                         items.set(2, typeInfoBean);
                         adapter.setItems(items);
                         adapter.notifyDataSetChanged();
@@ -187,6 +190,7 @@ public class DoubanFragment extends BaseFragment {
                     public void onNext(USBean usBean) {
                         TypeInfoBean typeInfoBean = new TypeInfoBean();
                         typeInfoBean.setTitle(usBean.getTitle());
+                        typeInfoBean.setType(DoubanApi.MOVIE_TYPE.TYPE_UsMovie);
                         List<SubjectsBean> list = new ArrayList<SubjectsBean>();
                         for (USBean.SBean b : usBean.getSubjects()) {
                             list.add(b.getSubject());

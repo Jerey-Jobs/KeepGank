@@ -1,5 +1,6 @@
 package com.jerey.keepgank.douban.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  * @date 8/17/17.
  */
 
-public class SubjectsBean {
+public class SubjectsBean implements Serializable {
     /**
      * rating : {"max":10,"average":7.5,"stars":"40","min":0}
      * genres : ["动作"]
@@ -152,7 +153,7 @@ public class SubjectsBean {
         this.directors = directors;
     }
 
-    public static class RatingBean {
+    public static class RatingBean implements Serializable {
         /**
          * max : 10
          * average : 7.5
@@ -198,7 +199,7 @@ public class SubjectsBean {
         }
     }
 
-    public static class ImagesBean {
+    public static class ImagesBean implements Serializable {
         /**
          * small : http://img3.doubanio.com/view/movie_poster_cover/ipst/public/p2485983612.webp
          * large : http://img3.doubanio.com/view/movie_poster_cover/lpst/public/p2485983612.webp
@@ -235,7 +236,7 @@ public class SubjectsBean {
         }
     }
 
-    public static class CastsBean {
+    public static class CastsBean implements Serializable {
         /**
          * alt : https://movie.douban.com/celebrity/1000525/
          * avatars : {"small":"http://img3.doubanio.com/img/celebrity/small/39105.jpg",
@@ -282,7 +283,7 @@ public class SubjectsBean {
             this.id = id;
         }
 
-        public static class AvatarsBean {
+        public static class AvatarsBean implements Serializable {
             /**
              * small : http://img3.doubanio.com/img/celebrity/small/39105.jpg
              * large : http://img3.doubanio.com/img/celebrity/large/39105.jpg
@@ -319,7 +320,7 @@ public class SubjectsBean {
         }
     }
 
-    public static class DirectorsBean {
+    public static class DirectorsBean implements Serializable {
         /**
          * alt : https://movie.douban.com/celebrity/1000525/
          * avatars : {"small":"http://img3.doubanio.com/img/celebrity/small/39105.jpg",
@@ -366,7 +367,7 @@ public class SubjectsBean {
             this.id = id;
         }
 
-        public static class AvatarsBeanX {
+        public static class AvatarsBeanX implements Serializable {
             /**
              * small : http://img3.doubanio.com/img/celebrity/small/39105.jpg
              * large : http://img3.doubanio.com/img/celebrity/large/39105.jpg

@@ -7,7 +7,8 @@ import java.util.List;
  * @author xiamin
  * @date 8/17/17.
  */
-public class TypeInfoBean implements Serializable{
+public class TypeInfoBean implements Serializable {
+
 
     /**
      * count : 20
@@ -486,6 +487,7 @@ public class TypeInfoBean implements Serializable{
      * title : 豆瓣电影Top250
      */
 
+    private String type;
     private int count;
     private int start;
     private int total;
@@ -531,4 +533,13 @@ public class TypeInfoBean implements Serializable{
     public void setSubjects(List<SubjectsBean> subjects) {
         this.subjects = subjects;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
 }
