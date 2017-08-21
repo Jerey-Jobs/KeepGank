@@ -1,6 +1,16 @@
 ## KeepGank
 
-一款Gank客户端,希望大家保持学习的动力
+一款Gank客户端,阅读本工程代码您将学习到：
+- RxJava + Retrofit + Glide的使用
+- DiskLruCache的封装
+- 常见Material-Design效果的设计
+- 如何设计插件化主题包
+- 如何使用装饰模式对RecyclerView进行扩展
+- 如何编写复用性强的RecyclerView的Adapter,使得每个Item即是独立的Bean又是可复用的Item
+- Arouter的路由框架的使用
+- 搭建Android5.0水波动画框架
+- 如何使用ViewPager打造出超炫浏览界面
+- 如何使用贝塞尔曲线打造Loading界面
 
 ---
 
