@@ -73,9 +73,10 @@ dependencies {
     //友盟统计 crash日志
     compile 'com.umeng.analytics:analytics:latest.integration'
     //查找内存泄露 临时调试用
-//    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
-//    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
-//    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+    //    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+    //    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+    //    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     compile 'com.alibaba:arouter-api:1.2.1.1'
     annotationProcessor 'com.alibaba:arouter-compiler:1.1.2.1'
+    compile project(':footerrecyclerview')
 }

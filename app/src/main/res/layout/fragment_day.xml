@@ -59,12 +59,12 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.v7.widget.RecyclerView
+        <com.jerey.footerrecyclerview.FooterRecyclerView
             android:id="@+id/day_recycleview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        </android.support.v7.widget.RecyclerView>
+        </com.jerey.footerrecyclerview.FooterRecyclerView>
 
     </android.support.v4.widget.NestedScrollView>
 

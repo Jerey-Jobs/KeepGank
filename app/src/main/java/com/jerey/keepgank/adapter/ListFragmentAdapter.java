@@ -12,6 +12,7 @@ import com.jerey.keepgank.R;
 import com.jerey.keepgank.activity.MyWebActivity;
 import com.jerey.keepgank.bean.Result;
 import com.jerey.keepgank.utils.IconUtils;
+import com.jerey.loglib.LogTools;
 import com.jerey.themelib.loader.SkinManager;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_list, parent, false);
+                                  .inflate(R.layout.item_list, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
@@ -91,7 +92,10 @@ public class ListFragmentAdapter extends RecyclerView.Adapter<ListFragmentAdapte
     }
 
     public void addData(List<Result> datas) {
+        int start = mDatas.size();
         this.mDatas.addAll(datas);
+        LogTools.d("start" + start + "mDatas.size()" + mDatas.size());
+        notifyItemRangeInserted(start + 1, mDatas.size());
     }
 
     public void setData(List<Result> datas) {

@@ -6,6 +6,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
+import com.jerey.animationadapter.AnimationAdapter;
+import com.jerey.animationadapter.SlideInBottomAnimationAdapter;
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.douban.bean.BannerBean;
 import com.jerey.keepgank.douban.bean.SubjectsBean;
@@ -64,7 +66,9 @@ public class DoubanFragment extends BaseFragment {
             items.add(new TypeInfoBean());
         }
         adapter.setItems(items);
-        mRecyclerView.setAdapter(adapter);
+        AnimationAdapter animationAdapter = new SlideInBottomAnimationAdapter(adapter);
+        animationAdapter.setDuration(800);
+        mRecyclerView.setAdapter(animationAdapter);
         getHead();
     }
 

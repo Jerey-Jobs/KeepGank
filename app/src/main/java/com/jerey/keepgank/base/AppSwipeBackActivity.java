@@ -2,6 +2,7 @@ package com.jerey.keepgank.base;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.jerey.themelib.base.SkinBaseActivity;
 import com.umeng.analytics.MobclickAgent;
@@ -69,5 +70,14 @@ public class AppSwipeBackActivity extends SkinBaseActivity implements SwipeBackA
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
+    }
+
+    protected void toast(final String string) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(AppSwipeBackActivity.this, string, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

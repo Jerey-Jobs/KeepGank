@@ -35,13 +35,22 @@ public class SubjectsBinder extends ItemViewBinder<SubjectsBean, SubjectsBinder.
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull SubjectsBean item) {
         if (item == null) return;
         /** 图片，影片名 */
+        String imageUrl = null;
+        if (item.getImages() != null){
+            imageUrl = item.getImages().getMedium();
+            if (imageUrl == null){
+                imageUrl = item.getImages().getLarge();
+            }
+        }
         Glide.with(holder.mItemImageView.getContext())
-                .load(item.getImages().getMedium())
+                .load(imageUrl)
                 .centerCrop()
                 .placeholder(R.drawable.bg_grey)
                 .into(holder.mItemImageView);
         holder.mItemName.setText(item.getTitle());
-        holder.mItemRating.setText("评分：" + item.getRating().getAverage());
+        if (item.getRating() != null){
+            holder.mItemRating.setText("评分：" + item.getRating().getAverage());
+        }
         StringBuilder stringBuilder = new StringBuilder("导演：");
 
         /** 导演 */

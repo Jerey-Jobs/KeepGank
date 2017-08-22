@@ -29,7 +29,7 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.ViewHolder> 
     private Context mContext;
     private List<Integer> heightList;//装产出的随机数
 
-    public MeiziAdapter(Context context){
+    public MeiziAdapter(Context context) {
         mContext = context;
         mDatas = new ArrayList<>();
         //记录为每个控件产生的随机高度,避免滑回到顶部出现空白
@@ -40,7 +40,7 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.meizi_fragment_item, parent, false);
+                                  .inflate(R.layout.meizi_fragment_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -51,22 +51,23 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.ViewHolder> 
         layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
         holder.imageView.setLayoutParams(layoutParams);
         final Result data = mDatas.get(position);
-        if(data.getUrl() != null) {
+        if (data.getUrl() != null) {
             Glide.with(mContext)
-                    .load(data.getUrl())
-                    .error(R.drawable.jay)
-                    .centerCrop()
-                    .placeholder(R.drawable.bg_cyan)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(holder.imageView);
-        }else {
+                 .load(data.getUrl())
+                 .error(R.drawable.jay)
+                 .centerCrop()
+                 .placeholder(R.drawable.bg_cyan)
+                 .diskCacheStrategy(DiskCacheStrategy.ALL)
+                 .into(holder.imageView);
+        } else {
             holder.imageView.setImageResource(R.drawable.jay);
 
         }
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PhotoActivity.startActivity((AppCompatActivity) mContext,data.getUrl(),holder.imageView);
+                PhotoActivity.startActivity((AppCompatActivity) mContext, data.getUrl(), holder
+                        .imageView);
             }
         });
         holder.textView.setText(data.getDesc());
@@ -89,16 +90,18 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.ViewHolder> 
     }
 
     public void addData(List<Result> datas) {
+        int start = mDatas.size() - 1;
         this.mDatas.addAll(datas);
-        for (int i = 0; i <mDatas.size(); i++) {
+        for (int i = 0; i < mDatas.size(); i++) {
             int height = new Random().nextInt(200) + 250;//[100,300)的随机数
             heightList.add(height);
         }
+        notifyItemRangeInserted(start + 1, mDatas.size());
     }
 
     public void setData(List<Result> datas) {
         this.mDatas = datas;
-        for (int i = 0; i <mDatas.size(); i++) {
+        for (int i = 0; i < mDatas.size(); i++) {
             int height = new Random().nextInt(200) + 250;//[100,300)的随机数
             heightList.add(height);
         }

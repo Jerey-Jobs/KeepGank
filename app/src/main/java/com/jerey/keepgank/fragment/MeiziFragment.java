@@ -73,9 +73,9 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
         initSwipeRefreshLayout(mSwipeRefreshLayout);
         mAdapter = new MeiziAdapter(getActivity());
         AnimationAdapter animationAdapter = new SlideInBottomAnimationAdapter(mAdapter);
-        animationAdapter.setDuration(600);
+        animationAdapter.setDuration(800);
         mRecyclerView.setAdapter(animationAdapter);
-        mRecyclerView.setItemAnimator(new SlideInOutRightItemAnimator(mRecyclerView));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.addOnScrollListener(mOnScrollListener);
 
         try {
