@@ -10,6 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.util.List;
 
 /**
  * <p>这是一个自动带脚标的RecyclerView,采用装饰模式对传进来的Adapter进行了脚标扩展
@@ -59,22 +62,12 @@ public class FooterRecyclerView extends RecyclerView {
 
                 LayoutManager layoutManager = recyclerView.getLayoutManager();
                 int total = layoutManager.getItemCount();
-                int lastPosition = 0;
-                if (layoutManager instanceof LinearLayoutManager) {
-                    lastPosition = ((LinearLayoutManager) layoutManager)
-                            .findLastVisibleItemPosition();
-                } else if (layoutManager instanceof StaggeredGridLayoutManager) {
-                    StaggeredGridLayoutManager staggeredGridLayoutManager =
-                            (StaggeredGridLayoutManager) layoutManager;
-                    int last[] = new int[staggeredGridLayoutManager.getSpanCount()];
-                    staggeredGridLayoutManager.findLastVisibleItemPositions(last);
-                    lastPosition = last[last.length - 1];
-                }
+                int lastPosition = getLastPosition(recyclerView);
                 Log.i(TAG, "onScrolled: dy:" + dy + " positon :" + lastPosition);
                 if (!isLoadingMore && total >= lastPosition && (
                         total - lastPosition) <= mLimitLastPosition) {
                     isLoadingMore = true;
-                    mOnLoadMoreListener.onLoadMore(lastPosition);
+                    mOnLoadMoreListener.onLoadMore(total);
                 }
             }
         });
@@ -92,12 +85,56 @@ public class FooterRecyclerView extends RecyclerView {
         }
     }
 
+    private int getLastPosition(RecyclerView recyclerView) {
+        LayoutManager layoutManager = recyclerView.getLayoutManager();
+        int lastPosition = 0;
+        if (layoutManager instanceof LinearLayoutManager) {
+            lastPosition = ((LinearLayoutManager) layoutManager)
+                    .findLastVisibleItemPosition();
+        } else if (layoutManager instanceof StaggeredGridLayoutManager) {
+            StaggeredGridLayoutManager staggeredGridLayoutManager =
+                    (StaggeredGridLayoutManager) layoutManager;
+            int last[] = new int[staggeredGridLayoutManager.getSpanCount()];
+            staggeredGridLayoutManager.findLastVisibleItemPositions(last);
+            lastPosition = last[last.length - 1];
+        }
+        return lastPosition;
+    }
+
     public int getLimitLastPosition() {
         return mLimitLastPosition;
     }
 
     public void setLimitLastPosition(int limitLastPosition) {
         mLimitLastPosition = limitLastPosition;
+    }
+
+    private int mViewState;
+    private static final int LOADING_VIEW = 0;
+    private static final int LOADING_TEXT = 1;
+    private static final int LOADING_GONE = -1;
+    private String mEndText;
+    private int mLoadingColor;
+
+    public void setEndText(String text) {
+        mEndText = text;
+        mViewState = LOADING_TEXT;
+        int last = getLastPosition(this);
+        if (getAdapter() != null) {
+            getAdapter().notifyItemChanged(last, 1);
+        }
+    }
+
+    public void restartEndLoading() {
+        mViewState = LOADING_VIEW;
+        int last = getLastPosition(this);
+        if (getAdapter() != null) {
+            getAdapter().notifyItemChanged(last, 1);
+        }
+    }
+
+    public void removeFooter() {
+        mViewState = LOADING_GONE;
     }
 
 
@@ -119,35 +156,30 @@ public class FooterRecyclerView extends RecyclerView {
         @Override
         public void onItemRangeChanged(int positionStart, int itemCount) {
             super.onItemRangeChanged(positionStart, itemCount);
-            Log.w(TAG, "onItemRangeChanged: ");
             reset();
         }
 
         @Override
         public void onItemRangeChanged(int positionStart, int itemCount, Object payload) {
             super.onItemRangeChanged(positionStart, itemCount, payload);
-            Log.w(TAG, "onItemRangeChanged: ");
             reset();
         }
 
         @Override
         public void onItemRangeInserted(int positionStart, int itemCount) {
             super.onItemRangeInserted(positionStart, itemCount);
-            Log.w(TAG, "onItemRangeInserted: ");
             reset();
         }
 
         @Override
         public void onItemRangeRemoved(int positionStart, int itemCount) {
             super.onItemRangeRemoved(positionStart, itemCount);
-            Log.w(TAG, "onItemRangeRemoved: ");
             reset();
         }
 
         @Override
         public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
             super.onItemRangeMoved(fromPosition, toPosition, itemCount);
-            Log.w(TAG, "onItemRangeMoved: ");
             reset();
         }
 
@@ -188,17 +220,30 @@ public class FooterRecyclerView extends RecyclerView {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(ViewHolder holder, int position, List<Object> payloads) {
             if (getItemViewType(position) == LOAD_MORE_VIEW_TYPE) {
                 Log.i(TAG, "onBindViewHolder: LOAD_MORE_VIEW_TYPE");
+                ProgressViewHolder progressViewHolder = (ProgressViewHolder) holder;
+                if (mViewState == LOADING_VIEW) {
+                    progressViewHolder.loadingView.setVisibility(VISIBLE);
+                    progressViewHolder.text.setVisibility(GONE);
+                } else if (mViewState == LOADING_TEXT) {
+                    progressViewHolder.loadingView.setVisibility(GONE);
+                    progressViewHolder.text.setVisibility(VISIBLE);
+                    progressViewHolder.text.setText(mEndText);
+                }
             } else {
-                mAdapterWrapper.onBindViewHolder(holder, position);
+                mAdapterWrapper.onBindViewHolder(holder, position, payloads);
             }
         }
 
         @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+        }
+
+        @Override
         public int getItemViewType(int position) {
-            if (position == getItemCount() - 1) {
+            if (mViewState != LOADING_GONE && position == getItemCount() - 1) {
                 return LOAD_MORE_VIEW_TYPE;
             }
             return mAdapterWrapper.getItemViewType(position);
@@ -206,6 +251,9 @@ public class FooterRecyclerView extends RecyclerView {
 
         @Override
         public int getItemCount() {
+            if (mViewState == LOADING_GONE) {
+                return mAdapterWrapper.getItemCount();
+            }
             return mAdapterWrapper.getItemCount() + 1;
         }
 
@@ -222,9 +270,13 @@ public class FooterRecyclerView extends RecyclerView {
         }
 
         class ProgressViewHolder extends ViewHolder {
+            View loadingView;
+            TextView text;
 
             public ProgressViewHolder(View itemView) {
                 super(itemView);
+                loadingView = itemView.findViewById(R.id.footer_loadingview);
+                text = (TextView) itemView.findViewById(R.id.footer_text);
             }
         }
     }
