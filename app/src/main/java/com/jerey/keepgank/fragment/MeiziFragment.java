@@ -11,6 +11,8 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
+import com.jerey.animationadapter.AnimationAdapter;
+import com.jerey.animationadapter.SlideInBottomAnimationAdapter;
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.View.SlideInOutRightItemAnimator;
 import com.jerey.keepgank.View.SwipeToRefreshLayout;
@@ -70,7 +72,9 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
         initRecyclerView(mRecyclerView);
         initSwipeRefreshLayout(mSwipeRefreshLayout);
         mAdapter = new MeiziAdapter(getActivity());
-        mRecyclerView.setAdapter(mAdapter);
+        AnimationAdapter animationAdapter = new SlideInBottomAnimationAdapter(mAdapter);
+        animationAdapter.setDuration(600);
+        mRecyclerView.setAdapter(animationAdapter);
         mRecyclerView.setItemAnimator(new SlideInOutRightItemAnimator(mRecyclerView));
         mRecyclerView.addOnScrollListener(mOnScrollListener);
 
@@ -197,8 +201,9 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
                     mAdapter.setData(data.getResults());
                     Log.i(TAG, "DiskLruCacheManager 写入");
                     mDiskLruCacheManager.put(TAG, data);
+                    mAdapter.notifyDataSetChanged();
                 }
-                mAdapter.notifyDataSetChanged();
+
             }
         }
     };

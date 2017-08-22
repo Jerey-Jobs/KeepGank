@@ -17,6 +17,9 @@ import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.jerey.animationadapter.AnimationAdapter;
+import com.jerey.animationadapter.SlideInBottomAnimationAdapter;
+import com.jerey.footerrecyclerview.FooterRecyclerView;
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.View.SlideInOutRightItemAnimator;
 import com.jerey.keepgank.adapter.DayFragmentAdapter;
@@ -44,6 +47,7 @@ import static com.jerey.keepgank.R.id.toolbar;
 
 public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDateSetListener {
     private static final String TAG = "TodayFragment";
+
     @Bind(toolbar)
     Toolbar mToolbar;
     @Bind(R.id.toolbar_layout)
@@ -51,7 +55,7 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
     @Bind(R.id.app_bar)
     AppBarLayout mAppBar;
     @Bind(R.id.day_recycleview)
-    RecyclerView mRecyclerView;
+    FooterRecyclerView mRecyclerView;
     @Bind(R.id.story_img)
     ImageView mImageView;
     @Bind(R.id.float_action_button)
@@ -103,17 +107,21 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
         mImageView.setImageResource(R.drawable.jay);
         //设置渐显动画，替换状态栏颜色
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            int statusBarColor = ((AppCompatActivity) getActivity()).getWindow().getStatusBarColor();
+            int statusBarColor = ((AppCompatActivity) getActivity()).getWindow()
+                                                                    .getStatusBarColor();
             mToolbarLayout.setContentScrimColor(statusBarColor);
-            if (statusBarColor != ((AppCompatActivity) getActivity()).getWindow().getStatusBarColor()) {
+            if (statusBarColor != ((AppCompatActivity) getActivity()).getWindow()
+                                                                     .getStatusBarColor()) {
                 ValueAnimator statusBarColorAnim = ValueAnimator.ofArgb(
-                        ((AppCompatActivity) getActivity()).getWindow().getStatusBarColor(), statusBarColor);
+                        ((AppCompatActivity) getActivity()).getWindow().getStatusBarColor(),
+                        statusBarColor);
                 statusBarColorAnim.addUpdateListener(new ValueAnimator
                         .AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            ((AppCompatActivity) getActivity()).getWindow().setStatusBarColor((int) animation.getAnimatedValue());
+                            ((AppCompatActivity) getActivity()).getWindow().setStatusBarColor(
+                                    (int) animation.getAnimatedValue());
                         }
                     }
                 });
@@ -126,6 +134,7 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
         }
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setEndText("没有更多数据了...");
         mLinearLayoutManager = new LinearLayoutManager(mRecyclerView.getContext());
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mButton.setOnClickListener(new View.OnClickListener() {
@@ -137,7 +146,7 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
                         now.get(Calendar.YEAR),
                         now.get(Calendar.MONTH),
                         now.get(Calendar.DAY_OF_MONTH)
-                );
+                                                                                );
                 datePickerDialog.setVersion(DatePickerDialog.Version.VERSION_2);
                 datePickerDialog.show(getActivity().getFragmentManager(), "Datepickerdialog");
             }
@@ -147,46 +156,49 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
     private void load(final int year, final int month, final int day) {
 
         GankApi.getInstance()
-                .getWebService()
-                .getGoodsByDay(year, month, day)
-                .compose(this.<GankDay>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
-                .cache()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<GankDay>() {
-                    @Override
-                    public void onCompleted() {
-                    }
+               .getWebService()
+               .getGoodsByDay(year, month, day)
+               .compose(this.<GankDay>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
+               .cache()
+               .subscribeOn(Schedulers.io())
+               .observeOn(AndroidSchedulers.mainThread())
+               .subscribe(new Subscriber<GankDay>() {
+                   @Override
+                   public void onCompleted() {
+                   }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        showSnackbar(R.string.error);
-                    }
+                   @Override
+                   public void onError(Throwable e) {
+                       showSnackbar(R.string.error);
+                   }
 
-                    @Override
-                    public void onNext(GankDay gankDay) {
-                        LogTools.d(gankDay.toString());
-                        if (gankDay != null && gankDay.results != null && gankDay.results.Android != null) {
-                            mToolbarLayout.setTitle(year + "年" + month + "月" + day + "日");
-                            mDiskLruCacheManager.put(TAG, gankDay);
-                            loadUIByGankday(gankDay);
-                        } else {
-                            showSnackbar("该日可能没有更新哦");
-                        }
-                    }
-                });
+                   @Override
+                   public void onNext(GankDay gankDay) {
+                       LogTools.d(gankDay.toString());
+                       if (gankDay != null && gankDay.results != null && gankDay.results.Android
+                               != null) {
+                           mToolbarLayout.setTitle(year + "年" + month + "月" + day + "日");
+                           mDiskLruCacheManager.put(TAG, gankDay);
+                           loadUIByGankday(gankDay);
+                       } else {
+                           showSnackbar("该日可能没有更新哦");
+                       }
+                   }
+               });
     }
 
     private void loadUIByGankday(GankDay gankDay) {
         LogTools.d(gankDay.results.福利.get(0).getUrl());
         Glide.with(TodayFragment.this)
-                .load(gankDay.results.福利.get(0).getUrl())
-                .centerCrop()
-                .crossFade()
-                .error(R.drawable.jay)
-                .into(mImageView);
+             .load(gankDay.results.福利.get(0).getUrl())
+             .centerCrop()
+             .crossFade()
+             .error(R.drawable.jay)
+             .into(mImageView);
         mAdapter.setData(gankDay.results);
-        mRecyclerView.setAdapter(mAdapter);
+        AnimationAdapter animationAdapter = new SlideInBottomAnimationAdapter(mAdapter);
+        animationAdapter.setDuration(600);
+        mRecyclerView.setAdapter(animationAdapter);
         mRecyclerView.setItemAnimator(new SlideInOutRightItemAnimator(mRecyclerView));
     }
 
