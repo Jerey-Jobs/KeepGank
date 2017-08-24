@@ -22,11 +22,11 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile APPCOMPAT_VERSION
+    compile "${APPCOMPAT_VERSION}"
     testCompile JUNIT_VERSION
     compile BUTTERKNIFE_VERSION
     annotationProcessor Butterknife_compiler
@@ -35,4 +35,5 @@ dependencies {
     compile RECYCLER_VERSION
     compile SUPPORT_ANNOTATIONS
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.25'
+    compile project(':mutiType')
 }

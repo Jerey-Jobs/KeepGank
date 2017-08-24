@@ -9,10 +9,6 @@ import android.view.ViewAnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-/**
- * Created by yuepeng on 2017/6/9.
- */
-
 public class SearchViewUtils {
     public static int dip2px(Context context, float dp) {
         final float scale = context.getResources().getDisplayMetrics().density;
