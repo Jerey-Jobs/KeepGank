@@ -8,39 +8,61 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.jerey.mutitype.ItemViewBinder;
-
-import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import com.jerey.searchview.HistoryBean;
+import com.jerey.searchview.R;
 
 /**
  * @author xiamin
  * @date 8/24/17.
  */
-public class HistoryBeanBinder extends ItemViewBinder<HistoryBean,HistoryBeanBinder.ViewHolder> {
+public class HistoryBeanBinder extends ItemViewBinder<HistoryBean, HistoryBeanBinder.ViewHolder> {
 
     @NonNull
     @Override
     protected HistoryBeanBinder.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater,
-                                                         @NonNull ViewGroup parent) {
+                                                              @NonNull ViewGroup parent) {
         View view = inflater.inflate(R.layout.view_rv_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull HistoryBean item) {
-
+        if (item.getDrawableURL() != null) {
+            Glide.with(holder.mIcon.getContext())
+                    .load(item.getDrawableURL())
+                    .placeholder(R.drawable.ic_history_black_24dp)
+                    .crossFade()
+                    .error(R.drawable.ic_history_black_24dp)
+                    .into(holder.mIcon);
+        } else if (item.getDrawable() != null) {
+            Glide.with(holder.mIcon.getContext())
+                    .load(item.getDrawable())
+                    .placeholder(R.drawable.ic_history_black_24dp)
+                    .crossFade()
+                    .error(R.drawable.ic_history_black_24dp)
+                    .into(holder.mIcon);
+        } else if (item.getBitmap() != null) {
+            Glide.with(holder.mIcon.getContext())
+                    .load(item.getBitmap())
+                    .placeholder(R.drawable.ic_history_black_24dp)
+                    .crossFade()
+                    .error(R.drawable.ic_history_black_24dp)
+                    .into(holder.mIcon);
+        } else {
+            holder.mIcon.setImageResource(R.drawable.ic_history_black_24dp);
+        }
+        holder.mTvHistoryItem.setText(item.getContent());
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder{
-        ImageView mRightIcon;
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView mIcon;
         TextView mTvHistoryItem;
 
         ViewHolder(View view) {
             super(view);
-            mRightIcon = view.findViewById(R.id.right_icon);
+            mIcon = view.findViewById(R.id.right_icon);
             mTvHistoryItem = view.findViewById(R.id.history_item);
         }
     }

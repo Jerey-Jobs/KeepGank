@@ -13,6 +13,9 @@ public class HistoryBean {
     private Bitmap mBitmap;
     private String content;
 
+    public HistoryBean() {
+    }
+
     public HistoryBean(String drawableURL, String content) {
         mDrawableURL = drawableURL;
         this.content = content;

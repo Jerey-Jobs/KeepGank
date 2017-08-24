@@ -34,6 +34,7 @@ dependencies {
     compile 'com.android.support:cardview-v7:26.0.0-alpha1'
     compile RECYCLER_VERSION
     compile SUPPORT_ANNOTATIONS
+    compile GLIDE
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.25'
     compile project(':mutiType')
 }

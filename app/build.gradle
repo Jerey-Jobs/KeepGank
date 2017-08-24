@@ -15,7 +15,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = [ moduleName : project.getName() ]
+                arguments = [moduleName: project.getName()]
             }
         }
     }
@@ -33,6 +33,10 @@ android {
 
 dependencies {
     compile project(':themelib')
+    compile project(':lrucache')
+    compile project(':footerrecyclerview')
+    compile project(':mutiType')
+    compile project(':searchview')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -45,11 +49,12 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
     //Google的json解析库
     compile GSON
+    //图片加载库
+    compile GLIDE
     //一个滑动返回库
     compile 'me.imid.swipebacklayout.lib:library:1.0.0'
     //注解绑定
-    //图片加载库
-    compile 'com.github.bumptech.glide:glide:3.5.2'
+
     compile 'io.reactivex:rxandroid:0.24.0'
     compile 'com.hwangjr.rxbus:rxbus:1.0.5'
     //严格控制由于发布了一个订阅后，由于没有及时取消，导致Activity/Fragment无法销毁导致的内存泄露的库
@@ -71,7 +76,7 @@ dependencies {
     //我的权限库
     compile 'com.github.Jerey-Jobs:PermissionTools:1.5'
     compile 'com.github.Jerey-Jobs:LogTools:0.1'
-    compile project(':lrucache')
+
     //友盟统计 crash日志
     compile 'com.umeng.analytics:analytics:latest.integration'
     //查找内存泄露 临时调试用
@@ -80,9 +85,6 @@ dependencies {
     //    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     compile 'com.alibaba:arouter-api:1.2.1.1'
     annotationProcessor 'com.alibaba:arouter-compiler:1.1.2.1'
-    compile project(':footerrecyclerview')
-    compile project(':mutiType')
-    compile project(':searchview')
     compile 'com.android.support:support-v4:26.0.0-alpha1'
 }
 /**

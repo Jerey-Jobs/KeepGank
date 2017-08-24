@@ -45,4 +45,5 @@ ext {
     GSON = 'com.google.code.gson:gson:2.2.4'
     SUPPORT_DESIGN = 'com.android.support:design:26.0.0-alpha1'
     SUPPORT_ANNOTATIONS = 'com.android.support:support-annotations:26.0.0-alpha1'
+    GLIDE = 'com.github.bumptech.glide:glide:3.5.2'
 }
