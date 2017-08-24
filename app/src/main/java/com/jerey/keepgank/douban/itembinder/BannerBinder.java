@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide;
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.douban.bean.BannerBean;
 import com.jerey.keepgank.douban.bean.SubjectsBean;
-import com.jerey.keepgank.multitype.ItemViewBinder;
+import com.jerey.mutitype.ItemViewBinder;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.loader.ImageLoader;
@@ -20,7 +20,7 @@ import com.youth.banner.loader.ImageLoader;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -56,7 +56,7 @@ public class BannerBinder extends ItemViewBinder<BannerBean, BannerBinder.Banner
 
 
     static class BannerHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.item_banner)
+        @BindView(R.id.item_banner)
         Banner mItemBanner;
 
         BannerHolder(View view) {

@@ -24,7 +24,7 @@ import com.trello.rxlifecycle.FragmentEvent;
 
 import java.io.IOException;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
@@ -40,9 +40,9 @@ public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     private static final String TAG = "ListFragment";
     public static final String KEY_TYPE = "type";
 
-    @Bind(R.id.recycler_view)
+    @BindView(R.id.recycler_view)
     FooterRecyclerView mRecyclerView;
-    @Bind(R.id.swipe_ly)
+    @BindView(R.id.swipe_ly)
     SwipeToRefreshLayout mSwipeRefreshLayout;
     private LinearLayoutManager mLinearLayoutManager;
     private ListFragmentAdapter mAdapter;

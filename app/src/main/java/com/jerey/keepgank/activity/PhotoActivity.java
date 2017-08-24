@@ -23,7 +23,7 @@ import com.jerey.keepgank.utils.AnimationHelper;
 import com.jerey.keepgank.utils.ImageSave;
 import com.jerey.loglib.LogTools;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -34,11 +34,11 @@ public class PhotoActivity extends AppSwipeBackActivity implements View.OnClickL
     private static final String TAG = "PhotoActivity";
     private static final String URL = "URL";
 
-    @Bind(R.id.meizi_image)
+    @BindView(R.id.meizi_image)
     PinchImageView pinchImageView;
-    @Bind(R.id.btn_back)
+    @BindView(R.id.btn_back)
     ImageView mBtnBack;
-    @Bind(R.id.btn_save)
+    @BindView(R.id.btn_save)
     ImageView mBtnSave;
 
     private String mUrl;

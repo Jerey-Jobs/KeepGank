@@ -17,10 +17,10 @@ import com.jerey.keepgank.R;
 import com.jerey.keepgank.douban.MovieListActivity;
 import com.jerey.keepgank.douban.bean.SubjectsBean;
 import com.jerey.keepgank.douban.bean.TypeInfoBean;
-import com.jerey.keepgank.multitype.ItemViewBinder;
 import com.jerey.loglib.LogTools;
+import com.jerey.mutitype.ItemViewBinder;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -135,11 +135,11 @@ public class TypeInfoBeanBinder extends ItemViewBinder<TypeInfoBean, TypeInfoBea
         }
 
         class ItemViewHolder extends RecyclerView.ViewHolder {
-            @Bind(R.id.item_imageView)
+            @BindView(R.id.item_imageView)
             ImageView mItemImageView;
-            @Bind(R.id.item_name)
+            @BindView(R.id.item_name)
             TextView mItemName;
-            @Bind(R.id.item_rating)
+            @BindView(R.id.item_rating)
             TextView mItemRating;
 
             public ItemViewHolder(View itemView) {

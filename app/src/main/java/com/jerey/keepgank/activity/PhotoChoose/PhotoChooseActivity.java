@@ -32,7 +32,7 @@ import com.jerey.lruCache.DiskLruCacheManager;
 
 import java.io.IOException;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observer;
@@ -46,15 +46,15 @@ import rx.schedulers.Schedulers;
 public class PhotoChooseActivity extends AppSwipeBackActivity {
 
     private static final String TAG = "PhotoChooseActivity";
-    @Bind(R.id.my_viewpager)
+    @BindView(R.id.my_viewpager)
     ViewPager mViewpager;
 
     ViewPagerAdapter mAdapter;
-    @Bind(R.id.activity_bg)
+    @BindView(R.id.activity_bg)
     ImageView mActivityBg;
-    @Bind(R.id.m_choose_btn)
+    @BindView(R.id.m_choose_btn)
     Button mMChooseBtn;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
     //当前选择pic

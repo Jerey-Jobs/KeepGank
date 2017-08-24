@@ -17,8 +17,32 @@ allprojects {
         jcenter()
         maven { url 'https://jitpack.io' }
     }
+
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+
+
+ext {
+    // Version of compile sdk
+    COMPILE_SDK_VERSION = 26
+    // Version of Android build tool
+    BUILD_TOOLS_VERSION = "26.0.1"
+    // Min version of Android sdk
+    MIN_SDK_VERSION = 15
+    // Version of target Android sdk
+    TARGET_SDK_VERSION = 26
+    APPCOMPAT_VERSION = 'com.android.support:appcompat-v7:26.+'
+    // Version of "junit", refer it as folow:
+    //  compile "junit:junit:${JUNIT_VERSION}"
+    JUNIT_VERSION= 'junit:junit:4.12'
+    RECYCLER_VERSION = 'com.android.support:recyclerview-v7:26.0.0-alpha1'
+    BUTTERKNIFE_VERSION = 'com.jakewharton:butterknife:8.8.1'
+    Butterknife_compiler = 'com.jakewharton:butterknife-compiler:8.8.1'
+    GSON = 'com.google.code.gson:gson:2.2.4'
+    SUPPORT_DESIGN = 'com.android.support:design:26.0.0-alpha1'
+    SUPPORT_ANNOTATIONS = 'com.android.support:support-annotations:26.0.0-alpha1'
 }

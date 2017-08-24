@@ -11,7 +11,7 @@ import com.jerey.keepgank.R;
 import com.jerey.keepgank.utils.ApplicationUtils;
 import com.jerey.loglib.LogTools;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by Xiamin on 2017/2/12.
@@ -20,9 +20,9 @@ import butterknife.Bind;
 public class WebView extends BaseFragment {
     private static final String BLOG = "http://jerey.cn";
 
-    @Bind(R.id.web_view)
+    @BindView(R.id.web_view)
     android.webkit.WebView mWebView;
-    @Bind(R.id.progress_bar)
+    @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
 
     @Override

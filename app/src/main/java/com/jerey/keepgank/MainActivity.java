@@ -35,6 +35,7 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -61,12 +62,13 @@ import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends SkinBaseActivity implements NavigationView
-        .OnNavigationItemSelectedListener {
+                                                                      .OnNavigationItemSelectedListener {
+
 
     private int mCurrentUIIndex = 0;
     private static final int INDEX_HOME = 0;
@@ -75,9 +77,11 @@ public class MainActivity extends SkinBaseActivity implements NavigationView
     private static final int INDEX_TODAY = 3;
     private static final int REQUEST_CODE = 111;
 
-    @Bind(R.id.drawer)
+    @BindView(R.id.drawer)
     DrawerLayout mDrawerLayout;
-    @Bind(R.id.nav_view)
+    @BindView(R.id.content)
+    FrameLayout mContent;
+    @BindView(R.id.nav_view)
     NavigationView mNavigationView;
 
     CircleImageView mUserimage;
@@ -234,9 +238,9 @@ public class MainActivity extends SkinBaseActivity implements NavigationView
                 // ThemeChooseActivity.class);
                 //                startActivity(intent);
                 ARouter.getInstance()
-                        .build("/activity/ThemeChooseActivity")
-                        .withTransition(R.anim.in_from_right, 0)
-                        .navigation(this);
+                       .build("/activity/ThemeChooseActivity")
+                       .withTransition(R.anim.in_from_right, 0)
+                       .navigation(this);
                 /**
                  * 延时收回Drawer,使得后台收回,解决打开Theme界面时,低端手机上卡顿问题
                  */
@@ -251,8 +255,8 @@ public class MainActivity extends SkinBaseActivity implements NavigationView
                 break;
             case R.id.nav_movie:
                 ARouter.getInstance().build("/douban/DoubanActivity")
-                        .withTransition(R.anim.in_from_right, 0)
-                        .navigation(this);
+                       .withTransition(R.anim.in_from_right, 0)
+                       .navigation(this);
                 /**
                  * 延时收回Drawer,使得后台收回,解决打开Theme界面时,低端手机上卡顿问题
                  */
@@ -323,21 +327,21 @@ public class MainActivity extends SkinBaseActivity implements NavigationView
 
     private void loadHead(final String url) {
         Glide.with(this)
-                .load(TextUtils.isEmpty(url) ? R.drawable.jay : url)
-                .asBitmap()
-                .centerCrop()
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap>
-                            glideAnimation) {
-                        mUserimage.setImageBitmap(resource);
-                        Bitmap overlay = BlurImageUtils.blur(mUserimage, 3, 3);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            mHeadViewContainer.setBackground(new BitmapDrawable(getResources(),
-                                    overlay));
-                        }
-                    }
-                });
+             .load(TextUtils.isEmpty(url) ? R.drawable.jay : url)
+             .asBitmap()
+             .centerCrop()
+             .into(new SimpleTarget<Bitmap>() {
+                 @Override
+                 public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap>
+                         glideAnimation) {
+                     mUserimage.setImageBitmap(resource);
+                     Bitmap overlay = BlurImageUtils.blur(mUserimage, 3, 3);
+                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                         mHeadViewContainer.setBackground(new BitmapDrawable(getResources(),
+                                 overlay));
+                     }
+                 }
+             });
     }
 
     /**

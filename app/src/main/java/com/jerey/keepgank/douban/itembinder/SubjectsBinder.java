@@ -11,9 +11,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.douban.bean.SubjectsBean;
-import com.jerey.keepgank.multitype.ItemViewBinder;
+import com.jerey.mutitype.ItemViewBinder;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -83,15 +83,15 @@ public class SubjectsBinder extends ItemViewBinder<SubjectsBean, SubjectsBinder.
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.item_imageView)
+        @BindView(R.id.item_imageView)
         ImageView mItemImageView;
-        @Bind(R.id.item_name)
+        @BindView(R.id.item_name)
         TextView mItemName;
-        @Bind(R.id.item_rating)
+        @BindView(R.id.item_rating)
         TextView mItemRating;
-        @Bind(R.id.item_director)
+        @BindView(R.id.item_director)
         TextView mItemDirector;
-        @Bind(R.id.item_actor)
+        @BindView(R.id.item_actor)
         TextView mItemActor;
 
         ViewHolder(View view) {

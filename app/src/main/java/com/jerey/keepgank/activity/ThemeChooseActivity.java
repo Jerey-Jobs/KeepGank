@@ -18,7 +18,7 @@ import com.jerey.loglib.LogTools;
 import com.jerey.themelib.SkinLoaderListener;
 import com.jerey.themelib.loader.SkinManager;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -30,21 +30,21 @@ public class ThemeChooseActivity extends AppSwipeBackActivity {
     public static final String FONT_STRING = "current-font";
     public static final String FONT_DEFAULT = "font_default";
 
-    @Bind(R.id.theme_default)
+    @BindView(R.id.theme_default)
     RadioButton mRadioThemeDefault;
-    @Bind(R.id.theme_night)
+    @BindView(R.id.theme_night)
     RadioButton mRadioThemeNight;
-    @Bind(R.id.theme_ocean)
+    @BindView(R.id.theme_ocean)
     RadioButton mRadioThemeOcean;
-    @Bind(R.id.font_default)
+    @BindView(R.id.font_default)
     RadioButton mRadioFontDefault;
-    @Bind(R.id.font_wryh)
+    @BindView(R.id.font_wryh)
     RadioButton mRadioFontWryh;
-    @Bind(R.id.theme_default_img)
+    @BindView(R.id.theme_default_img)
     ImageView mThemeDefaultImg;
-    @Bind(R.id.theme_night_img)
+    @BindView(R.id.theme_night_img)
     ImageView mThemeNightImg;
-    @Bind(R.id.theme_ocean_img)
+    @BindView(R.id.theme_ocean_img)
     ImageView mThemeOceanImg;
 
     Toolbar mToolbar;

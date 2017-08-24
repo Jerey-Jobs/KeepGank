@@ -9,7 +9,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -34,7 +33,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -48,17 +47,17 @@ import static com.jerey.keepgank.R.id.toolbar;
 public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDateSetListener {
     private static final String TAG = "TodayFragment";
 
-    @Bind(toolbar)
+    @BindView(toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.toolbar_layout)
+    @BindView(R.id.toolbar_layout)
     CollapsingToolbarLayout mToolbarLayout;
-    @Bind(R.id.app_bar)
+    @BindView(R.id.app_bar)
     AppBarLayout mAppBar;
-    @Bind(R.id.day_recycleview)
+    @BindView(R.id.day_recycleview)
     FooterRecyclerView mRecyclerView;
-    @Bind(R.id.story_img)
+    @BindView(R.id.story_img)
     ImageView mImageView;
-    @Bind(R.id.float_action_button)
+    @BindView(R.id.float_action_button)
     FloatingActionButton mButton;
 
     private LinearLayoutManager mLinearLayoutManager;

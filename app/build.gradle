@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion COMPILE_SDK_VERSION
+    buildToolsVersion BUILD_TOOLS_VERSION
     defaultConfig {
         applicationId "com.jerey.keepgank"
-        minSdkVersion 15
-        targetSdkVersion 25
+        minSdkVersion MIN_SDK_VERSION
+        targetSdkVersion TARGET_SDK_VERSION
         versionCode 3
         versionName "1.2"
 //        jackOptions {
@@ -37,15 +37,17 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:design:25.1.1'
-    testCompile 'junit:junit:4.12'
+    compile APPCOMPAT_VERSION
+    testCompile JUNIT_VERSION
+    compile BUTTERKNIFE_VERSION
+    annotationProcessor Butterknife_compiler
+    compile SUPPORT_ANNOTATIONS
     compile 'de.hdodenhof:circleimageview:2.1.0'
     //Google的json解析库
-    compile 'com.google.code.gson:gson:2.2.4'
+    compile GSON
     //一个滑动返回库
     compile 'me.imid.swipebacklayout.lib:library:1.0.0'
     //注解绑定
-    compile 'com.jakewharton:butterknife:7.0.1'
     //图片加载库
     compile 'com.github.bumptech.glide:glide:3.5.2'
     compile 'io.reactivex:rxandroid:0.24.0'
@@ -79,4 +81,20 @@ dependencies {
     compile 'com.alibaba:arouter-api:1.2.1.1'
     annotationProcessor 'com.alibaba:arouter-compiler:1.1.2.1'
     compile project(':footerrecyclerview')
+    compile project(':mutiType')
+    compile project(':searchview')
+    compile 'com.android.support:support-v4:26.0.0-alpha1'
+}
+/**
+ * 为所有版本强制改为25.1.0
+ */
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion '25.1.0'
+            }
+        }
+    }
 }

@@ -6,26 +6,23 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
-
-import com.jerey.keepgank.MainActivity;
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.adapter.HomeFragmentPagerAdapter;
 import com.jerey.keepgank.net.Config;
 import com.jerey.loglib.LogTools;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by Xiamin on 2017/2/12.
  */
 
 public class HomeFragment extends BaseFragment {
-    @Bind(R.id.viewpager)
+    @BindView(R.id.viewpager)
     ViewPager mViewPager;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.tabLayout)
+    @BindView(R.id.tabLayout)
     TabLayout mTabLayout;
 
     private HomeFragmentPagerAdapter mFragmentAdapter;

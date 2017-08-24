@@ -18,6 +18,7 @@ import com.trello.rxlifecycle.components.support.RxFragment;
 import java.util.List;
 
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by Xiamin on 2017/2/12.
@@ -28,6 +29,7 @@ public abstract class BaseFragment extends RxFragment implements IDynamicNewView
 
     protected View mContainView;
     private IDynamicNewView mIDynamicNewView;
+    Unbinder mUnbinder;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,7 +51,7 @@ public abstract class BaseFragment extends RxFragment implements IDynamicNewView
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
+        mUnbinder = ButterKnife.bind(this, view);
         afterCreate(savedInstanceState);
     }
 
@@ -116,6 +118,7 @@ public abstract class BaseFragment extends RxFragment implements IDynamicNewView
     @Override
     public void onDestroyView() {
         removeAllView(getView());
+        mUnbinder.unbind();
         super.onDestroyView();
     }
 

@@ -14,7 +14,6 @@ import android.util.Log;
 import com.jerey.animationadapter.AnimationAdapter;
 import com.jerey.animationadapter.SlideInBottomAnimationAdapter;
 import com.jerey.keepgank.R;
-import com.jerey.keepgank.View.SlideInOutRightItemAnimator;
 import com.jerey.keepgank.View.SwipeToRefreshLayout;
 import com.jerey.keepgank.adapter.MeiziAdapter;
 import com.jerey.keepgank.bean.Data;
@@ -25,7 +24,7 @@ import com.trello.rxlifecycle.FragmentEvent;
 
 import java.io.IOException;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -38,11 +37,11 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
 
     private static final String TAG = "MeiziFragment";
 
-    @Bind(R.id.recycler_view)
+    @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
-    @Bind(R.id.swipe_ly)
+    @BindView(R.id.swipe_ly)
     SwipeToRefreshLayout mSwipeRefreshLayout;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolBar;
 
     private StaggeredGridLayoutManager mStaggeredGridLayoutManager;

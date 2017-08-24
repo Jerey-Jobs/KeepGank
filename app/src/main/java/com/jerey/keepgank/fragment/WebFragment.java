@@ -21,7 +21,7 @@ import com.jerey.keepgank.base.AppSwipeBackActivity;
 import com.jerey.keepgank.utils.ApplicationUtils;
 import com.jerey.loglib.LogTools;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by Xiamin on 2017/2/12.
@@ -35,9 +35,9 @@ public class WebFragment extends BaseFragment {
     public static final String DATA_TYPE = "data_type";
     public static final String DATA_WHO = "data_who";
 
-    @Bind(R.id.progress_bar)
+    @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
-    @Bind(R.id.web_view)
+    @BindView(R.id.web_view)
     android.webkit.WebView mWebView;
 
     Toolbar mToolBar;

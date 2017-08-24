@@ -20,14 +20,14 @@ import com.jerey.keepgank.douban.bean.SubjectsBean;
 import com.jerey.keepgank.douban.bean.TypeInfoBean;
 import com.jerey.keepgank.douban.itembinder.BannerBinder;
 import com.jerey.keepgank.douban.itembinder.SubjectsBinder;
-import com.jerey.keepgank.multitype.MultiTypeAdapter;
 import com.jerey.keepgank.net.DoubanApi;
 import com.jerey.loglib.LogTools;
+import com.jerey.mutitype.MultiTypeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -38,9 +38,9 @@ public class MovieListActivity extends AppSwipeBackActivity implements FooterRec
                                                                                .onLoadMoreListener {
     public static final String TAG = "MovieListActivity";
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.m_recyclerView)
+    @BindView(R.id.m_recyclerView)
     FooterRecyclerView mRecyclerView;
     TypeInfoBean mTypeInfoBean;
     List<SubjectsBean> mSubjectsBeanList;
