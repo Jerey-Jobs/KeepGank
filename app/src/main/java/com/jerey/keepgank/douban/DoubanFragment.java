@@ -5,9 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.jerey.animationadapter.AnimationAdapter;
 import com.jerey.animationadapter.SlideInBottomAnimationAdapter;
@@ -23,6 +23,7 @@ import com.jerey.keepgank.fragment.BaseFragment;
 import com.jerey.keepgank.net.DoubanApi;
 import com.jerey.loglib.LogTools;
 import com.jerey.mutitype.MultiTypeAdapter;
+import com.jerey.searchview.SearchView;
 import com.trello.rxlifecycle.FragmentEvent;
 
 import java.util.ArrayList;
@@ -44,6 +45,8 @@ public class DoubanFragment extends BaseFragment {
     RecyclerView mRecyclerView;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.searchView)
+    SearchView mSearchView;
 
     private MultiTypeAdapter adapter;
     private List<Object> items;
@@ -202,6 +205,24 @@ public class DoubanFragment extends BaseFragment {
                          adapter.notifyDataSetChanged();
                      }
                  });
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        getActivity().getMenuInflater().inflate(R.menu.menu_search, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                //自动打开关闭SearchView
+                mSearchView.autoOpenOrClose();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

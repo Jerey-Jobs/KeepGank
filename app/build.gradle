@@ -53,7 +53,6 @@ dependencies {
     compile GLIDE
     //一个滑动返回库
     compile 'me.imid.swipebacklayout.lib:library:1.0.0'
-    //注解绑定
 
     compile 'io.reactivex:rxandroid:0.24.0'
     compile 'com.hwangjr.rxbus:rxbus:1.0.5'
