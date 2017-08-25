@@ -1,15 +1,8 @@
 package com.jerey.keepgank.net;
 
-import android.util.Log;
-
 import com.jerey.keepgank.bean.Data;
 import com.jerey.keepgank.bean.GankDay;
 
-import java.io.IOException;
-
-import okhttp3.Interceptor;
-import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -23,7 +16,7 @@ import rx.Observable;
 
 
 public class GankApi {
-    public static final String BASE_URL= "http://gank.io";
+    public static final String BASE_URL = "http://gank.io";
 
     /**
      * 每次加载条目
@@ -62,61 +55,66 @@ public class GankApi {
         Observable<Data> getBenefitsGoods(
                 @Path("limit") int limit,
                 @Path("page") int page
-        );
+                                         );
 
         @GET("/api/data/Android/{limit}/{page}")
         Observable<Data> getAndroidGoods(
                 @Path("limit") int limit,
                 @Path("page") int page
-        );
+                                        );
 
         @GET("/api/data/iOS/{limit}/{page}")
         Observable<Data> getIosGoods(
                 @Path("limit") int limit,
                 @Path("page") int page
-        );
+                                    );
 
         @GET("/api/data/前端/{limit}/{page}")
         Observable<Data> getFrontEndGoods(
                 @Path("limit") int limit,
                 @Path("page") int page
-        );
+                                         );
 
         @GET("/api/data/休息视频/{limit}/{page}")
         Observable<Data> getVidoeGoods(
                 @Path("limit") int limit,
                 @Path("page") int page
-        );
+                                      );
 
         @GET("/api/data/拓展资源/{limit}/{page}")
         Observable<Data> getResourcesGoods(
                 @Path("limit") int limit,
                 @Path("page") int page
-        );
+                                          );
 
         @GET("/api/data/瞎推荐/{limit}/{page}")
         Observable<Data> getRecommendGoods(
                 @Path("limit") int limit,
                 @Path("page") int page
-        );
+                                          );
 
 
         @GET("/api/data/all/{limit}/{page}")
         Observable<Data> getAllGoods(
                 @Path("limit") int limit,
                 @Path("page") int page
-        );
+                                    );
 
         @GET("/api/day/{year}/{month}/{day}")
         Observable<GankDay> getGoodsByDay(
                 @Path("year") int year,
                 @Path("month") int month,
                 @Path("day") int day
-        );
+                                         );
+
+        //http://gank.io/api/search/query/%E4%BD%A0/category/all/count/10/page/1
+        @GET("/api/search/query/{content}/category/all/count/10/page/1")
+        Observable<Data> query(
+                @Path("content") String content);
     }
 
     public Observable<Data> getCommonGoods(String type, int limit, int page) {
-//        return mWebService.getGoods(type, limit, page);
+        //        return mWebService.getGoods(type, limit, page);
         if (Config.TYPE_ANDROID.equalsIgnoreCase(type)) {
             return mWebService.getAndroidGoods(limit, page);
         } else if (Config.TYPE_IOS.equalsIgnoreCase(type)) {
@@ -136,10 +134,9 @@ public class GankApi {
         }
     }
 
-    public GankCloudService getWebService(){
+    public GankCloudService getWebService() {
         return mWebService;
     }
-
 
 
 }
