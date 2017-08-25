@@ -10,8 +10,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.jerey.mutitype.ItemViewBinder;
-import com.jerey.searchview.HistoryBean;
-import com.jerey.searchview.R;
 
 /**
  * @author xiamin

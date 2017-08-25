@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
  */
 public class HistoryBean {
     private long time;
+    private String type = "default";
     private Drawable mDrawable;
     private String mDrawableURL;
     private Bitmap mBitmap;
@@ -17,7 +18,18 @@ public class HistoryBean {
     public HistoryBean() {
     }
 
-    public HistoryBean(String drawableURL, String content) {
+    public HistoryBean(String content) {
+        this.content = content;
+    }
+
+    public HistoryBean(String type, String content) {
+        this.type = type;
+        this.content = content;
+    }
+
+
+    public HistoryBean(String type, String drawableURL, String content) {
+        this.type = type;
         mDrawableURL = drawableURL;
         this.content = content;
     }
@@ -31,6 +43,7 @@ public class HistoryBean {
         mBitmap = bitmap;
         this.content = content;
     }
+
 
     public Drawable getDrawable() {
         return mDrawable;
@@ -62,5 +75,18 @@ public class HistoryBean {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Override
+    public String toString() {
+        return content;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

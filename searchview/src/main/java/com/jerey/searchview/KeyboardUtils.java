@@ -40,5 +40,4 @@ public class KeyboardUtils {
         if (imm == null) return;
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
-
 }

@@ -12,18 +12,20 @@ import android.util.Log;
 public class HistoryDataBaseHelper extends SQLiteOpenHelper {
     private static final String TAG = HistoryDataBaseHelper.class.getSimpleName();
 
-    private static String HISTORY_TABLE = "search_history_";
+    private static final String HISTORY_TABLE = "search_history";
     static final String SEARCH_HISTORY_ID = "id";
+    static final String SEARCH_TYPE = "type";
     static final String SEARCH_HISTORY_TIME = "time";
     static final String SEARCH_HISTORY_CONTENT = "content";
     static final String SEARCH_HISTORY_URL = "url";
 
     private static final String DATABASE_NAME = "search_history_info.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
 
-    private static final String CREATE_TABLE_SEARCH_HISTORY = "CREATE TABLE IF NOT EXISTS "
+    private static String CREATE_TABLE_SEARCH_HISTORY = "CREATE TABLE IF NOT EXISTS "
             + HISTORY_TABLE + " ( "
             + SEARCH_HISTORY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + SEARCH_TYPE + " TEXT,"
             + SEARCH_HISTORY_TIME + " DATETIME,"
             + SEARCH_HISTORY_CONTENT + " TEXT UNIQUE, "
             + SEARCH_HISTORY_URL + " TEXT " + ");";
@@ -32,9 +34,8 @@ public class HistoryDataBaseHelper extends SQLiteOpenHelper {
         return HISTORY_TABLE;
     }
 
-    public HistoryDataBaseHelper(Context context, String tb_name) {
+    public HistoryDataBaseHelper(Context context) {
         this(context, DATABASE_NAME, null, DATABASE_VERSION);
-        HISTORY_TABLE = HISTORY_TABLE + tb_name;
     }
 
     public HistoryDataBaseHelper(Context context, String name, SQLiteDatabase.CursorFactory
@@ -51,6 +52,7 @@ public class HistoryDataBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + HISTORY_TABLE);
+        Log.i(TAG, "onUpgrade SQL : " + "DROP TABLE IF EXISTS " + HISTORY_TABLE);
         onCreate(sqLiteDatabase);
     }
 }

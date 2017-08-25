@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.jerey.searchview.HistoryBean;
@@ -20,14 +21,16 @@ public class HistoryHelper {
 
     private HistoryDataBaseHelper mHistoryDataBaseHelper;
 
-    public HistoryHelper(Context context, String module_name) {
-        mHistoryDataBaseHelper = new HistoryDataBaseHelper(context, module_name);
+    public HistoryHelper(Context context) {
+        mHistoryDataBaseHelper = new HistoryDataBaseHelper(context);
+        mHistoryDataBaseHelper.onCreate(mHistoryDataBaseHelper.getWritableDatabase());
     }
 
     public void insertHistory(HistoryBean historyBean) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(HistoryDataBaseHelper.SEARCH_HISTORY_CONTENT,
                 historyBean.getContent().trim());
+        contentValues.put(HistoryDataBaseHelper.SEARCH_TYPE, historyBean.getType());
         if (historyBean.getDrawableURL() != null) {
             contentValues.put(HistoryDataBaseHelper.SEARCH_HISTORY_URL, historyBean
                     .getDrawableURL());
@@ -67,11 +70,21 @@ public class HistoryHelper {
      * @param search
      * @return
      */
-    public List<HistoryBean> searchHistoryList(String search, int count) {
-        String dbString = "select * from " + mHistoryDataBaseHelper.getHistoryTableName() +
-                " where " + HistoryDataBaseHelper.SEARCH_HISTORY_CONTENT +
-                " like " + "'%" + search + "%'" + " order by " + HistoryDataBaseHelper
-                .SEARCH_HISTORY_TIME + " desc limit " + count;
+    public List<HistoryBean> searchHistoryList(String search, String type, int count) {
+        String dbString;
+        if (TextUtils.isEmpty(type)) {
+            dbString = "select * from " + mHistoryDataBaseHelper.getHistoryTableName() +
+                    " where " + HistoryDataBaseHelper.SEARCH_HISTORY_CONTENT +
+                    " like " + "'%" + search + "%'" + " order by " + HistoryDataBaseHelper
+                    .SEARCH_HISTORY_TIME + " desc limit " + count;
+        } else {
+            dbString = "select * from " + mHistoryDataBaseHelper.getHistoryTableName() +
+                    " where " + HistoryDataBaseHelper.SEARCH_HISTORY_CONTENT +
+                    " like " + "'%" + search + "%'" +
+                    " and " + HistoryDataBaseHelper.SEARCH_TYPE + " = '" + type
+                    + "' order by " + HistoryDataBaseHelper
+                    .SEARCH_HISTORY_TIME + " desc limit " + count;
+        }
         Log.d(TAG, "searchHistoryList: " + dbString);
         SQLiteDatabase sqLiteDatabase = mHistoryDataBaseHelper.getWritableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery(dbString, null);

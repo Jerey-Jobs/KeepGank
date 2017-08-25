@@ -14,6 +14,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -39,8 +40,15 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-
+/**
+ * searchView
+ * <pre>
+ *     1.initDatabase()
+ *     2.
+ * </pre>
+ */
 public class SearchView extends LinearLayout {
+    private static final String TAG = SearchView.class.getSimpleName();
     public static final int CLOSE = 0;
     public static final int OPEN = 1;
     public static final int HISTORY_COUNT = 6;
@@ -86,6 +94,7 @@ public class SearchView extends LinearLayout {
 
     private List<Object> mItems = new ArrayList<>();
     HistoryHelper mHistoryHelper;
+    String mDbType = "default";
 
 
     public SearchView(Context context) {
@@ -100,15 +109,18 @@ public class SearchView extends LinearLayout {
         super(context, attrs, defStyleAttr);
         this.context = context;
         initView(context);
-        initData(context);
+        initDatabase();
         getCustomStyle(attrs);
     }
 
+    public void setType(String type) {
+        mDbType = type;
+    }
+
     /***
-     * 初始化数据
-     * @param context
+     * 初始化数据库
      */
-    private void initData(Context context) {
+    public void initDatabase() {
         mHistoryHelper = new HistoryHelper(context);
         loadHistory("");
     }
@@ -194,6 +206,8 @@ public class SearchView extends LinearLayout {
         etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                mHistoryHelper.insertHistory(new HistoryBean(mDbType,
+                        textView.getText().toString()));
                 if (i == EditorInfo.IME_ACTION_SEARCH && onSearchActionListener != null) {
                     onSearchActionListener.onSearchAction(textView.getText().toString());
                     KeyboardUtils.hideSoftInput(etSearch, context);
@@ -217,31 +231,35 @@ public class SearchView extends LinearLayout {
      * @param string
      */
     public void loadHistory(final String string) {
+        Log.i(TAG, "loadHistory: ");
         Observable.create(new Observable.OnSubscribe<List<HistoryBean>>() {
             @Override
             public void call(Subscriber<? super List<HistoryBean>> subscriber) {
-                subscriber.onNext(mHistoryHelper.searchHistoryList(string, HISTORY_COUNT));
+                subscriber.onNext(mHistoryHelper.searchHistoryList(string, mDbType, HISTORY_COUNT));
             }
         }).subscribeOn(Schedulers.io())
-                  .observeOn(AndroidSchedulers.mainThread())
-                  .subscribe(new Observer<List<HistoryBean>>() {
-                      @Override
-                      public void onCompleted() {
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<HistoryBean>>() {
+                    @Override
+                    public void onCompleted() {
 
-                      }
+                    }
 
-                      @Override
-                      public void onError(Throwable e) {
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
 
-                      }
-
-                      @Override
-                      public void onNext(List<HistoryBean> historyBeen) {
-                          mItems.clear();
-                          mItems.addAll(historyBeen);
-                          adapter.notifyDataSetChanged();
-                      }
-                  });
+                    @Override
+                    public void onNext(List<HistoryBean> historyBeen) {
+                        Log.i(TAG, "loadHistory: onNext size:" + historyBeen.size());
+                        mItems.clear();
+                        mItems.addAll(historyBeen);
+                        adapter.setItems(mItems);
+                        adapter.notifyDataSetChanged();
+                        switchCleanHistoryDisplay();
+                    }
+                });
     }
 
     /***
@@ -417,11 +435,12 @@ public class SearchView extends LinearLayout {
     }
 
     /***
-     * 设置全新的历史记录列表
+     * 设置全新记录列表
      * @param list 历史纪录列表
      */
-    public void setNewHistoryList(List<Object> list) {
-        mItems = list;
+    public void setListObjects(List<? extends Object> list) {
+        mItems.clear();
+        mItems.addAll(list);
         adapter.setItems(list);
         adapter.notifyDataSetChanged();
         switchCleanHistoryDisplay();
