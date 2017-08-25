@@ -13,7 +13,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:supportsRtl="true"
+        android:roundIcon="@drawable/ic_launcher"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
@@ -21,7 +21,6 @@
             android:launchMode="singleTask"
             android:theme="@style/AppTheme">
             <intent-filter>
-
                 <!-- 协议部分，随便设置 -->
                 <data
                     android:host="login"
@@ -30,13 +29,10 @@
                     android:scheme="xl"/>
                 <!-- 下面这几行也必须得设置 -->
                 <category android:name="android.intent.category.DEFAULT"/>
-
                 <action android:name="android.intent.action.VIEW"/>
-
                 <category android:name="android.intent.category.BROWSABLE"/>
 
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -48,7 +44,12 @@
             android:name=".activity.PhotoActivity"
             android:launchMode="singleTop"
             android:theme="@style/PhotoActivity"/>
-        <activity android:name=".SplashActivity"/>
+        <activity android:name=".SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activity.ThemeChooseActivity"
             android:theme="@style/WebTheme"/>

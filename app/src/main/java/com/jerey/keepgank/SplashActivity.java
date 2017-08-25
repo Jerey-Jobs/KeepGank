@@ -1,6 +1,7 @@
 package com.jerey.keepgank;
 
 import android.Manifest;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,8 +22,9 @@ public class SplashActivity extends AppCompatActivity {
                 .setOnPermissionCallbacks(new PermissionCallbacks() {
                     @Override
                     public void onPermissionsGranted(int requestCode, List<String> perms) {
-                        //    Toast.makeText(MainActivity.this, "权限申请通过", Toast.LENGTH_SHORT).show();
-
+                        //    Toast.makeText(MainActivity.this, "权限申请通过", Toast.LENGTH_SHORT)
+                        // .show();
+                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
                     }
 
                     @Override
@@ -38,7 +40,8 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         permissionTools.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
