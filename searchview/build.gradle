@@ -37,4 +37,5 @@ dependencies {
     compile GLIDE
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.25'
     compile project(':mutiType')
+    compile 'io.reactivex:rxandroid:0.24.0'
 }

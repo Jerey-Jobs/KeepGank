@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
  * @date 8/24/17.
  */
 public class HistoryBean {
+    private long time;
     private Drawable mDrawable;
     private String mDrawableURL;
     private Bitmap mBitmap;

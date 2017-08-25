@@ -11,8 +11,6 @@ import com.jerey.searchview.HistoryBean;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.jerey.searchview.data.HistoryDataBaseHelper.HISTORY_TABLE;
-
 /**
  * @author xiamin
  * @date 8/24/17.
@@ -22,8 +20,8 @@ public class HistoryHelper {
 
     private HistoryDataBaseHelper mHistoryDataBaseHelper;
 
-    public HistoryHelper(Context context) {
-        mHistoryDataBaseHelper = new HistoryDataBaseHelper(context);
+    public HistoryHelper(Context context, String module_name) {
+        mHistoryDataBaseHelper = new HistoryDataBaseHelper(context, module_name);
     }
 
     public void insertHistory(HistoryBean historyBean) {
@@ -34,14 +32,15 @@ public class HistoryHelper {
             contentValues.put(HistoryDataBaseHelper.SEARCH_HISTORY_URL, historyBean
                     .getDrawableURL());
         }
+        contentValues.put(HistoryDataBaseHelper.SEARCH_HISTORY_TIME, System.currentTimeMillis());
         SQLiteDatabase sqLiteDatabase = mHistoryDataBaseHelper.getWritableDatabase();
-        sqLiteDatabase.insert(HISTORY_TABLE, null, contentValues);
+        sqLiteDatabase.insert(mHistoryDataBaseHelper.getHistoryTableName(), null, contentValues);
         mHistoryDataBaseHelper.close();
     }
 
 
     public List<HistoryBean> getHistoryList() {
-        String dbString = "SELECT * FROM " + HISTORY_TABLE;
+        String dbString = "SELECT * FROM " + mHistoryDataBaseHelper.getHistoryTableName();
         SQLiteDatabase sqLiteDatabase = mHistoryDataBaseHelper.getWritableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery(dbString, null);
         List<HistoryBean> list = new ArrayList<>();
@@ -63,10 +62,17 @@ public class HistoryHelper {
         return list;
     }
 
-    public List<HistoryBean> searchHistoryList(String search) {
-        String dbString = "SELECT * FROM " + HISTORY_TABLE +
-                " WHERE " + HistoryDataBaseHelper.SEARCH_HISTORY_CONTENT +
-                " LIKE " + "'%" + search + "%'";
+    /**
+     * 根据文字从数据库搜索最近的十条包含其内容的历史记录
+     * @param search
+     * @return
+     */
+    public List<HistoryBean> searchHistoryList(String search, int count) {
+        String dbString = "select * from " + mHistoryDataBaseHelper.getHistoryTableName() +
+                " where " + HistoryDataBaseHelper.SEARCH_HISTORY_CONTENT +
+                " like " + "'%" + search + "%'" + " order by " + HistoryDataBaseHelper
+                .SEARCH_HISTORY_TIME + " desc limit " + count;
+        Log.d(TAG, "searchHistoryList: " + dbString);
         SQLiteDatabase sqLiteDatabase = mHistoryDataBaseHelper.getWritableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery(dbString, null);
         List<HistoryBean> list = new ArrayList<>();
@@ -90,7 +96,8 @@ public class HistoryHelper {
 
     public void clearHistory() {
         SQLiteDatabase sqLiteDatabase = mHistoryDataBaseHelper.getWritableDatabase();
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + HISTORY_TABLE);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + mHistoryDataBaseHelper
+                .getHistoryTableName());
         mHistoryDataBaseHelper.close();
     }
 }
