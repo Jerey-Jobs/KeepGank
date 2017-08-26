@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.bumptech.glide.Glide;
 import com.jerey.keepgank.R;
-import com.jerey.keepgank.View.GlideRoundTransform;
+import com.jerey.keepgank.view.GlideRoundTransform;
 import com.jerey.keepgank.base.AppSwipeBackActivity;
 import com.jerey.keepgank.utils.SPUtils;
 import com.jerey.loglib.LogTools;

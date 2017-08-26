@@ -1,4 +1,4 @@
-package com.jerey.keepgank.Constant;
+package com.jerey.keepgank.constant;
 
 /**
  * Created by Xiamin on 2017/4/9.

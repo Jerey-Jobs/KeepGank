@@ -1,4 +1,4 @@
-package com.jerey.keepgank.View;
+package com.jerey.keepgank.view;
 
 import android.content.Context;
 import android.content.res.Resources;

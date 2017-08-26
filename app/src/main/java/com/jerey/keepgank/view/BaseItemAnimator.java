@@ -1,4 +1,4 @@
-package com.jerey.keepgank.View;
+package com.jerey.keepgank.view;
 
 /**
  * Created by Xiamin on 2017/2/25.

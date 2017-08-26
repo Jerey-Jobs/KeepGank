@@ -1,4 +1,4 @@
-package com.jerey.keepgank.View;
+package com.jerey.keepgank.view;
 
 import android.animation.ValueAnimator;
 import android.content.Context;

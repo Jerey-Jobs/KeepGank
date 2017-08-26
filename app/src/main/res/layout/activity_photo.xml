@@ -6,7 +6,7 @@
                 android:orientation="vertical">
 
 
-    <com.jerey.keepgank.View.PinchImageView
+    <com.jerey.keepgank.view.PinchImageView
         android:id="@+id/meizi_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

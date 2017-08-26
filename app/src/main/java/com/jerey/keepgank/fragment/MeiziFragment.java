@@ -14,7 +14,7 @@ import android.util.Log;
 import com.jerey.animationadapter.AnimationAdapter;
 import com.jerey.animationadapter.SlideInBottomAnimationAdapter;
 import com.jerey.keepgank.R;
-import com.jerey.keepgank.View.SwipeToRefreshLayout;
+import com.jerey.keepgank.view.SwipeToRefreshLayout;
 import com.jerey.keepgank.adapter.MeiziAdapter;
 import com.jerey.keepgank.bean.Data;
 import com.jerey.keepgank.net.GankApi;

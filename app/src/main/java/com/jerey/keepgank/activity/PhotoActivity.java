@@ -17,7 +17,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.jerey.keepgank.R;
-import com.jerey.keepgank.View.PinchImageView;
+import com.jerey.keepgank.view.PinchImageView;
 import com.jerey.keepgank.base.AppSwipeBackActivity;
 import com.jerey.keepgank.utils.AnimationHelper;
 import com.jerey.keepgank.utils.ImageSave;

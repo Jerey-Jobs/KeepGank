@@ -1,4 +1,4 @@
-package com.jerey.keepgank.View;
+package com.jerey.keepgank.view;
 
 /*
  * ******************************************************************************

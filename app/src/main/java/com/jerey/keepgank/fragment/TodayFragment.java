@@ -20,7 +20,7 @@ import com.jerey.animationadapter.AnimationAdapter;
 import com.jerey.animationadapter.SlideInBottomAnimationAdapter;
 import com.jerey.footerrecyclerview.FooterRecyclerView;
 import com.jerey.keepgank.R;
-import com.jerey.keepgank.View.SlideInOutRightItemAnimator;
+import com.jerey.keepgank.view.SlideInOutRightItemAnimator;
 import com.jerey.keepgank.adapter.DayFragmentAdapter;
 import com.jerey.keepgank.bean.GankDay;
 import com.jerey.keepgank.net.GankApi;

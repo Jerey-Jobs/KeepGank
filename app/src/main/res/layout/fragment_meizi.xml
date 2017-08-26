@@ -27,7 +27,7 @@
             skin:enable="true"/>
     </android.support.design.widget.AppBarLayout>
 
-    <com.jerey.keepgank.View.SwipeToRefreshLayout
+    <com.jerey.keepgank.view.SwipeToRefreshLayout
         android:id="@+id/swipe_ly"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -41,5 +41,5 @@
             android:layout_height="match_parent"
             skin:enable="true"/>
 
-    </com.jerey.keepgank.View.SwipeToRefreshLayout>
+    </com.jerey.keepgank.view.SwipeToRefreshLayout>
 </android.support.design.widget.CoordinatorLayout>
