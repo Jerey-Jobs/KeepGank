@@ -107,10 +107,24 @@ public class HistoryHelper {
         return list;
     }
 
-    public void clearHistory() {
+    public void deleteAllHistory() {
         SQLiteDatabase sqLiteDatabase = mHistoryDataBaseHelper.getWritableDatabase();
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + mHistoryDataBaseHelper
                 .getHistoryTableName());
         mHistoryDataBaseHelper.close();
+    }
+
+    public void deleteHistoryByType(String type) {
+        try {
+            String sql = "DELETE FROM " + mHistoryDataBaseHelper.getHistoryTableName() +
+                    " WHERE " + HistoryDataBaseHelper.SEARCH_TYPE + " = '" + type + "'";
+            Log.i(TAG, "deleteHistoryByType SQL: " + sql);
+            SQLiteDatabase sqLiteDatabase = mHistoryDataBaseHelper.getWritableDatabase();
+            sqLiteDatabase.execSQL(sql);
+            mHistoryDataBaseHelper.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

@@ -115,6 +115,7 @@ public class SearchView extends LinearLayout {
 
     public void setType(String type) {
         mDbType = type;
+        loadHistory("");
     }
 
     /***
@@ -165,7 +166,12 @@ public class SearchView extends LinearLayout {
             public void onClick(View view) {
                 adapter.getItems().clear();
                 adapter.notifyDataSetChanged();
-                // TODO 数据库清空
+                // 数据库清空
+                if (TextUtils.isEmpty(mDbType)) {
+                    mHistoryHelper.deleteAllHistory();
+                } else {
+                    mHistoryHelper.deleteHistoryByType(mDbType);
+                }
                 switchCleanHistoryDisplay();
                 if (onCleanHistoryClickListener != null)
                     onCleanHistoryClickListener.onClick();
