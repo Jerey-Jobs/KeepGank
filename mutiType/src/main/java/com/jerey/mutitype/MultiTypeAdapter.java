@@ -23,7 +23,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.Collections;
@@ -243,14 +242,6 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<ViewHolder> {
             payloads) {
         Object item = items.get(position);
         ItemViewBinder binder = typePool.getItemViewBinders().get(holder.getItemViewType());
-        if (mOnItemClickedListener != null) {
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mOnItemClickedListener.onItemClicked(holder, position);
-                }
-            });
-        }
         binder.onBindViewHolder(holder, item, payloads);
     }
 
@@ -377,15 +368,5 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<ViewHolder> {
             @NonNull Class clazz, @NonNull ItemViewBinder itemViewBinder, @NonNull Linker linker) {
         checkAndRemoveAllTypesIfNeed(clazz);
         typePool.register(clazz, itemViewBinder, linker);
-    }
-
-    private onItemClickedListener mOnItemClickedListener;
-
-    public void setOnItemClickedListener(onItemClickedListener onItemClickedListener) {
-        mOnItemClickedListener = onItemClickedListener;
-    }
-
-    public interface onItemClickedListener {
-        void onItemClicked(ViewHolder holder, int position);
     }
 }
