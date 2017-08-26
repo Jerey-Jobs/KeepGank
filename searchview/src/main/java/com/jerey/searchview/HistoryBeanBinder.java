@@ -11,11 +11,19 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.jerey.mutitype.ItemViewBinder;
 
+import butterknife.OnClick;
+
 /**
  * @author xiamin
  * @date 8/24/17.
  */
 public class HistoryBeanBinder extends ItemViewBinder<HistoryBean, HistoryBeanBinder.ViewHolder> {
+
+    private OnClickListener mOnClickListener;
+
+    public HistoryBeanBinder(OnClickListener onClickListener) {
+        mOnClickListener = onClickListener;
+    }
 
     @NonNull
     @Override
@@ -26,7 +34,7 @@ public class HistoryBeanBinder extends ItemViewBinder<HistoryBean, HistoryBeanBi
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull HistoryBean item) {
+    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull final HistoryBean item) {
         if (item.getDrawableURL() != null) {
             Glide.with(holder.mIcon.getContext())
                     .load(item.getDrawableURL())
@@ -52,6 +60,12 @@ public class HistoryBeanBinder extends ItemViewBinder<HistoryBean, HistoryBeanBi
             holder.mIcon.setImageResource(R.drawable.ic_history_black_24dp);
         }
         holder.mTvHistoryItem.setText(item.getContent());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mOnClickListener.onClick(item);
+            }
+        });
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -63,5 +77,9 @@ public class HistoryBeanBinder extends ItemViewBinder<HistoryBean, HistoryBeanBi
             mIcon = view.findViewById(R.id.right_icon);
             mTvHistoryItem = view.findViewById(R.id.history_item);
         }
+    }
+
+    interface OnClickListener {
+        void onClick(HistoryBean item);
     }
 }

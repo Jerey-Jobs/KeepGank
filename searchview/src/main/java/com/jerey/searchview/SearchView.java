@@ -82,7 +82,7 @@ public class SearchView extends LinearLayout {
 
     private MultiTypeAdapter adapter;
     /** 列表item点击监听器 */
-    private OnListItemClickListener onListItemClickListener;
+    private OnHistoryClickListener onHistoryClickListener;
     /** 搜索按钮按下监听器 */
     private OnSearchActionListener onSearchActionListener;
     /** 输入变化监听器 */
@@ -152,7 +152,15 @@ public class SearchView extends LinearLayout {
 
 
         adapter = new MultiTypeAdapter(mItems);
-        registerData(HistoryBean.class, new HistoryBeanBinder());
+        registerData(HistoryBean.class, new HistoryBeanBinder(new HistoryBeanBinder
+                .OnClickListener() {
+            @Override
+            public void onClick(HistoryBean item) {
+                if (onHistoryClickListener != null) {
+                    onHistoryClickListener.onClick(item);
+                }
+            }
+        }));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -464,16 +472,8 @@ public class SearchView extends LinearLayout {
      * 设置历史纪录点击事件
      * @param listItemClickListener
      */
-    public void setHistoryItemClickListener(OnListItemClickListener listItemClickListener) {
-        this.onListItemClickListener = listItemClickListener;
-        adapter.setOnItemClickedListener(new MultiTypeAdapter.onItemClickedListener() {
-            @Override
-            public void onItemClicked(RecyclerView.ViewHolder holder, int position) {
-                if (onListItemClickListener != null) {
-                    onListItemClickListener.onClick(mItems.get(position), position);
-                }
-            }
-        });
+    public void setHistoryItemClickListener(OnHistoryClickListener listItemClickListener) {
+        this.onHistoryClickListener = listItemClickListener;
     }
 
     /***
@@ -506,8 +506,8 @@ public class SearchView extends LinearLayout {
         this.onCleanHistoryClickListener = onCleanHistoryClickListener;
     }
 
-    public interface OnListItemClickListener {
-        void onClick(Object data, int position);
+    public interface OnHistoryClickListener {
+        void onClick(HistoryBean data);
     }
 
     public interface OnSearchActionListener {
