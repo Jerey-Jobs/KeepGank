@@ -18,6 +18,7 @@ import com.jerey.keepgank.binder.GankResultBinder;
 import com.jerey.keepgank.net.Config;
 import com.jerey.keepgank.net.GankApi;
 import com.jerey.loglib.LogTools;
+import com.jerey.searchview.HistoryBean;
 import com.jerey.searchview.SearchView;
 
 import butterknife.BindView;
@@ -71,6 +72,12 @@ public class HomeFragment extends BaseFragment implements SearchView.OnSearchAct
         mTabLayout.setupWithViewPager(mViewPager);
         mViewPager.setCurrentItem(0);
         mSearchView.setOnSearchActionListener(this);
+        mSearchView.setHistoryItemClickListener(new SearchView.OnHistoryClickListener() {
+            @Override
+            public void onClick(HistoryBean data) {
+                onSearchAction(data.getContent());
+            }
+        });
     }
 
     @Override

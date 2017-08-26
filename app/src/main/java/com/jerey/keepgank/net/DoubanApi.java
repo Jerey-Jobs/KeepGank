@@ -105,6 +105,13 @@ public class DoubanApi {
         @GET("/v2/movie/subject/{id}")
         Observable<MovieInfoBean> getMonvieInfo(@Path("id") int id);
 
+        /**
+         * https://api.douban.com/v2/movie/search?q=content
+         * 搜索
+         */
+        @GET("/v2/movie/search")
+        Observable<TypeInfoBean> search(@Query("q") String content);
+
     }
 
     public DoubanInterface getDoubanInterface() {
