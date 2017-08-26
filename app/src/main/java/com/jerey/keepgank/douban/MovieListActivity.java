@@ -8,6 +8,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.MenuItem;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.jerey.animationadapter.AnimationAdapter;
@@ -35,7 +36,7 @@ import rx.schedulers.Schedulers;
 
 @Route(path = "/douban/MovieListActivity")
 public class MovieListActivity extends AppSwipeBackActivity implements FooterRecyclerView
-                                                                               .onLoadMoreListener {
+        .onLoadMoreListener {
     public static final String TAG = "MovieListActivity";
 
     @BindView(R.id.toolbar)
@@ -97,34 +98,44 @@ public class MovieListActivity extends AppSwipeBackActivity implements FooterRec
             return;
         }
         DoubanApi.getInstance()
-                 .getDoubanInterface()
-                 .getTypeData(mType, from, count)
-                 .subscribeOn(Schedulers.io())
-                 .observeOn(AndroidSchedulers.mainThread())
-                 .subscribe(new Observer<TypeInfoBean>() {
-                     @Override
-                     public void onCompleted() {
+                .getDoubanInterface()
+                .getTypeData(mType, from, count)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<TypeInfoBean>() {
+                    @Override
+                    public void onCompleted() {
 
-                     }
+                    }
 
-                     @Override
-                     public void onError(Throwable e) {
-                         e.printStackTrace();
-                     }
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
 
-                     @Override
-                     public void onNext(TypeInfoBean typeInfoBean) {
-                         LogTools.d("数据来了： " + typeInfoBean.getTitle());
-                         int begin = mSubjectsBeanList.size() + 1;
-                         mSubjectsBeanList.addAll(typeInfoBean.getSubjects());
-                         adapter.notifyItemRangeInserted(begin, mSubjectsBeanList.size());
-                     }
-                 });
+                    @Override
+                    public void onNext(TypeInfoBean typeInfoBean) {
+                        LogTools.d("数据来了： " + typeInfoBean.getTitle());
+                        int begin = mSubjectsBeanList.size() + 1;
+                        mSubjectsBeanList.addAll(typeInfoBean.getSubjects());
+                        adapter.notifyItemRangeInserted(begin, mSubjectsBeanList.size());
+                    }
+                });
     }
 
     @Override
     public void onLoadMore(int lastPosition) {
         LogTools.d("lastPosition " + lastPosition);
         loadData(lastPosition, 20);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                scrollToFinishActivity();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

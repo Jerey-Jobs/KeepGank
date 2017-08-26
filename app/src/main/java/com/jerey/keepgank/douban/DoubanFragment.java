@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import com.jerey.animationadapter.AnimationAdapter;
 import com.jerey.animationadapter.SlideInBottomAnimationAdapter;
 import com.jerey.keepgank.R;
+import com.jerey.keepgank.base.AppSwipeBackActivity;
 import com.jerey.keepgank.douban.bean.BannerBean;
 import com.jerey.keepgank.douban.bean.SubjectsBean;
 import com.jerey.keepgank.douban.bean.TypeInfoBean;
@@ -220,6 +221,9 @@ public class DoubanFragment extends BaseFragment {
             case R.id.action_search:
                 //自动打开关闭SearchView
                 mSearchView.autoOpenOrClose();
+                break;
+            case android.R.id.home:
+                ((AppSwipeBackActivity) getActivity()).scrollToFinishActivity();
                 break;
         }
         return super.onOptionsItemSelected(item);
