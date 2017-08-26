@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -42,7 +43,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by xiamin on 6/16/17.
  */
-
+@Route(path = "/activity/PhotoChooseActivity")
 public class PhotoChooseActivity extends AppSwipeBackActivity {
 
     private static final String TAG = "PhotoChooseActivity";
@@ -116,7 +117,8 @@ public class PhotoChooseActivity extends AppSwipeBackActivity {
                 .subscribe(dataObservable);
     }
 
-    private ViewPager.OnPageChangeListener mOnPageChangeListener = new ViewPager.OnPageChangeListener() {
+    private ViewPager.OnPageChangeListener mOnPageChangeListener = new ViewPager
+            .OnPageChangeListener() {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -185,8 +187,10 @@ public class PhotoChooseActivity extends AppSwipeBackActivity {
                 .centerCrop()
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        ObjectAnimator animator = ObjectAnimator.ofFloat(mActivityBg, "alpha", 1f, 0.5f);
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap>
+                            glideAnimation) {
+                        ObjectAnimator animator = ObjectAnimator.ofFloat(mActivityBg, "alpha",
+                                1f, 0.5f);
                         animator.setDuration(300);
                         animator.start();
                         Bitmap overlay = BlurImageUtils.blur(resource, 12, 12);
@@ -233,7 +237,8 @@ public class PhotoChooseActivity extends AppSwipeBackActivity {
 
         @Nullable
         @Override
-        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                                 @Nullable Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_viewpager_item, null);
             mPolygonView = (PolygonView) view.findViewById(R.id.item_image);
             // 做一个属性动画
@@ -255,12 +260,14 @@ public class PhotoChooseActivity extends AppSwipeBackActivity {
                     .placeholder(R.drawable.jay)
                     .into(new SimpleTarget<Bitmap>() {
                         @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        public void onResourceReady(Bitmap resource, GlideAnimation<? super
+                                Bitmap> glideAnimation) {
                             mPolygonView.setImageBitmap(resource);
                             //   mPolygonView.setImageResource(R.drawable.jay);
                         }
                     });
-            // mPolygonView.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.captain_android));
+            // mPolygonView.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable
+            // .captain_android));
         }
 
         @Override
