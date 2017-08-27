@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.douban.bean.SubjectsBean;
@@ -32,7 +33,7 @@ public class SubjectsBinder extends ItemViewBinder<SubjectsBean, SubjectsBinder.
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull SubjectsBean item) {
+    protected void onBindViewHolder(@NonNull final ViewHolder holder, @NonNull final SubjectsBean item) {
         if (item == null) return;
         /** 图片，影片名 */
         String imageUrl = null;
@@ -80,6 +81,16 @@ public class SubjectsBinder extends ItemViewBinder<SubjectsBean, SubjectsBinder.
             }
         }
         holder.mItemActor.setText(actorBuilder.toString());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ARouter.getInstance()
+                        .build("/douban/MovieActivity")
+                        .withTransition(R.anim.in_from_right, 0)
+                        .withString("movieId", item.getId())
+                        .navigation(holder.itemView.getContext());
+            }
+        });
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

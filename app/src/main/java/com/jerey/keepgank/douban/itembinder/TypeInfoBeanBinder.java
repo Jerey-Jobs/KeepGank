@@ -101,8 +101,8 @@ public class TypeInfoBeanBinder extends ItemViewBinder<TypeInfoBean, TypeInfoBea
         }
 
         @Override
-        public void onBindViewHolder(ItemViewHolder holder, int position) {
-            SubjectsBean subject = mTypeInfoBean.getSubjects().get(position);
+        public void onBindViewHolder(final ItemViewHolder holder, int position) {
+            final SubjectsBean subject = mTypeInfoBean.getSubjects().get(position);
             LogTools.d("subject:" + subject.toString());
             LogTools.d("subject:" + subject.getTitle() + subject.getRating());
             if (subject.getTitle() != null) {
@@ -124,6 +124,16 @@ public class TypeInfoBeanBinder extends ItemViewBinder<TypeInfoBean, TypeInfoBea
                         .placeholder(R.drawable.bg_grey)
                         .into(holder.mItemImageView);
             }
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ARouter.getInstance()
+                            .build("/douban/MovieActivity")
+                            .withTransition(R.anim.in_from_right, 0)
+                            .withString("movieId", subject.getId())
+                            .navigation(holder.itemView.getContext());
+                }
+            });
         }
 
         @Override

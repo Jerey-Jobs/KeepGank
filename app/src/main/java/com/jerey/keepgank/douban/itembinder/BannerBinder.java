@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.douban.bean.BannerBean;
@@ -15,6 +16,7 @@ import com.jerey.keepgank.douban.bean.SubjectsBean;
 import com.jerey.mutitype.ItemViewBinder;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
+import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
 import java.util.ArrayList;
@@ -38,7 +40,8 @@ public class BannerBinder extends ItemViewBinder<BannerBean, BannerBinder.Banner
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull BannerHolder holder, @NonNull BannerBean item) {
+    protected void onBindViewHolder(@NonNull final BannerHolder holder, @NonNull final BannerBean
+            item) {
         List<SubjectsBean> subjects = item.getSubjects();
         List<String> imageUrls = new ArrayList<>();
         List<String> titles = new ArrayList<>();
@@ -52,6 +55,16 @@ public class BannerBinder extends ItemViewBinder<BannerBean, BannerBinder.Banner
                 .setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE)
                 .setImageLoader(new GlideImageLoader())
                 .start();
+        holder.mItemBanner.setOnBannerListener(new OnBannerListener() {
+            @Override
+            public void OnBannerClick(int position) {
+                ARouter.getInstance()
+                        .build("/douban/MovieActivity")
+                        .withTransition(R.anim.in_from_right, 0)
+                        .withString("movieId", item.getSubjects().get(position).getId())
+                        .navigation(holder.mItemBanner.getContext());
+            }
+        });
     }
 
 
