@@ -20,10 +20,10 @@ import com.jerey.animationadapter.AnimationAdapter;
 import com.jerey.animationadapter.SlideInBottomAnimationAdapter;
 import com.jerey.footerrecyclerview.FooterRecyclerView;
 import com.jerey.keepgank.R;
-import com.jerey.keepgank.view.SlideInOutRightItemAnimator;
 import com.jerey.keepgank.adapter.DayFragmentAdapter;
 import com.jerey.keepgank.bean.GankDay;
 import com.jerey.keepgank.net.GankApi;
+import com.jerey.keepgank.view.SlideInOutRightItemAnimator;
 import com.jerey.loglib.LogTools;
 import com.jerey.lruCache.DiskLruCacheManager;
 import com.trello.rxlifecycle.FragmentEvent;
@@ -36,6 +36,7 @@ import java.util.Date;
 import butterknife.BindView;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.jerey.keepgank.R.id.toolbar;
@@ -157,6 +158,14 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
         GankApi.getInstance()
                .getWebService()
                .getGoodsByDay(year, month, day)
+               .filter(new Func1<GankDay, Boolean>() {
+                   @Override
+                   public Boolean call(GankDay gankDay) {
+                       return gankDay != null
+                               && gankDay.results != null
+                               && gankDay.results.Android != null;
+                   }
+               })
                .compose(this.<GankDay>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
                .cache()
                .subscribeOn(Schedulers.io())
@@ -168,7 +177,9 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
 
                    @Override
                    public void onError(Throwable e) {
+                       e.printStackTrace();
                        showSnackbar(R.string.error);
+                       showSnackbar("该日可能没有更新哦");
                    }
 
                    @Override
@@ -179,8 +190,6 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
                            mToolbarLayout.setTitle(year + "年" + month + "月" + day + "日");
                            mDiskLruCacheManager.put(TAG, gankDay);
                            loadUIByGankday(gankDay);
-                       } else {
-                           showSnackbar("该日可能没有更新哦");
                        }
                    }
                });

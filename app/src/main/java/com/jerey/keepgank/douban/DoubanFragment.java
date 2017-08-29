@@ -34,6 +34,7 @@ import java.util.List;
 import butterknife.BindView;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -97,35 +98,45 @@ public class DoubanFragment extends BaseFragment implements SearchView.OnSearchA
      */
     private void getHead() {
         DoubanApi.getInstance()
-                .getDoubanInterface()
-                .getTypeData(DoubanApi.MOVIE_TYPE.TYPE_in_theaters, 0, 6)
-                .compose(this.<TypeInfoBean>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<TypeInfoBean>() {
-                    @Override
-                    public void onCompleted() {
-                        getInfo();
-                    }
+                 .getDoubanInterface()
+                 .getTypeData(DoubanApi.MOVIE_TYPE.TYPE_in_theaters, 0, 6)
+                 .compose(this.<TypeInfoBean>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
+                 .subscribeOn(Schedulers.io())
+                 .filter(new Func1<TypeInfoBean, Boolean>() {
+                     @Override
+                     public Boolean call(TypeInfoBean typeInfoBean) {
+                         return typeInfoBean != null;
+                     }
+                 })
+                 .map(new Func1<TypeInfoBean, List<SubjectsBean>>() {
+                     @Override
+                     public List<SubjectsBean> call(TypeInfoBean typeInfoBean) {
+                         return typeInfoBean.getSubjects();
+                     }
+                 })
+                 .observeOn(AndroidSchedulers.mainThread())
+                 .subscribe(new Observer<List<SubjectsBean>>() {
+                     @Override
+                     public void onCompleted() {
+                         getInfo();
+                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
+                     @Override
+                     public void onError(Throwable e) {
+                         e.printStackTrace();
+                     }
 
-                    @Override
-                    public void onNext(TypeInfoBean typeInfoBean) {
-                        LogTools.w(typeInfoBean.toString());
-                        typeInfoBean.setType(DoubanApi.MOVIE_TYPE.TYPE_in_theaters);
-                        items.set(0, new BannerBean(typeInfoBean.getSubjects()));
-                        LogTools.w("itemsize:" + items.size());
-                        for (SubjectsBean s : typeInfoBean.getSubjects()) {
-                            items.add(4, s);
-                        }
-                        adapter.setItems(items);
-                        adapter.notifyDataSetChanged();
-                    }
-                });
+                     @Override
+                     public void onNext(List<SubjectsBean> subjects) {
+                         items.set(0, new BannerBean(subjects));
+                         LogTools.w("itemsize:" + items.size());
+                         for (SubjectsBean s : subjects) {
+                             items.add(4, s);
+                         }
+                         adapter.setItems(items);
+                         adapter.notifyDataSetChanged();
+                     }
+                 });
     }
 
     /**
@@ -133,92 +144,99 @@ public class DoubanFragment extends BaseFragment implements SearchView.OnSearchA
      */
     private void getInfo() {
         DoubanApi.getInstance()
-                .getDoubanInterface()
-                .getTop250(0, 10)
-                .compose(this.<TypeInfoBean>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<TypeInfoBean>() {
-                    @Override
-                    public void onCompleted() {
+                 .getDoubanInterface()
+                 .getTop250(0, 10)
+                 .compose(this.<TypeInfoBean>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
+                 .subscribeOn(Schedulers.io())
+                 .observeOn(AndroidSchedulers.mainThread())
+                 .subscribe(new Observer<TypeInfoBean>() {
+                     @Override
+                     public void onCompleted() {
 
-                    }
+                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
+                     @Override
+                     public void onError(Throwable e) {
+                         e.printStackTrace();
+                     }
 
-                    @Override
-                    public void onNext(TypeInfoBean typeInfoBean) {
-                        LogTools.w(typeInfoBean.toString());
-                        typeInfoBean.setType(DoubanApi.MOVIE_TYPE.TYPE_TOP250);
-                        items.set(1, typeInfoBean);
-                        adapter.setItems(items);
-                        adapter.notifyDataSetChanged();
-                    }
-                });
-
-        DoubanApi.getInstance()
-                .getDoubanInterface()
-                .getCommingSoon(0, 10)
-                .compose(this.<TypeInfoBean>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<TypeInfoBean>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(TypeInfoBean typeInfoBean) {
-                        LogTools.w(typeInfoBean.toString());
-                        typeInfoBean.setType(DoubanApi.MOVIE_TYPE.TYPE_CommingSoon);
-                        items.set(2, typeInfoBean);
-                        adapter.setItems(items);
-                        adapter.notifyDataSetChanged();
-                    }
-                });
+                     @Override
+                     public void onNext(TypeInfoBean typeInfoBean) {
+                         LogTools.w(typeInfoBean.toString());
+                         typeInfoBean.setType(DoubanApi.MOVIE_TYPE.TYPE_TOP250);
+                         items.set(1, typeInfoBean);
+                         adapter.setItems(items);
+                         adapter.notifyDataSetChanged();
+                     }
+                 });
 
         DoubanApi.getInstance()
-                .getDoubanInterface()
-                .getUSMovie()
-                .compose(this.<USBean>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<USBean>() {
-                    @Override
-                    public void onCompleted() {
+                 .getDoubanInterface()
+                 .getCommingSoon(0, 10)
+                 .compose(this.<TypeInfoBean>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
+                 .subscribeOn(Schedulers.io())
+                 .observeOn(AndroidSchedulers.mainThread())
+                 .subscribe(new Observer<TypeInfoBean>() {
+                     @Override
+                     public void onCompleted() {
 
-                    }
+                     }
 
-                    @Override
-                    public void onError(Throwable e) {
+                     @Override
+                     public void onError(Throwable e) {
 
-                    }
+                     }
 
-                    @Override
-                    public void onNext(USBean usBean) {
-                        TypeInfoBean typeInfoBean = new TypeInfoBean();
-                        typeInfoBean.setTitle(usBean.getTitle());
-                        typeInfoBean.setType(DoubanApi.MOVIE_TYPE.TYPE_UsMovie);
-                        List<SubjectsBean> list = new ArrayList<SubjectsBean>();
-                        for (USBean.SBean b : usBean.getSubjects()) {
-                            list.add(b.getSubject());
-                        }
-                        typeInfoBean.setSubjects(list);
-                        LogTools.w(typeInfoBean.toString());
-                        items.set(3, typeInfoBean);
-                        adapter.setItems(items);
-                        adapter.notifyDataSetChanged();
-                    }
-                });
+                     @Override
+                     public void onNext(TypeInfoBean typeInfoBean) {
+                         LogTools.w(typeInfoBean.toString());
+                         typeInfoBean.setType(DoubanApi.MOVIE_TYPE.TYPE_CommingSoon);
+                         items.set(2, typeInfoBean);
+                         adapter.setItems(items);
+                         adapter.notifyDataSetChanged();
+                     }
+                 });
+
+        DoubanApi.getInstance()
+                 .getDoubanInterface()
+                 .getUSMovie()
+                 .map(new Func1<USBean, TypeInfoBean>() {
+                     @Override
+                     public TypeInfoBean call(USBean usBean) {
+                         TypeInfoBean typeInfoBean = new TypeInfoBean();
+                         typeInfoBean.setTitle(usBean.getTitle());
+                         typeInfoBean.setType(DoubanApi.MOVIE_TYPE.TYPE_UsMovie);
+                         List<SubjectsBean> list = new ArrayList<SubjectsBean>();
+                         for (USBean.SBean b : usBean.getSubjects()) {
+                             list.add(b.getSubject());
+                         }
+                         typeInfoBean.setSubjects(list);
+                         return typeInfoBean;
+                     }
+                 })
+                 .compose(this.<TypeInfoBean>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
+                 .subscribeOn(Schedulers.io())
+                 .observeOn(AndroidSchedulers.mainThread())
+                 .subscribe(new Observer<TypeInfoBean>() {
+                     @Override
+                     public void onCompleted() {
+
+                     }
+
+                     @Override
+                     public void onError(Throwable e) {
+
+                     }
+
+                     @Override
+                     public void onNext(TypeInfoBean typeInfoBean) {
+                         LogTools.w(typeInfoBean.toString());
+                         items.set(3, typeInfoBean);
+                         adapter.setItems(items);
+                         adapter.notifyDataSetChanged();
+                     }
+                 });
+
     }
 
 
@@ -245,25 +263,33 @@ public class DoubanFragment extends BaseFragment implements SearchView.OnSearchA
     @Override
     public void onSearchAction(String searchText) {
         DoubanApi.getInstance()
-                .getDoubanInterface()
-                .search(searchText.trim())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<TypeInfoBean>() {
-                    @Override
-                    public void onCompleted() {
+                 .getDoubanInterface()
+                 .search(searchText.trim())
+                 .map(new Func1<TypeInfoBean, List<SubjectsBean>>() {
+                     @Override
+                     public List<SubjectsBean> call(TypeInfoBean typeInfoBean) {
+                         return typeInfoBean.getSubjects();
+                     }
+                 })
+                 .compose(this.<List<SubjectsBean>>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
+                 .subscribeOn(Schedulers.io())
+                 .observeOn(AndroidSchedulers.mainThread())
+                 .subscribe(new Observer<List<SubjectsBean>>() {
+                     @Override
+                     public void onCompleted() {
 
-                    }
+                     }
 
-                    @Override
-                    public void onError(Throwable e) {
+                     @Override
+                     public void onError(Throwable e) {
 
-                    }
+                     }
 
-                    @Override
-                    public void onNext(TypeInfoBean typeInfoBean) {
-                        mSearchView.setListObjects(typeInfoBean.getSubjects());
-                    }
-                });
+                     @Override
+                     public void onNext(List<SubjectsBean> subjectsBeen) {
+                         mSearchView.setListObjects(subjectsBeen);
+                     }
+                 });
+
     }
 }

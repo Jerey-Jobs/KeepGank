@@ -12,23 +12,26 @@ import com.jerey.animationadapter.AnimationAdapter;
 import com.jerey.animationadapter.SlideInBottomAnimationAdapter;
 import com.jerey.footerrecyclerview.FooterRecyclerView;
 import com.jerey.keepgank.R;
-import com.jerey.keepgank.view.SlideInOutRightItemAnimator;
-import com.jerey.keepgank.view.SwipeToRefreshLayout;
 import com.jerey.keepgank.adapter.ListFragmentAdapter;
 import com.jerey.keepgank.bean.Data;
+import com.jerey.keepgank.bean.Result;
 import com.jerey.keepgank.net.Config;
 import com.jerey.keepgank.net.GankApi;
+import com.jerey.keepgank.view.SlideInOutRightItemAnimator;
+import com.jerey.keepgank.view.SwipeToRefreshLayout;
 import com.jerey.loglib.LogTools;
 import com.jerey.lruCache.DiskLruCacheManager;
 import com.trello.rxlifecycle.FragmentEvent;
 
 import java.io.IOException;
+import java.util.List;
 
 import butterknife.BindView;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -130,9 +133,21 @@ public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                     e.printStackTrace();
                 }
             }
-        }).subscribeOn(Schedulers.io())
-                  .observeOn(AndroidSchedulers.mainThread())
-                  .subscribe(new Observer<Data>() {
+        })
+                  .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                  .filter(new Func1<Data, Boolean>() {
+                      @Override
+                      public Boolean call(Data data) {
+                          return (data != null && data.getResults() != null);
+                      }
+                  })
+                  .map(new Func1<Data, List<Result>>() {
+                      @Override
+                      public List<Result> call(Data data) {
+                          return data.getResults();
+                      }
+                  })
+                  .subscribe(new Observer<List<Result>>() {
                       @Override
                       public void onCompleted() {
 
@@ -144,14 +159,14 @@ public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                       }
 
                       @Override
-                      public void onNext(Data data) {
-                          if (data != null) {
-                              Log.d(TAG, "获取缓存数据成功");
-                              mAdapter.setData(data.getResults());
-                              mAdapter.notifyDataSetChanged();
-                          }
+                      public void onNext(List<Result> results) {
+                          Log.d(TAG, "获取缓存数据成功");
+                          mAdapter.setData(results);
+                          mAdapter.notifyDataSetChanged();
                       }
                   });
+
+
         //        try {
         //            Log.i(TAG, "DiskLruCacheManager 创建");
         //            mDiskLruCacheManager = new DiskLruCacheManager(getActivity());
@@ -190,9 +205,9 @@ public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     private void initSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout) {
         Resources resources = getResources();
         swipeRefreshLayout.setColorSchemeColors(resources.getColor(R.color.blue_dark),
-                resources.getColor(R.color.red_dark),
-                resources.getColor(R.color.yellow_dark),
-                resources.getColor(R.color.green_dark)
+                                                resources.getColor(R.color.red_dark),
+                                                resources.getColor(R.color.yellow_dark),
+                                                resources.getColor(R.color.green_dark)
                                                );
         swipeRefreshLayout.setOnRefreshListener(this);
     }

@@ -32,11 +32,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 @Route(path = "/douban/MovieListActivity")
 public class MovieListActivity extends AppSwipeBackActivity implements FooterRecyclerView
-        .onLoadMoreListener {
+                                                                               .onLoadMoreListener {
     public static final String TAG = "MovieListActivity";
 
     @BindView(R.id.toolbar)
@@ -98,29 +99,36 @@ public class MovieListActivity extends AppSwipeBackActivity implements FooterRec
             return;
         }
         DoubanApi.getInstance()
-                .getDoubanInterface()
-                .getTypeData(mType, from, count)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<TypeInfoBean>() {
-                    @Override
-                    public void onCompleted() {
+                 .getDoubanInterface()
+                 .getTypeData(mType, from, count)
+                 .map(new Func1<TypeInfoBean, List<SubjectsBean>>() {
+                     @Override
+                     public List<SubjectsBean> call(TypeInfoBean typeInfoBean) {
+                         LogTools.d("数据来了： " + typeInfoBean.getTitle());
+                         return typeInfoBean.getSubjects();
+                     }
+                 })
+                 .subscribeOn(Schedulers.io())
+                 .observeOn(AndroidSchedulers.mainThread())
+                 .subscribe(new Observer<List<SubjectsBean>>() {
+                     @Override
+                     public void onCompleted() {
 
-                    }
+                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
+                     @Override
+                     public void onError(Throwable e) {
+                         e.printStackTrace();
+                     }
 
-                    @Override
-                    public void onNext(TypeInfoBean typeInfoBean) {
-                        LogTools.d("数据来了： " + typeInfoBean.getTitle());
-                        int begin = mSubjectsBeanList.size() + 1;
-                        mSubjectsBeanList.addAll(typeInfoBean.getSubjects());
-                        adapter.notifyItemRangeInserted(begin, mSubjectsBeanList.size());
-                    }
-                });
+                     @Override
+                     public void onNext(List<SubjectsBean> subjects) {
+
+                         int begin = mSubjectsBeanList.size() + 1;
+                         mSubjectsBeanList.addAll(subjects);
+                         adapter.notifyItemRangeInserted(begin, mSubjectsBeanList.size());
+                     }
+                 });
     }
 
     @Override
