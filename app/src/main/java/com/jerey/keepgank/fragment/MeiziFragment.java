@@ -14,19 +14,24 @@ import android.util.Log;
 import com.jerey.animationadapter.AnimationAdapter;
 import com.jerey.animationadapter.SlideInBottomAnimationAdapter;
 import com.jerey.keepgank.R;
-import com.jerey.keepgank.view.SwipeToRefreshLayout;
 import com.jerey.keepgank.adapter.MeiziAdapter;
 import com.jerey.keepgank.bean.Data;
+import com.jerey.keepgank.bean.Result;
 import com.jerey.keepgank.net.GankApi;
+import com.jerey.keepgank.view.SwipeToRefreshLayout;
 import com.jerey.loglib.LogTools;
 import com.jerey.lruCache.DiskLruCacheManager;
 import com.trello.rxlifecycle.FragmentEvent;
 
 import java.io.IOException;
+import java.util.List;
 
 import butterknife.BindView;
+import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -77,19 +82,55 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.addOnScrollListener(mOnScrollListener);
 
-        try {
-            Log.i(TAG, "DiskLruCacheManager 创建");
-            mDiskLruCacheManager = new DiskLruCacheManager(getActivity());
-            Data data = mDiskLruCacheManager.getAsSerializable(TAG);
-            Log.i(TAG, "DiskLruCacheManager 读取");
-            if (data != null) {
-                Log.i(TAG, "获取到缓存数据");
-                mAdapter.setData(data.getResults());
-                mAdapter.notifyDataSetChanged();
+
+        Observable.create(new Observable.OnSubscribe<Data>() {
+
+            @Override
+            public void call(Subscriber<? super Data> subscriber) {
+                Log.i(TAG, "DiskLruCacheManager 创建");
+                try {
+                    mDiskLruCacheManager = new DiskLruCacheManager(getActivity());
+                    Data data = mDiskLruCacheManager.getAsSerializable(TAG);
+                    Log.i(TAG, "DiskLruCacheManager 读取");
+                    if (data != null) {
+                        subscriber.onNext(data);
+                    } else {
+                        subscriber.onCompleted();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    subscriber.onError(e);
+                    return;
+                }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        })
+                  .map(new Func1<Data, List<Result>>() {
+
+                      @Override
+                      public List<Result> call(Data data) {
+                          return data.getResults();
+                      }
+                  })
+                  .subscribeOn(Schedulers.io())
+                  .observeOn(AndroidSchedulers.mainThread())
+                  .subscribe(new Observer<List<Result>>() {
+                      @Override
+                      public void onCompleted() {
+
+                      }
+
+                      @Override
+                      public void onError(Throwable e) {
+                          e.printStackTrace();
+                      }
+
+                      @Override
+                      public void onNext(List<Result> results) {
+                          Log.i(TAG, "获取到缓存数据");
+                          mAdapter.setData(results);
+                          mAdapter.notifyDataSetChanged();
+                      }
+                  });
         onRefresh();
 
     }
@@ -98,17 +139,18 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         mStaggeredGridLayoutManager = new StaggeredGridLayoutManager(2,
-                StaggeredGridLayoutManager.VERTICAL);
+                                                                     StaggeredGridLayoutManager
+                                                                             .VERTICAL);
         recyclerView.setLayoutManager(mStaggeredGridLayoutManager);
     }
 
     private void initSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout) {
         Resources resources = getResources();
         swipeRefreshLayout.setColorSchemeColors(resources.getColor(R.color.blue_dark),
-                resources.getColor(R.color.red_dark),
-                resources.getColor(R.color.yellow_dark),
-                resources.getColor(R.color.green_dark)
-        );
+                                                resources.getColor(R.color.red_dark),
+                                                resources.getColor(R.color.yellow_dark),
+                                                resources.getColor(R.color.green_dark)
+                                               );
         swipeRefreshLayout.setOnRefreshListener(this);
     }
 
@@ -130,7 +172,8 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
             if (lastPositions == null) {
                 lastPositions = new int[mStaggeredGridLayoutManager.getSpanCount()];
             }
-            int[] lastVisibleItem = mStaggeredGridLayoutManager.findLastVisibleItemPositions(lastPositions);
+            int[] lastVisibleItem = mStaggeredGridLayoutManager.findLastVisibleItemPositions(
+                    lastPositions);
             int totalItemCount = mAdapter.getItemCount();
             // dy>0 表示向下滑动
             if (lastVisibleItem[0] >= totalItemCount - 4 && dy > 0 && !isLoading() && !isALlLoad) {
@@ -153,57 +196,64 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
 
     private void loadData(int pager) {
         GankApi.getInstance()
-                .getWebService()
-                .getBenefitsGoods(GankApi.LOAD_LIMIT, pager)
-                .compose(this.<Data>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
-                .cache()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(dataObservable);
+               .getWebService()
+               .getBenefitsGoods(GankApi.LOAD_LIMIT, pager)
+               .compose(this.<Data>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
+               .cache()
+               .subscribeOn(Schedulers.io())
+               .map(new Func1<Data, List<Result>>() {
+                   @Override
+                   public List<Result> call(Data data) {
+                       if (data != null) {
+                           Log.i(TAG, "DiskLruCacheManager 写入");
+                           mDiskLruCacheManager.put(TAG, data);
+                           mAdapter.notifyDataSetChanged();
+                           return data.getResults();
+                       }
+                       return null;
+                   }
+               })
+               .observeOn(AndroidSchedulers.mainThread())
+               .subscribe(new Observer<List<Result>>() {
+                   @Override
+                   public void onCompleted() {
+                       LogTools.i("数据onCompleted 停止刷新");
+                       mSwipeRefreshLayout.setRefreshing(false);
+                       isLoadingNewData = false;
+                       isLoadingMore = false;
+                   }
+
+                   @Override
+                   public void onError(Throwable e) {
+                       LogTools.i("onError 停止刷新");
+                       mSwipeRefreshLayout.setRefreshing(false);
+                       isLoadingNewData = false;
+                       isLoadingMore = false;
+                       showSnackbar("OnError");
+                   }
+
+                   @Override
+                   public void onNext(List<Result> results) {
+                       LogTools.i("onNext " + results);
+                       if (results != null) {
+                           /**
+                            * 没有更多数据
+                            */
+                           if (results.size() < GankApi.LOAD_LIMIT) {
+                               isALlLoad = true;
+                               showSnackbar(R.string.no_more);
+                           }
+
+                           if (isLoadingMore) {
+                               mAdapter.addData(results);
+                           } else if (isLoadingNewData) {
+                               isALlLoad = false;
+                               mAdapter.setData(results);
+                           }
+
+                       }
+                   }
+               });
     }
 
-    private Observer<Data> dataObservable = new Observer<Data>() {
-
-        @Override
-        public void onCompleted() {
-            LogTools.i("数据onCompleted 停止刷新");
-            mSwipeRefreshLayout.setRefreshing(false);
-            isLoadingNewData = false;
-            isLoadingMore = false;
-        }
-
-        @Override
-        public void onError(Throwable e) {
-            LogTools.i("onError 停止刷新");
-            mSwipeRefreshLayout.setRefreshing(false);
-            isLoadingNewData = false;
-            isLoadingMore = false;
-            showSnackbar("OnError");
-        }
-
-        @Override
-        public void onNext(Data data) {
-            LogTools.i("onNext " + data.toString());
-            if (data != null && data.getResults() != null) {
-                /**
-                 * 没有更多数据
-                 */
-                if (data.getResults().size() < GankApi.LOAD_LIMIT) {
-                    isALlLoad = true;
-                    showSnackbar(R.string.no_more);
-                }
-
-                if (isLoadingMore) {
-                    mAdapter.addData(data.getResults());
-                } else if (isLoadingNewData) {
-                    isALlLoad = false;
-                    mAdapter.setData(data.getResults());
-                    Log.i(TAG, "DiskLruCacheManager 写入");
-                    mDiskLruCacheManager.put(TAG, data);
-                    mAdapter.notifyDataSetChanged();
-                }
-
-            }
-        }
-    };
 }
