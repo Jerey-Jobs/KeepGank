@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -27,6 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -46,6 +49,22 @@ public class MovieActivity extends AppSwipeBackActivity {
     LinearLayout mMovieLayout;
     @BindView(R.id.movie_recyclerview)
     RecyclerView mMovieRecyclerview;
+    @BindView(R.id.title_text)
+    TextView mTitleText;
+    @BindView(R.id.tv_movie_title)
+    TextView mTvMovieTitle;
+    @BindView(R.id.tv_movie_detail1)
+    TextView mTvMovieDetail1;
+    @BindView(R.id.tv_movie_detail2)
+    TextView mTvMovieDetail2;
+    @BindView(R.id.tv_movie_detail3)
+    TextView mTvMovieDetail3;
+    @BindView(R.id.tv_rating)
+    TextView mTvRating;
+    @BindView(R.id.tv_ratings_count)
+    TextView mTvRatingsCount;
+    @BindView(R.id.tv_summary)
+    TextView mTvSummary;
 
     MultiTypeAdapter mMultiTypeAdapter;
     List<Object> mList;
@@ -79,42 +98,87 @@ public class MovieActivity extends AppSwipeBackActivity {
 
     private void loadData(String id) {
         DoubanApi.getInstance()
-                 .getDoubanInterface()
-                 .getMonvieInfo(id)
-                 .subscribeOn(Schedulers.io())
-                 .observeOn(AndroidSchedulers.mainThread())
-                 .subscribe(new Observer<MovieInfoBean>() {
-                     @Override
-                     public void onCompleted() {
+                .getDoubanInterface()
+                .getMonvieInfo(id)
+                .filter(new Func1<MovieInfoBean, Boolean>() {
+                    @Override
+                    public Boolean call(MovieInfoBean movieInfoBean) {
+                        return !TextUtils.isEmpty(movieInfoBean.getTitle());
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<MovieInfoBean>() {
+                    @Override
+                    public void onCompleted() {
 
-                     }
+                    }
 
-                     @Override
-                     public void onError(Throwable e) {
-                         e.printStackTrace();
-                     }
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
 
-                     @Override
-                     public void onNext(MovieInfoBean movieInfoBean) {
-                         if (movieInfoBean == null) {
-                             return;
-                         }
-                         String imageUrl = null;
-                         if (movieInfoBean.getImages() != null) {
-                             imageUrl = movieInfoBean.getImages().getLarge();
-                             if (imageUrl == null) {
-                                 imageUrl = movieInfoBean.getImages().getMedium();
-                             }
-                             if (imageUrl == null) {
-                                 imageUrl = movieInfoBean.getImages().getSmall();
-                             }
-                         }
-                         Glide.with(MovieActivity.this)
-                              .load(imageUrl)
-                              .placeholder(R.drawable.bg_grey)
-                              .error(R.drawable.bg_red)
-                              .into(mMovieImageView);
-                     }
-                 });
+                    @Override
+                    public void onNext(MovieInfoBean movieInfoBean) {
+                        if (movieInfoBean == null) {
+                            return;
+                        }
+                        updateUI(movieInfoBean);
+                    }
+                });
     }
+
+    private void updateUI(MovieInfoBean movieInfoBean) {
+        String imageUrl = null;
+        if (movieInfoBean.getImages() != null) {
+            imageUrl = movieInfoBean.getImages().getLarge();
+            if (imageUrl == null) {
+                imageUrl = movieInfoBean.getImages().getMedium();
+            }
+            if (imageUrl == null) {
+                imageUrl = movieInfoBean.getImages().getSmall();
+            }
+        }
+        Glide.with(MovieActivity.this)
+                .load(imageUrl)
+                .placeholder(R.drawable.bg_grey)
+                .error(R.drawable.bg_red)
+                .into(mMovieImageView);
+        mTvMovieTitle.setText(movieInfoBean.getTitle());
+        mTitleText.setText(movieInfoBean.getTitle());
+        /** 设置年代 */
+        StringBuilder builder = new StringBuilder();
+        if (!TextUtils.isEmpty(movieInfoBean.getYear())) {
+            builder.append(movieInfoBean.getYear());
+        }
+        if (movieInfoBean.getCountries() != null) {
+            for (String s : movieInfoBean.getCountries()) {
+                builder.append("/");
+                builder.append(s);
+            }
+        }
+        if (!TextUtils.isEmpty(builder.toString())) {
+            mTvMovieDetail1.setText(builder.toString());
+        }
+        /** 设置类型 */
+        if (movieInfoBean.getGenres() != null) {
+            StringBuilder stringBuilder = new StringBuilder("类型: ");
+            for (String s : movieInfoBean.getGenres()) {
+                stringBuilder.append(s);
+            }
+            mTvMovieDetail2.setText(stringBuilder.toString());
+        }
+
+        if (!movieInfoBean.getTitle().equals(movieInfoBean.getOriginal_title())) {
+            mTvMovieDetail3.setText("原名: " + movieInfoBean.getOriginal_title());
+        }
+
+        mTvSummary.setText(movieInfoBean.getSummary());
+        if (movieInfoBean.getRating() != null) {
+            mTvRating.setText("" + movieInfoBean.getRating().getAverage());
+            mTvRatingsCount.setText("评分人数:" + movieInfoBean.getRatings_count());
+        }
+    }
+
 }
