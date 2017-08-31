@@ -211,4 +211,15 @@ public abstract class ItemViewBinder<T, VH extends ViewHolder> {
         onBindViewHolder(holder, t);
         return holder.itemView;
     }
+
+    /**
+     * create binder's itemview then bind data , and then add to the parent
+     * @param parent the view will be added
+     * @param t      the data
+     */
+    public void addView(ViewGroup parent, T t) {
+        VH holder = onCreateViewHolder(LayoutInflater.from(parent.getContext()), parent);
+        onBindViewHolder(holder, t);
+        parent.addView(holder.itemView);
+    }
 }
