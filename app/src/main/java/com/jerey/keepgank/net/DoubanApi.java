@@ -103,7 +103,7 @@ public class DoubanApi {
          * 某个电影信息
          */
         @GET("/v2/movie/subject/{id}")
-        Observable<MovieInfoBean> getMonvieInfo(@Path("id") int id);
+        Observable<MovieInfoBean> getMonvieInfo(@Path("id") String id);
 
         /**
          * https://api.douban.com/v2/movie/search?q=content

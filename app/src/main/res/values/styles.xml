@@ -24,6 +24,7 @@
     <style name="WebTheme" parent="AppTheme">
         <item name="android:windowBackground">@color/web_background</item>
         <item name="android:windowAnimationStyle">@style/Animation</item>
+        <item name="android:label"></item>
     </style>
 
     <style name="PhotoActivity" parent="WebTheme">

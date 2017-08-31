@@ -10,10 +10,13 @@ import android.widget.LinearLayout;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.bumptech.glide.Glide;
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.base.AppSwipeBackActivity;
+import com.jerey.keepgank.douban.bean.MovieInfoBean;
 import com.jerey.keepgank.douban.bean.SubjectsBean;
 import com.jerey.keepgank.douban.itembinder.SubjectsBinder;
+import com.jerey.keepgank.net.DoubanApi;
 import com.jerey.loglib.LogTools;
 import com.jerey.mutitype.MultiTypeAdapter;
 
@@ -22,6 +25,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * @author Xiamin
@@ -55,8 +61,13 @@ public class MovieActivity extends AppSwipeBackActivity {
         //movieId = getIntent().getStringExtra("movieId");
         LogTools.d("movieId = " + movieId);
         mList = new ArrayList<>();
+
+        loadData(movieId);
+
+
+        // TODO 测试代码
         mMultiTypeAdapter = new MultiTypeAdapter(mList);
-        mMultiTypeAdapter.register(SubjectsBean.class,new SubjectsBinder());
+        mMultiTypeAdapter.register(SubjectsBean.class, new SubjectsBinder());
         mMovieRecyclerview.setLayoutManager(new LinearLayoutManager(this));
         mMovieRecyclerview.setAdapter(mMultiTypeAdapter);
         mMovieRecyclerview.setNestedScrollingEnabled(false);
@@ -64,5 +75,46 @@ public class MovieActivity extends AppSwipeBackActivity {
             mList.add(new SubjectsBean());
         }
         mMultiTypeAdapter.notifyDataSetChanged();
+    }
+
+    private void loadData(String id) {
+        DoubanApi.getInstance()
+                 .getDoubanInterface()
+                 .getMonvieInfo(id)
+                 .subscribeOn(Schedulers.io())
+                 .observeOn(AndroidSchedulers.mainThread())
+                 .subscribe(new Observer<MovieInfoBean>() {
+                     @Override
+                     public void onCompleted() {
+
+                     }
+
+                     @Override
+                     public void onError(Throwable e) {
+                         e.printStackTrace();
+                     }
+
+                     @Override
+                     public void onNext(MovieInfoBean movieInfoBean) {
+                         if (movieInfoBean == null) {
+                             return;
+                         }
+                         String imageUrl = null;
+                         if (movieInfoBean.getImages() != null) {
+                             imageUrl = movieInfoBean.getImages().getLarge();
+                             if (imageUrl == null) {
+                                 imageUrl = movieInfoBean.getImages().getMedium();
+                             }
+                             if (imageUrl == null) {
+                                 imageUrl = movieInfoBean.getImages().getSmall();
+                             }
+                         }
+                         Glide.with(MovieActivity.this)
+                              .load(imageUrl)
+                              .placeholder(R.drawable.bg_grey)
+                              .error(R.drawable.bg_red)
+                              .into(mMovieImageView);
+                     }
+                 });
     }
 }
