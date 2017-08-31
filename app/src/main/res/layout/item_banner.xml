@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content">
-    <com.youth.banner.Banner xmlns:app="http://schemas.android.com/apk/res-auto"
-                             android:id="@+id/item_banner"
-                             android:layout_width="match_parent"
-                             android:layout_height="160dp"
-                             app:title_background="#55e53935"
-                             app:title_textsize="10sp"
-                             app:title_textcolor="@android:color/white"
-                             app:title_height="30dp"/>
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <com.youth.banner.Banner
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/item_banner"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        app:title_background="#55e53935"
+        app:title_height="30dp"
+        app:title_textcolor="@android:color/white"
+        app:title_textsize="10sp"/>
 </LinearLayout>
