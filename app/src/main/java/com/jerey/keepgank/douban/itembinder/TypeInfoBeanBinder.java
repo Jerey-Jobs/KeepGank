@@ -41,7 +41,8 @@ public class TypeInfoBeanBinder extends ItemViewBinder<TypeInfoBean, TypeInfoBea
     @Override
     protected void onBindViewHolder(@NonNull final ViewHolder holder, @NonNull final TypeInfoBean
             item) {
-        if (item == null) return;
+        if (item == null)
+            return;
 
         LogTools.i("Title：" + item.getTitle());
         holder.mTextView.setText(item.getTitle());
@@ -52,6 +53,8 @@ public class TypeInfoBeanBinder extends ItemViewBinder<TypeInfoBean, TypeInfoBea
         holder.mRecyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
         TypeItemAdapter adapter = new TypeItemAdapter(item);
         holder.mRecyclerView.setAdapter(adapter);
+        /** 解决横向RecyclerView与纵向AppBarLayout不联动问题 */
+        holder.mRecyclerView.setNestedScrollingEnabled(false);
         holder.mImageViewMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,9 +64,9 @@ public class TypeInfoBeanBinder extends ItemViewBinder<TypeInfoBean, TypeInfoBea
                  * Arouter
                  */
                 ARouter.getInstance().build("/douban/MovieListActivity")
-                        .withTransition(R.anim.in_from_right, 0)
-                        .withBundle(MovieListActivity.TAG, bundle)
-                        .navigation(holder.mImageViewMore.getContext());
+                       .withTransition(R.anim.in_from_right, 0)
+                       .withBundle(MovieListActivity.TAG, bundle)
+                       .navigation(holder.mImageViewMore.getContext());
                 /**
                  * 传统方式
                  */
@@ -96,7 +99,9 @@ public class TypeInfoBeanBinder extends ItemViewBinder<TypeInfoBean, TypeInfoBea
         @Override
         public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View root = LayoutInflater.from(parent.getContext()).inflate(R.layout
-                    .item_douban_type_item, parent, false);
+                                                                                 .item_douban_type_item,
+                                                                         parent,
+                                                                         false);
             return new ItemViewHolder(root);
         }
 
@@ -119,19 +124,19 @@ public class TypeInfoBeanBinder extends ItemViewBinder<TypeInfoBean, TypeInfoBea
                     url = subject.getImages().getLarge();
                 }
                 Glide.with(holder.mItemImageView.getContext())
-                        .load(url)
-                        .centerCrop()
-                        .placeholder(R.drawable.bg_grey)
-                        .into(holder.mItemImageView);
+                     .load(url)
+                     .centerCrop()
+                     .placeholder(R.drawable.bg_grey)
+                     .into(holder.mItemImageView);
             }
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     ARouter.getInstance()
-                            .build("/douban/MovieActivity")
-                            .withTransition(R.anim.in_from_right, 0)
-                            .withString("movieId", subject.getId())
-                            .navigation(holder.itemView.getContext());
+                           .build("/douban/MovieActivity")
+                           .withTransition(R.anim.in_from_right, 0)
+                           .withString("movieId", subject.getId())
+                           .navigation(holder.itemView.getContext());
                 }
             });
         }
