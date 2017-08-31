@@ -11,6 +11,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.githang.statusbar.StatusBarCompat;
 import com.jerey.themelib.IDynamicNewView;
 import com.jerey.themelib.ISkinUpdate;
 import com.jerey.themelib.SkinConfig;
@@ -71,6 +72,7 @@ public class SkinBaseActivity extends AppCompatActivity implements ISkinUpdate, 
                 Window window = getWindow();
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                 window.setStatusBarColor(SkinManager.getInstance().getColorPrimaryDark());
+                StatusBarCompat.setStatusBarColor(this, color);
             }
         }
     }

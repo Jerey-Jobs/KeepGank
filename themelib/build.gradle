@@ -30,4 +30,5 @@ dependencies {
     testCompile JUNIT_VERSION
     compile SUPPORT_DESIGN
     compile project(':downloadmanager')
+    compile 'com.githang:status-bar-compat:0.5.3'
 }
