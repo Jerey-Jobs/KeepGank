@@ -1,5 +1,5 @@
-<h2><font color="#f57e42">KeepGank</font>
-
+KeepGank.IO
+---
 
 一款Gank客户端,阅读本工程代码您将学习到：
 - RxJava + Retrofit + Glide的使用
@@ -99,10 +99,8 @@ MaterialDateTimePicker | 一个Material-Design风格的TimePicker
 
 
 ----------
-<font color="#004B97"><strong>作者:Anderson大码渣，欢迎关注我的简书:  </strong></font><a target="_blank" href="http://www.jianshu.com/u/016a5ba708a0"><font color="#f57e42">Anderson大码渣 </font>
-</a>
-<font color="#004B97"><strong>欢迎关注我的Github:  </strong></font><a target="_blank" href="https://github.com/Jerey-Jobs"><font color="#f57e42">Jerey-Jobs </font>
-</a>
+作者:Anderson大码渣，欢迎关注我的简书: [Anderson大码渣](http://www.jianshu.com/u/016a5ba708a0) <br>
+欢迎关注我的Github:  [Jerey-Jobs](https://github.com/Jerey-Jobs)
 
 -------
 ## License
