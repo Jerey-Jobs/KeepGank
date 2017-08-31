@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.jerey.animationadapter.AnimationAdapter;
@@ -24,12 +27,14 @@ import com.jerey.keepgank.douban.itembinder.SubjectsBinder;
 import com.jerey.keepgank.net.DoubanApi;
 import com.jerey.loglib.LogTools;
 import com.jerey.mutitype.MultiTypeAdapter;
+import com.jerey.searchview.SearchView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
@@ -46,6 +51,14 @@ public class MovieListActivity extends AppSwipeBackActivity implements FooterRec
     FooterRecyclerView mRecyclerView;
     TypeInfoBean mTypeInfoBean;
     List<SubjectsBean> mSubjectsBeanList;
+    @BindView(R.id.header_layout)
+    LinearLayout mHeaderLayout;
+    @BindView(R.id.toolbar_text)
+    TextView mToolbarText;
+    @BindView(R.id.toolbar_layout)
+    CollapsingToolbarLayout mToolbarLayout;
+    @BindView(R.id.searchView)
+    SearchView mSearchView;
     private MultiTypeAdapter adapter;
 
     private String mType;
@@ -66,7 +79,10 @@ public class MovieListActivity extends AppSwipeBackActivity implements FooterRec
         }
         if (mTypeInfoBean != null) {
             mSubjectsBeanList = mTypeInfoBean.getSubjects();
+            setSupportActionBar(mToolbar);
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
             getSupportActionBar().setTitle(mTypeInfoBean.getTitle().toString());
+            mToolbarText.setText(mTypeInfoBean.getTitle().toString());
             LogTools.d("title：" + mTypeInfoBean.getTitle().toString());
             mType = mTypeInfoBean.getType();
         } else {
@@ -123,7 +139,6 @@ public class MovieListActivity extends AppSwipeBackActivity implements FooterRec
 
                      @Override
                      public void onNext(List<SubjectsBean> subjects) {
-
                          int begin = mSubjectsBeanList.size() + 1;
                          mSubjectsBeanList.addAll(subjects);
                          adapter.notifyItemRangeInserted(begin, mSubjectsBeanList.size());
