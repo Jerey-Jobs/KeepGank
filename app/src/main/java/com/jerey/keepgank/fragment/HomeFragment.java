@@ -53,8 +53,16 @@ public class HomeFragment extends BaseFragment implements SearchView.OnSearchAct
         LogTools.i("afterCreate");
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         dynamicAddView(mToolbar, "background", R.color.app_main_color);
-        mSearchView.setType(DB_NAME);
-        mSearchView.registerData(Result.class, new GankResultBinder());
+
+        mSearchView.setType(DB_NAME)
+                   .registerData(Result.class, new GankResultBinder())
+                   .setOnSearchActionListener(this)
+                   .setHistoryItemClickListener(new SearchView.OnHistoryClickListener() {
+                       @Override
+                       public void onClick(HistoryBean data) {
+                           onSearchAction(data.getContent());
+                       }
+                   });
         /**
          * 注: 在该Fragment设置mToolbar的onOptionsItemSelected是无效的
          */
@@ -71,13 +79,6 @@ public class HomeFragment extends BaseFragment implements SearchView.OnSearchAct
         mViewPager.setOffscreenPageLimit(mFragmentAdapter.getCount());
         mTabLayout.setupWithViewPager(mViewPager);
         mViewPager.setCurrentItem(0);
-        mSearchView.setOnSearchActionListener(this);
-        mSearchView.setHistoryItemClickListener(new SearchView.OnHistoryClickListener() {
-            @Override
-            public void onClick(HistoryBean data) {
-                onSearchAction(data.getContent());
-            }
-        });
     }
 
     @Override
@@ -105,25 +106,25 @@ public class HomeFragment extends BaseFragment implements SearchView.OnSearchAct
     public void onSearchAction(String searchText) {
         LogTools.d("onSearchAction : " + searchText);
         GankApi.getInstance()
-                .getWebService()
-                .getSearchResult(searchText)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Data>() {
-                    @Override
-                    public void onCompleted() {
+               .getWebService()
+               .getSearchResult(searchText)
+               .subscribeOn(Schedulers.io())
+               .observeOn(AndroidSchedulers.mainThread())
+               .subscribe(new Observer<Data>() {
+                   @Override
+                   public void onCompleted() {
 
-                    }
+                   }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
+                   @Override
+                   public void onError(Throwable e) {
+                       e.printStackTrace();
+                   }
 
-                    @Override
-                    public void onNext(Data data) {
-                        mSearchView.setListObjects(data.getResults());
-                    }
-                });
+                   @Override
+                   public void onNext(Data data) {
+                       mSearchView.setListObjects(data.getResults());
+                   }
+               });
     }
 }

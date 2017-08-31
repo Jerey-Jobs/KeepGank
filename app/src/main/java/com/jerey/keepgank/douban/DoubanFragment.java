@@ -81,21 +81,21 @@ public class DoubanFragment extends BaseFragment implements SearchView.OnSearchA
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         mToolbarLayout.setTitleEnabled(false);
         /** searchView处理*/
-        mSearchView.setType(DB_TYPE);
-        mSearchView.registerData(SubjectsBean.class, new SubjectsBinder());
-        mSearchView.setOnSearchActionListener(this);
-        mSearchView.setHistoryItemClickListener(new SearchView.OnHistoryClickListener() {
-            @Override
-            public void onClick(HistoryBean data) {
-                onSearchAction(data.getContent());
-            }
-        });
+        mSearchView.setType(DB_TYPE)
+                   .registerData(SubjectsBean.class, new SubjectsBinder())
+                   .setOnSearchActionListener(this)
+                   .setHistoryItemClickListener(new SearchView.OnHistoryClickListener() {
+                       @Override
+                       public void onClick(HistoryBean data) {
+                           onSearchAction(data.getContent());
+                       }
+                   });
         /** adapter初始化*/
         adapter = new MultiTypeAdapter();
         items = new ArrayList<>();
-        adapter.register(TypeInfoBean.class, new TypeInfoBeanBinder());
-        adapter.register(SubjectsBean.class, new SubjectsBinder());
-        adapter.register(BannerBean.class, new BannerBinder());
+        adapter.register(TypeInfoBean.class, new TypeInfoBeanBinder())
+               .register(SubjectsBean.class, new SubjectsBinder())
+               .register(BannerBean.class, new BannerBinder());
 
         mLinearLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
@@ -170,8 +170,7 @@ public class DoubanFragment extends BaseFragment implements SearchView.OnSearchA
                          /**
                           * Bannerbinder直接转View 添加到头部视差布局中
                           */
-                         mHeadLayout.addView(new BannerBinder().createView(new BannerBean(subjects),
-                                                                           mHeadLayout));
+                         new BannerBinder().addView(mHeadLayout, new BannerBean(subjects));
                          LogTools.w("itemsize:" + items.size());
                          for (SubjectsBean s : subjects) {
                              items.add(3, s);
