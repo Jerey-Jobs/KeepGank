@@ -1,4 +1,5 @@
-## KeepGank
+<h2><font color="#f57e42">KeepGank</font>
+
 
 一款Gank客户端,阅读本工程代码您将学习到：
 - RxJava + Retrofit + Glide的使用
@@ -11,6 +12,7 @@
 - 搭建Android5.0水波动画框架
 - 如何使用ViewPager打造出超炫浏览界面
 - 如何使用贝塞尔曲线打造Loading界面
+- 如何使用ViewPager打造出超炫的图片选择界面
 
 ---
 
@@ -78,35 +80,29 @@ RxJava + Retrofit + Glide + DiskLruCache + Material-Design
 
 ### 总之, 希望大家多多star, 一起进步
 
-ps: 后续我可能还是会加上笑话大全功能
-
-
-----------
-本文作者：Anderson/Jerey_Jobs
-
-博客地址   ： [夏敏的博客/Anderson大码渣/Jerey_Jobs][1] <br>
-简书地址   :  [Anderson大码渣][2] <br>
-github地址 :  [Jerey_Jobs][3]
-
-
-
-[1]: http://jerey.cn/
-[2]: http://www.jianshu.com/users/016a5ba708a0/latest_articles
-[3]: https://github.com/Jerey-Jobs
-
-
-目前用到的依赖有：
+### 目前用到的依赖有：
 
 Gson | Google json解析库
 --- | ---
 Swipebacklayout | 滑动返回库
 Butterknife | jakewharton的注解绑定库
 Glide | 图片加载框架
-RxJava |
+RxJava | 一个对于构成使用的Java虚拟机观察序列异步和基于事件的程序库
+Rxbus | 事件总线
 Rxlifecycle | RxJava生命周期绑定库
 Retrofit2 | 网络请求库
-joda-time:2.8.2 | 时间管理库
-realm-android:0.87.0 | Realm数据库
+joda-time | 时间管理库
+Realm-android | Realm数据库
+Umeng.analytics | 友盟统计
+Arouter | 阿里巴巴开源路由框架
+MaterialDateTimePicker | 一个Material-Design风格的TimePicker
+
+
+----------
+<font color="#004B97"><strong>作者:Anderson大码渣，欢迎关注我的简书:  </strong></font><a target="_blank" href="http://www.jianshu.com/u/016a5ba708a0"><font color="#f57e42">Anderson大码渣 </font>
+</a>
+<font color="#004B97"><strong>欢迎关注我的Github:  </strong></font><a target="_blank" href="https://github.com/Jerey-Jobs"><font color="#f57e42">Jerey-Jobs </font>
+</a>
 
 -------
 ## License
