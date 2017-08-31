@@ -1,6 +1,8 @@
 package com.jerey.keepgank.douban;
 
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.jerey.animationadapter.AnimationAdapter;
 import com.jerey.animationadapter.SlideInBottomAnimationAdapter;
@@ -44,13 +48,22 @@ import rx.schedulers.Schedulers;
 public class DoubanFragment extends BaseFragment implements SearchView.OnSearchActionListener {
     private static final String DB_TYPE = "douban_search";
 
+    @BindView(R.id.appbar_layout)
+    AppBarLayout mAppBarLayout;
     @BindView(R.id.m_recyclerView)
     RecyclerView mRecyclerView;
+    @BindView(R.id.toolbar_layout)
+    CollapsingToolbarLayout mToolbarLayout;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.toolbar_text)
+    TextView mTextView;
     @BindView(R.id.searchView)
     SearchView mSearchView;
+    @BindView(R.id.header_layout)
+    LinearLayout mHeadLayout;
 
+    LinearLayoutManager mLinearLayoutManager;
     private MultiTypeAdapter adapter;
     private List<Object> items;
 
@@ -61,10 +74,12 @@ public class DoubanFragment extends BaseFragment implements SearchView.OnSearchA
 
     @Override
     protected void afterCreate(Bundle savedInstanceState) {
-        dynamicAddView(mToolbar, "background", R.color.app_main_color);
-        mToolbar.setTitle("豆瓣电影推荐");
+        dynamicAddView(mToolbarLayout, "ContentScrimColor", R.color.app_main_color);
+        mTextView.setText("豆瓣电影推荐");
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+        mToolbarLayout.setTitleEnabled(false);
         /** searchView处理*/
         mSearchView.setType(DB_TYPE);
         mSearchView.registerData(SubjectsBean.class, new SubjectsBinder());
@@ -82,15 +97,39 @@ public class DoubanFragment extends BaseFragment implements SearchView.OnSearchA
         adapter.register(SubjectsBean.class, new SubjectsBinder());
         adapter.register(BannerBean.class, new BannerBinder());
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        for (int i = 0; i < 4; i++) {
-            items.add(new TypeInfoBean());
+        mLinearLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        for (int i = 0; i < 3; i++) {
+            items.add(new SubjectsBean());
         }
         adapter.setItems(items);
         AnimationAdapter animationAdapter = new SlideInBottomAnimationAdapter(adapter);
         animationAdapter.setDuration(800);
         mRecyclerView.setAdapter(animationAdapter);
+        /**
+         * 增加滚动监听,避免下拉时AppBar还要多拉动一次,没有了连贯效果
+         */
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    int visiblePosition = mLinearLayoutManager
+                            .findFirstCompletelyVisibleItemPosition();
+                    if (visiblePosition == 0) {
+                        mAppBarLayout.setExpanded(true, true);
+                    }
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+            }
+        });
         getHead();
+        getInfo();
     }
 
     /**
@@ -118,7 +157,7 @@ public class DoubanFragment extends BaseFragment implements SearchView.OnSearchA
                  .subscribe(new Observer<List<SubjectsBean>>() {
                      @Override
                      public void onCompleted() {
-                         getInfo();
+
                      }
 
                      @Override
@@ -128,10 +167,14 @@ public class DoubanFragment extends BaseFragment implements SearchView.OnSearchA
 
                      @Override
                      public void onNext(List<SubjectsBean> subjects) {
-                         items.set(0, new BannerBean(subjects));
+                         /**
+                          * Bannerbinder直接转View 添加到头部视差布局中
+                          */
+                         mHeadLayout.addView(new BannerBinder().createView(new BannerBean(subjects),
+                                                                           mHeadLayout));
                          LogTools.w("itemsize:" + items.size());
                          for (SubjectsBean s : subjects) {
-                             items.add(4, s);
+                             items.add(3, s);
                          }
                          adapter.setItems(items);
                          adapter.notifyDataSetChanged();
@@ -231,7 +274,7 @@ public class DoubanFragment extends BaseFragment implements SearchView.OnSearchA
                      @Override
                      public void onNext(TypeInfoBean typeInfoBean) {
                          LogTools.w(typeInfoBean.toString());
-                         items.set(3, typeInfoBean);
+                         items.set(0, typeInfoBean);
                          adapter.setItems(items);
                          adapter.notifyDataSetChanged();
                      }
