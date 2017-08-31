@@ -36,9 +36,15 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     private static final String TAG = "MultiTypeAdapter";
 
-    private @NonNull List<?> items;
-    private @NonNull TypePool typePool;
-    protected @Nullable LayoutInflater inflater;
+    private
+    @NonNull
+    List<?> items;
+    private
+    @NonNull
+    TypePool typePool;
+    protected
+    @Nullable
+    LayoutInflater inflater;
 
 
     /**
@@ -51,8 +57,7 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     /**
      * Constructs a MultiTypeAdapter with a items list.
-     * @param items
-     *         the items list
+     * @param items the items list
      */
     public MultiTypeAdapter(@NonNull List<?> items) {
         this(items, new MultiTypePool());
@@ -61,10 +66,8 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     /**
      * Constructs a MultiTypeAdapter with a items list and an initial capacity of TypePool.
-     * @param items
-     *         the items list
-     * @param initialCapacity
-     *         the initial capacity of TypePool
+     * @param items           the items list
+     * @param initialCapacity the initial capacity of TypePool
      */
     public MultiTypeAdapter(@NonNull List<?> items, int initialCapacity) {
         this(items, new MultiTypePool(initialCapacity));
@@ -73,10 +76,8 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     /**
      * Constructs a MultiTypeAdapter with a items list and a TypePool.
-     * @param items
-     *         the items list
-     * @param pool
-     *         the type pool
+     * @param items the items list
+     * @param pool  the type pool
      */
     public MultiTypeAdapter(@NonNull List<?> items, @NonNull TypePool pool) {
         this.items = items;
@@ -93,17 +94,15 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<ViewHolder> {
      * {@link RecyclerView#setAdapter(RecyclerView.Adapter)}, or you have to call the setAdapter
      * again.
      * </p>
-     * @param clazz
-     *         the class of a item
-     * @param binder
-     *         the item view binder
-     * @param <T>
-     *         the item data type
+     * @param clazz  the class of a item
+     * @param binder the item view binder
+     * @param <T>    the item data type
      */
-    public <T> void register(
+    public <T> MultiTypeAdapter register(
             @NonNull Class<? extends T> clazz, @NonNull ItemViewBinder<T, ?> binder) {
         checkAndRemoveAllTypesIfNeed(clazz);
         typePool.register(clazz, binder, new DefaultLinker<T>());
+        return this;
     }
 
 
@@ -116,10 +115,8 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<ViewHolder> {
      * {@link RecyclerView#setAdapter(RecyclerView.Adapter)}, or you have to call the setAdapter
      * again.
      * </p>
-     * @param clazz
-     *         the class of a item
-     * @param <T>
-     *         the item data type
+     * @param clazz the class of a item
+     * @param <T>   the item data type
      * @return {@link OneToManyFlow} for setting the binders
      * @see #register(Class, ItemViewBinder)
      */
@@ -139,8 +136,7 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<ViewHolder> {
      * {@link RecyclerView#setAdapter(RecyclerView.Adapter)}, or you have to call the setAdapter
      * again.
      * </p>
-     * @param pool
-     *         type pool containing contents to be added to this adapter inner pool
+     * @param pool type pool containing contents to be added to this adapter inner pool
      * @see #register(Class, ItemViewBinder)
      * @see #register(Class)
      */
@@ -162,8 +158,7 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<ViewHolder> {
      * <p>
      * <p>Note: If you want to refresh the list views after setting items, you should
      * call {@link RecyclerView.Adapter#notifyDataSetChanged()} by yourself.</p>
-     * @param items
-     *         the new items list
+     * @param items the new items list
      * @since v2.4.1
      */
     public void setItems(@NonNull List<?> items) {
@@ -179,8 +174,7 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     /**
      * Set the TypePool to hold the types and view binders.
-     * @param typePool
-     *         the TypePool implementation
+     * @param typePool the TypePool implementation
      */
     public void setTypePool(@NonNull TypePool typePool) {
         this.typePool = typePool;
@@ -218,13 +212,10 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<ViewHolder> {
      * If you need to call the binding, use {@link RecyclerView.Adapter#onBindViewHolder(ViewHolder,
      * int, List)} instead.
      * </p>
-     * @param holder
-     *         The ViewHolder which should be updated to represent the contents of the
-     *         item at the given position in the data set.
-     * @param position
-     *         The position of the item within the adapter's data set.
-     * @throws IllegalAccessError
-     *         By default.
+     * @param holder   The ViewHolder which should be updated to represent the contents of the
+     *                 item at the given position in the data set.
+     * @param position The position of the item within the adapter's data set.
+     * @throws IllegalAccessError By default.
      * @deprecated Call {@link RecyclerView.Adapter#onBindViewHolder(ViewHolder, int, List)}
      * instead.
      */
@@ -232,7 +223,8 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<ViewHolder> {
     @Deprecated
     public final void onBindViewHolder(ViewHolder holder, int position) {
         throw new IllegalAccessError("You should not call this method. " +
-                "Call RecyclerView.Adapter#onBindViewHolder(holder, position, payloads) instead.");
+                                             "Call RecyclerView.Adapter#onBindViewHolder(holder, " +
+                                             "position, payloads) instead.");
     }
 
 
@@ -255,8 +247,7 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<ViewHolder> {
     /**
      * Called when a view created by this adapter has been recycled, and passes the event to its
      * associated binder.
-     * @param holder
-     *         The ViewHolder for the view being recycled
+     * @param holder The ViewHolder for the view being recycled
      * @see RecyclerView.Adapter#onViewRecycled(ViewHolder)
      * @see ItemViewBinder#onViewRecycled(ViewHolder)
      */
@@ -270,9 +261,8 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<ViewHolder> {
     /**
      * Called by the RecyclerView if a ViewHolder created by this Adapter cannot be recycled
      * due to its transient state, and passes the event to its associated item view binder.
-     * @param holder
-     *         The ViewHolder containing the View that could not be recycled due to its
-     *         transient state.
+     * @param holder The ViewHolder containing the View that could not be recycled due to its
+     *               transient state.
      * @return True if the View should be recycled, false otherwise. Note that if this method
      * returns <code>true</code>, RecyclerView <em>will ignore</em> the transient state of
      * the View and recycle it regardless. If this method returns <code>false</code>,
@@ -291,8 +281,7 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<ViewHolder> {
     /**
      * Called when a view created by this adapter has been attached to a window, and passes the
      * event to its associated item view binder.
-     * @param holder
-     *         Holder of the view being attached
+     * @param holder Holder of the view being attached
      * @see RecyclerView.Adapter#onViewAttachedToWindow(ViewHolder)
      * @see ItemViewBinder#onViewAttachedToWindow(ViewHolder)
      */
@@ -306,8 +295,7 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<ViewHolder> {
     /**
      * Called when a view created by this adapter has been detached from its window, and passes
      * the event to its associated item view binder.
-     * @param holder
-     *         Holder of the view being detached
+     * @param holder Holder of the view being detached
      * @see RecyclerView.Adapter#onViewDetachedFromWindow(ViewHolder)
      * @see ItemViewBinder#onViewDetachedFromWindow(ViewHolder)
      */
