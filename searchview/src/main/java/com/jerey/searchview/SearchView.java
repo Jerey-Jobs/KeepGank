@@ -2,7 +2,6 @@ package com.jerey.searchview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
 import android.support.v4.content.ContextCompat;
@@ -113,9 +112,10 @@ public class SearchView extends LinearLayout {
         getCustomStyle(attrs);
     }
 
-    public void setType(String type) {
+    public SearchView setType(String type) {
         mDbType = type;
         loadHistory("");
+        return this;
     }
 
     /***
@@ -221,7 +221,7 @@ public class SearchView extends LinearLayout {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 mHistoryHelper.insertHistory(new HistoryBean(mDbType,
-                        textView.getText().toString()));
+                                                             textView.getText().toString()));
                 if (i == EditorInfo.IME_ACTION_SEARCH && onSearchActionListener != null) {
                     onSearchActionListener.onSearchAction(textView.getText().toString());
                     KeyboardUtils.hideSoftInput(etSearch, context);
@@ -237,8 +237,9 @@ public class SearchView extends LinearLayout {
      * @param c
      * @param itemViewBinder
      */
-    public void registerData(Class c, ItemViewBinder itemViewBinder) {
+    public SearchView registerData(Class c, ItemViewBinder itemViewBinder) {
         adapter.register(c, itemViewBinder);
+        return this;
     }
 
     /**
@@ -252,39 +253,40 @@ public class SearchView extends LinearLayout {
                 subscriber.onNext(mHistoryHelper.searchHistoryList(string, mDbType, HISTORY_COUNT));
             }
         }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<HistoryBean>>() {
-                    @Override
-                    public void onCompleted() {
+                  .observeOn(AndroidSchedulers.mainThread())
+                  .subscribe(new Observer<List<HistoryBean>>() {
+                      @Override
+                      public void onCompleted() {
 
-                    }
+                      }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
+                      @Override
+                      public void onError(Throwable e) {
+                          e.printStackTrace();
+                      }
 
-                    @Override
-                    public void onNext(List<HistoryBean> historyBeen) {
-                        Log.i(TAG, "loadHistory: onNext size:" + historyBeen.size());
-                        mItems.clear();
-                        mItems.addAll(historyBeen);
-                        adapter.setItems(mItems);
-                        adapter.notifyDataSetChanged();
-                        switchCleanHistoryDisplay();
-                    }
-                });
+                      @Override
+                      public void onNext(List<HistoryBean> historyBeen) {
+                          Log.i(TAG, "loadHistory: onNext size:" + historyBeen.size());
+                          mItems.clear();
+                          mItems.addAll(historyBeen);
+                          adapter.setItems(mItems);
+                          adapter.notifyDataSetChanged();
+                          switchCleanHistoryDisplay();
+                      }
+                  });
     }
 
     /***
      * 设置“清除历史记录”的显示隐藏
      */
-    private void switchCleanHistoryDisplay() {
+    private SearchView switchCleanHistoryDisplay() {
         if (adapter.getItems() == null || adapter.getItems().size() == 0) {
             cleanHistory.setVisibility(GONE);
         } else {
             cleanHistory.setVisibility(VISIBLE);
         }
+        return this;
     }
 
     /***
@@ -318,8 +320,6 @@ public class SearchView extends LinearLayout {
         setBackIcon(backIcon);
         defaultState(defaultState == CLOSE ? CLOSE : OPEN);
         setOneKeyCleanIcon(cleanIcon);
-        setHistoryIcon(historyIcon);
-        setHistoryTextColor(historyTextColor);
         a.recycle();
     }
 
@@ -327,65 +327,59 @@ public class SearchView extends LinearLayout {
      * 设置一键清除是否显示
      * @param visible
      */
-    public void setOneKeyCleanIsVisible(boolean visible) {
+    public SearchView setOneKeyCleanIsVisible(boolean visible) {
         isOnKeyCleanVisible = visible;
         //        if (visible) {
         //            clearSearch.setVisibility(VISIBLE);
         //        } else {
         //            clearSearch.setVisibility(GONE);
         //        }
+        return this;
     }
 
     /***
      * 设置搜索框提示文本
      * @param hintText
      */
-    public void setHintText(String hintText) {
+    public SearchView setHintText(String hintText) {
         etSearch.setHint(hintText);
+        return this;
     }
 
     /**
      * 设置搜索框初始文本
      * @param text
      */
-    public void setSearchEditText(String text) {
+    public SearchView setSearchEditText(String text) {
         etSearch.setText(text);
+        return this;
     }
 
     /**
      * 设置输入框打开或者关闭状态
      * @param enabled
      */
-    public void setSearchEditTextEnabled(boolean enabled) {
+    public SearchView setSearchEditTextEnabled(boolean enabled) {
         etSearch.setEnabled(enabled);
+        return this;
     }
 
     /***
      * 设置返回按钮图标
      * @param icon
      */
-    public void setBackIcon(@DrawableRes int icon) {
+    public SearchView setBackIcon(@DrawableRes int icon) {
         ivSearchBack.setImageResource(icon);
+        return this;
     }
 
     /***
      * 设置清空按钮图标
      * @param icon
      */
-    public void setOneKeyCleanIcon(@DrawableRes int icon) {
+    public SearchView setOneKeyCleanIcon(@DrawableRes int icon) {
         clearSearch.setImageResource(icon);
-    }
-
-    public void setHistoryIcon(@DrawableRes int icon) {
-        // adapter.setHistoryIcon(icon);
-    }
-
-    /***
-     * 设置搜索历史文本颜色
-     * @param color
-     */
-    public void setHistoryTextColor(@ColorInt int color) {
-        //   adapter.setHistoryTextColor(color);
+        return this;
     }
 
     /***
@@ -432,32 +426,35 @@ public class SearchView extends LinearLayout {
      * 添加一条历史纪录
      * @param historyBean
      */
-    public void addOneHistory(Object historyBean) {
+    public SearchView addOneHistory(Object historyBean) {
         mItems.add(historyBean);
         adapter.notifyDataSetChanged();
         switchCleanHistoryDisplay();
+        return this;
     }
 
     /***
      * 添加历史纪录列表
      * @param list
      */
-    public void addHistoryList(List<Object> list) {
+    public SearchView addHistoryList(List<Object> list) {
         mItems.addAll(list);
         adapter.notifyDataSetChanged();
         switchCleanHistoryDisplay();
+        return this;
     }
 
     /***
      * 设置全新记录列表
      * @param list 历史纪录列表
      */
-    public void setListObjects(List<? extends Object> list) {
+    public SearchView setListObjects(List<? extends Object> list) {
         mItems.clear();
         mItems.addAll(list);
         adapter.setItems(list);
         adapter.notifyDataSetChanged();
         switchCleanHistoryDisplay();
+        return this;
     }
 
     /***
@@ -472,38 +469,44 @@ public class SearchView extends LinearLayout {
      * 设置历史纪录点击事件
      * @param listItemClickListener
      */
-    public void setHistoryItemClickListener(OnHistoryClickListener listItemClickListener) {
+    public SearchView setHistoryItemClickListener(OnHistoryClickListener listItemClickListener) {
         this.onHistoryClickListener = listItemClickListener;
+        return this;
     }
 
     /***
      * 设置软键盘搜索按钮点击事件
      * @param onSearchActionListener
      */
-    public void setOnSearchActionListener(OnSearchActionListener onSearchActionListener) {
+    public SearchView setOnSearchActionListener(OnSearchActionListener onSearchActionListener) {
         this.onSearchActionListener = onSearchActionListener;
+        return this;
     }
 
     /***
      * 设置输入文本监听事件
      * @param onInputTextChangeListener
      */
-    public void setOnInputTextChangeListener(OnInputTextChangeListener onInputTextChangeListener) {
+    public SearchView setOnInputTextChangeListener(OnInputTextChangeListener
+            onInputTextChangeListener) {
         this.inputTextChangeListener = onInputTextChangeListener;
+        return this;
     }
 
-    public void setOnSearchBackIconClickListener(OnSearchBackIconClickListener
-                                                         onSearchBackIconClickListener) {
+    public SearchView setOnSearchBackIconClickListener(OnSearchBackIconClickListener
+            onSearchBackIconClickListener) {
         this.onSearchBackIconClickListener = onSearchBackIconClickListener;
+        return this;
     }
 
     /**
      * 设置清除历史点击监听
      * @param onCleanHistoryClickListener
      */
-    public void setOnCleanHistoryClickListener(OnCleanHistoryClickListener
-                                                       onCleanHistoryClickListener) {
+    public SearchView setOnCleanHistoryClickListener(OnCleanHistoryClickListener
+            onCleanHistoryClickListener) {
         this.onCleanHistoryClickListener = onCleanHistoryClickListener;
+        return this;
     }
 
     public interface OnHistoryClickListener {
