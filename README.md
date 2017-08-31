@@ -97,34 +97,32 @@ github地址 :  [Jerey_Jobs][3]
 
 目前用到的依赖有：
 
-``` gradle
-    //Google的json解析库
-    compile 'com.google.code.gson:gson:2.2.4'
-    //一个滑动返回库
-    compile 'me.imid.swipebacklayout.lib:library:1.0.0'
-    //注解绑定
-    compile 'com.jakewharton:butterknife:7.0.1'
-    //日志库
-    compile 'com.orhanobut:logger:1.3'
-    //图片加载库
-    compile 'com.github.bumptech.glide:glide:3.5.2'
+Gson | Google json解析库
+--- | ---
+Swipebacklayout | 滑动返回库
+Butterknife | jakewharton的注解绑定库
+Glide | 图片加载框架
+RxJava |
+Rxlifecycle | RxJava生命周期绑定库
+Retrofit2 | 网络请求库
+joda-time:2.8.2 | 时间管理库
+realm-android:0.87.0 | Realm数据库
 
-    compile 'io.reactivex:rxandroid:0.24.0'
+-------
+## License
 
-    //严格控制由于发布了一个订阅后，由于没有及时取消，导致Activity/Fragment无法销毁导致的内存泄露的库
-    //http://www.jianshu.com/p/a3ad9dd20655
-    compile 'com.trello:rxlifecycle:0.3.0'
-    compile 'com.trello:rxlifecycle-components:0.3.0'
+```
+Copyright 2017 Jerey-Jobs.
 
-    //rmlite、greenDao、SugarORM等等，这些orm框架基本都是基于sqlite的。
-    //Realm，是用来替代sqlite的一种解决方案，它有一套自己的数据库存储引擎，比sqlite更轻量级，拥有更快的速度，最重要的是跨平台
-    compile 'io.realm:realm-android:0.87.0'
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-    //添加retrofit
-    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
-    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta4'
+   http://www.apache.org/licenses/LICENSE-2.0
 
-    //Time
-    compile 'joda-time:joda-time:2.8.2'
- ```
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
