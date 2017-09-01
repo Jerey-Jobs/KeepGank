@@ -48,4 +48,18 @@
 
     <string name="error">错误</string>
     <string name="transitions_name">image</string>
+
+    <string name="version">Version: 1.4</string>
+    <string name="about_app_summary">KeepGank.IO是一款第三方Gank.IO客户端,同时还有豆瓣电影推荐浏览功能</string>
+    <string name="about_app">关于KeepGank.IO</string>
+    <string name="about_me">关于作者</string>
+    <string name="follow_me_on_github">在Github上关注我: Jerey-Jobs</string>
+    <string name="about_me_name">Anderson大码渣</string>
+    <string name="about_me_rename">(Jerey-Jobs)</string>
+    <string name="follow_me_on_github_desc">点击跳转Github</string>
+    <string name="follow_me_on_jianshu">在简书上关注我: Anderson大码渣</string>
+    <string name="follow_me_on_github_jianshu">点击跳转简书</string>
+    <string name="suggestions">支持</string>
+    <string name="send_suggestion">给作者提意见</string>
+    <string name="open_source_licenses">开源许可</string>
 </resources>

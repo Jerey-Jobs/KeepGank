@@ -65,8 +65,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends SkinBaseActivity implements NavigationView
-        .OnNavigationItemSelectedListener {
+public class MainActivity extends SkinBaseActivity implements
+                                                   NavigationView.OnNavigationItemSelectedListener {
 
 
     private int mCurrentUIIndex = 0;
@@ -108,9 +108,9 @@ public class MainActivity extends SkinBaseActivity implements NavigationView
             @Override
             public void onClick(View v) {
                 ARouter.getInstance()
-                        .build("/activity/PhotoChooseActivity")
-                        .withTransition(R.anim.in_from_right, 0)
-                        .navigation(MainActivity.this);
+                       .build("/activity/PhotoChooseActivity")
+                       .withTransition(R.anim.in_from_right, 0)
+                       .navigation(MainActivity.this);
             }
         });
         mUserimage = (CircleImageView) mHeadViewContainer.findViewById(R.id.userimage);
@@ -237,9 +237,9 @@ public class MainActivity extends SkinBaseActivity implements NavigationView
             case R.id.nav_settings:
                 LogTools.d("主题被点击");
                 ARouter.getInstance()
-                        .build("/activity/ThemeChooseActivity")
-                        .withTransition(R.anim.in_from_right, 0)
-                        .navigation(this);
+                       .build("/activity/ThemeChooseActivity")
+                       .withTransition(R.anim.in_from_right, 0)
+                       .navigation(this);
                 /**
                  * 延时收回Drawer,使得后台收回,解决打开Theme界面时,低端手机上卡顿问题
                  */
@@ -254,8 +254,8 @@ public class MainActivity extends SkinBaseActivity implements NavigationView
                 break;
             case R.id.nav_movie:
                 ARouter.getInstance().build("/douban/DoubanActivity")
-                        .withTransition(R.anim.in_from_right, 0)
-                        .navigation(this);
+                       .withTransition(R.anim.in_from_right, 0)
+                       .navigation(this);
                 /**
                  * 延时收回Drawer,使得后台收回,解决打开Theme界面时,低端手机上卡顿问题
                  */
@@ -326,21 +326,21 @@ public class MainActivity extends SkinBaseActivity implements NavigationView
 
     private void loadHead(final String url) {
         Glide.with(this)
-                .load(TextUtils.isEmpty(url) ? R.drawable.jay : url)
-                .asBitmap()
-                .centerCrop()
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap>
-                            glideAnimation) {
-                        mUserimage.setImageBitmap(resource);
-                        Bitmap overlay = BlurImageUtils.blur(mUserimage, 3, 3);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            mHeadViewContainer.setBackground(new BitmapDrawable(getResources(),
-                                    overlay));
-                        }
-                    }
-                });
+             .load(TextUtils.isEmpty(url) ? R.drawable.jay : url)
+             .asBitmap()
+             .centerCrop()
+             .into(new SimpleTarget<Bitmap>() {
+                 @Override
+                 public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap>
+                         glideAnimation) {
+                     mUserimage.setImageBitmap(resource);
+                     Bitmap overlay = BlurImageUtils.blur(mUserimage, 3, 3);
+                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                         mHeadViewContainer.setBackground(new BitmapDrawable(getResources(),
+                                                                             overlay));
+                     }
+                 }
+             });
     }
 
     /**
@@ -361,7 +361,7 @@ public class MainActivity extends SkinBaseActivity implements NavigationView
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         permissionTools.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/app_name">
+        <Preference android:title="@string/version"/>
+
+        <Preference
+            android:key="rate"
+            android:summary="@string/about_app_summary"
+            android:title="@string/about_app"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/about_me">
+        <Preference
+            android:key="rate"
+            android:summary="@string/about_me_rename"
+            android:title="@string/about_me_name"/>
+
+
+        <Preference
+            android:title="@string/follow_me_on_github"
+            android:key="follow_me_on_github"
+            android:summary="@string/follow_me_on_github_desc"/>
+
+        <Preference
+            android:title="@string/follow_me_on_jianshu"
+            android:key="follow_me_on_github"
+            android:summary="@string/follow_me_on_github_jianshu"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/suggestions">
+        <Preference android:title="@string/send_suggestion"/>
+        <Preference android:title="@string/open_source_licenses"
+                    android:key="open_source_license" />
+
+    </PreferenceCategory>
+</PreferenceScreen>
