@@ -18,6 +18,7 @@
     <color name="normal_background_grey">@color/translucent_grey_300_96p</color>
     <color name="normal_background_grey_200">@color/md_grey_200</color>
     <color name="normal_text_color">#212121</color>
+    <color name="normal_text_color_second">#757575</color>
     <color name="normal_drawable_color">#e53935</color>
     <color name="drawer_divider">#E0E0E0</color>
     <color name="web_background">#9e9e9e</color>

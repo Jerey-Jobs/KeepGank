@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -74,6 +75,7 @@ public class MovieActivity extends AppSwipeBackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
         ButterKnife.bind(this);
+        setSupportActionBar(mToolbar);
         /** 使用ARouter解析 */
         ARouter.getInstance().inject(this);
         /** 使用Android自带 */
@@ -181,4 +183,14 @@ public class MovieActivity extends AppSwipeBackActivity {
         }
     }
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                scrollToFinishActivity();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

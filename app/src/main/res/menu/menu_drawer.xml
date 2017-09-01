@@ -28,15 +28,17 @@
             android:title="@string/movie"
             skin:enable="true"/>
 
-        <item
-            android:id="@+id/my_blog"
-            android:icon="@drawable/ic_star_grey600_24dp"
-            android:title="@string/action_blog"
-            skin:enable="true"/>
+
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings_grey600_24dp"
             android:title="@string/action_theme"
+            skin:enable="true"/>
+
+        <item
+            android:id="@+id/my_blog"
+            android:icon="@drawable/icon_about"
+            android:title="@string/action_blog"
             skin:enable="true"/>
 
     </group>

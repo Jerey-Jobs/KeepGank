@@ -27,7 +27,22 @@
         <item name="android:label"></item>
     </style>
 
+    <style name="MyPreferenceTheme" parent="WebTheme">
+        <item name="preferenceTheme">@style/MaterialPreferenceTheme</item>
+        <item name="android:preferenceStyle">@style/Preference.Material</item>
+    </style>
+
     <style name="PhotoActivity" parent="WebTheme">
+    </style>
+
+    <style name="MaterialPreferenceTheme" parent="PreferenceThemeOverlay.v14.Material">
+        <item name="android:fadeScrollbars">true</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:scrollbarFadeDuration">1</item>
+        <item name="android:background">@color/normal_background</item>
+        <item name="android:textColorPrimary">@color/normal_text_color</item>
+        <item name="android:textColorSecondary">@color/normal_text_color_second</item>
+        <item name="android:colorAccent">@color/colorPrimary</item>
     </style>
 
     <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
@@ -75,11 +90,11 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
-    <style name="ViewerTheme" parent="ViewerThemeBase" />
+    <style name="ViewerTheme" parent="ViewerThemeBase"/>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <style name="Animation">
         <item name="android:activityOpenEnterAnimation">@null</item>

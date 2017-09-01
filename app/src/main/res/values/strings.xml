@@ -3,7 +3,7 @@
     <string name="study">KeepGank.IO</string>
     <string name="fun">开心每一天</string>
 
-    <string name="action_blog">作者博客</string>
+    <string name="action_blog">关于</string>
     <string name="action_settings">Settings</string>
     <string name="action_theme">主题设置</string>
     <string name="action_home">主页</string>
@@ -54,12 +54,15 @@
     <string name="about_app">关于KeepGank.IO</string>
     <string name="about_me">关于作者</string>
     <string name="follow_me_on_github">在Github上关注我: Jerey-Jobs</string>
-    <string name="about_me_name">Anderson大码渣</string>
-    <string name="about_me_rename">(Jerey-Jobs)</string>
+    <string name="about_me_name">Anderson大码渣(Jerey-Jobs) - 江苏,南京</string>
+    <string name="about_me_rename">点击跳转作者博客</string>
     <string name="follow_me_on_github_desc">点击跳转Github</string>
     <string name="follow_me_on_jianshu">在简书上关注我: Anderson大码渣</string>
     <string name="follow_me_on_github_jianshu">点击跳转简书</string>
-    <string name="suggestions">支持</string>
+    <string name="suggestions">支持与改进</string>
     <string name="send_suggestion">给作者提意见</string>
     <string name="open_source_licenses">开源许可</string>
+    <string name="click_go_github">点击跳转Github</string>
+    <string name="github_url">在Github上关注此工程,获取工程源码</string>
+    <string name="click_send_suggestion">点击发送邮件</string>
 </resources>

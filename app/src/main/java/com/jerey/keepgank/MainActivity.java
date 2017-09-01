@@ -66,7 +66,7 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends SkinBaseActivity implements
-                                                   NavigationView.OnNavigationItemSelectedListener {
+        NavigationView.OnNavigationItemSelectedListener {
 
 
     private int mCurrentUIIndex = 0;
@@ -108,9 +108,9 @@ public class MainActivity extends SkinBaseActivity implements
             @Override
             public void onClick(View v) {
                 ARouter.getInstance()
-                       .build("/activity/PhotoChooseActivity")
-                       .withTransition(R.anim.in_from_right, 0)
-                       .navigation(MainActivity.this);
+                        .build("/activity/PhotoChooseActivity")
+                        .withTransition(R.anim.in_from_right, 0)
+                        .navigation(MainActivity.this);
             }
         });
         mUserimage = (CircleImageView) mHeadViewContainer.findViewById(R.id.userimage);
@@ -229,46 +229,41 @@ public class MainActivity extends SkinBaseActivity implements
                 updateUI();
                 break;
             case R.id.my_blog:
-                LogTools.d("博客被点击");
-                item.setChecked(true);
-                mCurrentUIIndex = INDEX_Blog;
-                updateUI();
+                LogTools.d("about被点击");
+                ARouter.getInstance()
+                        .build("/activity/AboutActivity")
+                        .withTransition(R.anim.in_from_right, 0)
+                        .navigation(this);
+                // item.setChecked(true);
+                // mCurrentUIIndex = INDEX_Blog;
+                // updateUI();
                 break;
             case R.id.nav_settings:
                 LogTools.d("主题被点击");
                 ARouter.getInstance()
-                       .build("/activity/ThemeChooseActivity")
-                       .withTransition(R.anim.in_from_right, 0)
-                       .navigation(this);
-                /**
-                 * 延时收回Drawer,使得后台收回,解决打开Theme界面时,低端手机上卡顿问题
-                 */
-                mHander.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-                            mDrawerLayout.closeDrawer(GravityCompat.START);
-                        }
-                    }
-                }, 1500);
+                        .build("/activity/ThemeChooseActivity")
+                        .withTransition(R.anim.in_from_right, 0)
+                        .navigation(this);
+
                 break;
             case R.id.nav_movie:
                 ARouter.getInstance().build("/douban/DoubanActivity")
-                       .withTransition(R.anim.in_from_right, 0)
-                       .navigation(this);
-                /**
-                 * 延时收回Drawer,使得后台收回,解决打开Theme界面时,低端手机上卡顿问题
-                 */
-                mHander.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-                            mDrawerLayout.closeDrawer(GravityCompat.START);
-                        }
-                    }
-                }, 1500);
+                        .withTransition(R.anim.in_from_right, 0)
+                        .navigation(this);
+
                 break;
         }
+        /**
+         * 延时收回Drawer,使得后台收回,解决打开Theme界面时,低端手机上卡顿问题
+         */
+        mHander.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    mDrawerLayout.closeDrawer(GravityCompat.START);
+                }
+            }
+        }, 1500);
         return false;
     }
 
@@ -326,21 +321,21 @@ public class MainActivity extends SkinBaseActivity implements
 
     private void loadHead(final String url) {
         Glide.with(this)
-             .load(TextUtils.isEmpty(url) ? R.drawable.jay : url)
-             .asBitmap()
-             .centerCrop()
-             .into(new SimpleTarget<Bitmap>() {
-                 @Override
-                 public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap>
-                         glideAnimation) {
-                     mUserimage.setImageBitmap(resource);
-                     Bitmap overlay = BlurImageUtils.blur(mUserimage, 3, 3);
-                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                         mHeadViewContainer.setBackground(new BitmapDrawable(getResources(),
-                                                                             overlay));
-                     }
-                 }
-             });
+                .load(TextUtils.isEmpty(url) ? R.drawable.jay : url)
+                .asBitmap()
+                .centerCrop()
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap>
+                            glideAnimation) {
+                        mUserimage.setImageBitmap(resource);
+                        Bitmap overlay = BlurImageUtils.blur(mUserimage, 3, 3);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            mHeadViewContainer.setBackground(new BitmapDrawable(getResources(),
+                                    overlay));
+                        }
+                    }
+                });
     }
 
     /**
@@ -361,7 +356,7 @@ public class MainActivity extends SkinBaseActivity implements
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         permissionTools.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }

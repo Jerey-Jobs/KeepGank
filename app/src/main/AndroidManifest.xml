@@ -67,6 +67,10 @@
         <activity
             android:name=".douban.MovieActivity"
             android:theme="@style/WebTheme"/>
+        <activity
+            android:name=".activity.AboutActivity"
+            android:theme="@style/MyPreferenceTheme"
+            />
 
         <meta-data
             android:name="UMENG_APPKEY"

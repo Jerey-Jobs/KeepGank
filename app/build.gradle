@@ -84,7 +84,8 @@ dependencies {
     //    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     compile 'com.alibaba:arouter-api:1.2.1.1'
     annotationProcessor 'com.alibaba:arouter-compiler:1.1.2.1'
-    compile 'com.android.support:support-v4:26.0.0-alpha1'
+    compile 'com.android.support:support-v4:25.1.0'
+    compile 'com.android.support:preference-v14:25.1.0'
 }
 /**
  * 为所有版本强制改为25.1.0
