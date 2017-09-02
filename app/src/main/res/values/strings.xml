@@ -65,4 +65,12 @@
     <string name="click_go_github">点击跳转Github</string>
     <string name="github_url">在Github上关注此工程,获取工程源码</string>
     <string name="click_send_suggestion">点击发送邮件</string>
+    <string name="mail_topic">KeepGank应用反馈建议</string>
+    <string name="device_model">设备型号</string>
+    <string name="sdk_version">SDK版本号</string>
+    <string name="sendto">mailto:jerey_jobs@qq.com</string>
+    <string name="app_github">https://github.com/Jerey-Jobs/KeepGank</string>
+    <string name="my_blog">http://jerey.cn/</string>
+    <string name="my_github">https://github.com/Jerey-Jobs</string>
+    <string name="my_jianshu">http://www.jianshu.com/u/016a5ba708a0</string>
 </resources>

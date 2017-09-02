@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.base.SingleFragmentActivity;
@@ -27,6 +29,11 @@ public class MyWebActivity extends SingleFragmentActivity {
     private static final String TAG = "MyWebActivity";
     private WebFragment mWebFragment;
 
+    @Autowired
+    String title;
+    @Autowired
+    String url;
+
     @Override
     protected Fragment getFragment() {
         if (mWebFragment == null) {
@@ -39,22 +46,29 @@ public class MyWebActivity extends SingleFragmentActivity {
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        LogTools.i("title:" + title + " url:" + url);
     }
 
     @Override
     protected Bundle getArguments() {
         Intent intent = getIntent();
         String id = intent.getStringExtra(WebFragment.DATA_ID);
-        String title = intent.getStringExtra(WebFragment.DATA_TITLE);
-        String type = intent.getStringExtra(WebFragment.DATA_TYPE);
-        String url = intent.getStringExtra(WebFragment.DATA_URL);
+        String tmptitle = intent.getStringExtra(WebFragment.DATA_TITLE);
+        String tmptype = intent.getStringExtra(WebFragment.DATA_TYPE);
+        String tmpurl = intent.getStringExtra(WebFragment.DATA_URL);
         String who = intent.getStringExtra(WebFragment.DATA_WHO);
+        if (TextUtils.isEmpty(tmptitle)) {
+            tmptitle = title;
+        }
+        if (TextUtils.isEmpty(tmpurl)) {
+            tmpurl = url;
+        }
         Log.d(TAG, "id: " + id + " title: " + title + " url: " + url);
         Bundle bundle = new Bundle();
         bundle.putSerializable(WebFragment.DATA_ID, id);
-        bundle.putSerializable(WebFragment.DATA_TITLE, title);
-        bundle.putSerializable(WebFragment.DATA_URL, url);
-        bundle.putSerializable(WebFragment.DATA_TYPE, type);
+        bundle.putSerializable(WebFragment.DATA_TITLE, tmptitle);
+        bundle.putSerializable(WebFragment.DATA_URL, tmpurl);
+        bundle.putSerializable(WebFragment.DATA_TYPE, tmptype);
         bundle.putSerializable(WebFragment.DATA_WHO, who);
         return bundle;
     }
@@ -77,8 +91,8 @@ public class MyWebActivity extends SingleFragmentActivity {
         intent.putExtra(WebFragment.DATA_TYPE, result.getType());
         intent.putExtra(WebFragment.DATA_URL, result.getUrl());
         intent.putExtra(WebFragment.DATA_WHO, result.getWho());
-//        context.startActivity(intent);
         LogTools.d(SkinManager.getInstance().getColor(R.color.colorPrimary));
+        LogTools.i("title:" + result.getDesc() + " url:" + result.getUrl());
         AnimationHelper.startActivity((Activity) context
                 , intent
                 , view

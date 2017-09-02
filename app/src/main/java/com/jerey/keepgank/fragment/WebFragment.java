@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.ClipboardManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,7 +48,8 @@ public class WebFragment extends BaseFragment {
     private String mType;
     private String mWho;
 
-    public static WebFragment newInstance(String id, String title, String url, String type, String who) {
+    public static WebFragment newInstance(String id, String title, String url, String type,
+                                          String who) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(DATA_ID, id);
         bundle.putSerializable(DATA_TITLE, title);
@@ -75,6 +77,10 @@ public class WebFragment extends BaseFragment {
         mTitle = getArguments().getString(DATA_TITLE);
         mType = getArguments().getString(DATA_TYPE);
         mURl = getArguments().getString(DATA_URL);
+        LogTools.d("title:" + mTitle + " url:" + mURl);
+        if (!TextUtils.isEmpty(mTitle)) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(mTitle);
+        }
         initWebView();
         mWebView.loadUrl(mURl);
     }
@@ -133,7 +139,8 @@ public class WebFragment extends BaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_copy_the_url:
-                ClipboardManager c = (ClipboardManager) getActivity().getSystemService(getActivity().CLIPBOARD_SERVICE);
+                ClipboardManager c = (ClipboardManager) getActivity().getSystemService
+                        (getActivity().CLIPBOARD_SERVICE);
                 c.setText(mURl);
                 break;
             case R.id.action_open_in_browser:

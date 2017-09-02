@@ -3,6 +3,7 @@ package com.jerey.keepgank.base;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.jerey.keepgank.R;
 
 /**
@@ -14,6 +15,7 @@ public abstract class SingleFragmentActivity extends AppSwipeBackActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_empty);
+        ARouter.getInstance().inject(this);
         Fragment fragment = getFragment();
         fragment.setArguments(getArguments());
         getSupportFragmentManager().beginTransaction().add(android.R.id.content, fragment).commit();
