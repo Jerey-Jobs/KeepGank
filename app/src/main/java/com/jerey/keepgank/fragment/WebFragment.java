@@ -12,8 +12,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
@@ -85,13 +87,52 @@ public class WebFragment extends BaseFragment {
         mWebView.loadUrl(mURl);
     }
 
+    /* 根据元素判断是否，含有"View all of README.md"
+    var myParagragh = document.getElementsByClassName("bubble-actions");
+	console.log("myParagragh length:", myParagragh.length);
+	for (var i = myParagragh.length - 1; i >= 0; i--) {
+        var a = myParagragh[i].getElementsByClassName("bubble-action");
+        if (a.length > 0) {
+            console.log("action:", a[0]);
+            console.log("action:", a[0].firstChild.data);
+            if (a[0].firstChild.data.indexOf("View all of README.md") > 0){
+                console.log("含有");
+                window.location.href=a[0].href;
+            }
+        }
+    }
+    */
+    String jsCode = "javascript:\tvar myParagragh = document.getElementsByClassName" +
+            "(\"bubble-actions\"); \n" +
+            "\tconsole.log(\"myParagragh length:\", myParagragh.length);\n" +
+            "\tfor (var i = myParagragh.length - 1; i >= 0; i--) {\n" +
+            "\t\tvar a = myParagragh[i].getElementsByClassName(\"bubble-action\");\n" +
+            "\t\tif (a.length > 0) {\n" +
+            "\t\t\tconsole.log(\"action:\", a[0]);\n" +
+            "\t\t\tconsole.log(\"action:\", a[0].firstChild.data);\n" +
+            "\t\t\tif (a[0].firstChild.data.indexOf(\"View all of README.md\") > 0){\n" +
+            "\t\t\t\t    console.log(\"含有\");\n" +
+            "\t\t\t\t    window.location.href=a[0].href;\n" +
+            "\t\t\t }\n" +
+            "\t\t\n" +
+            "\t\t}\n" +
+            "\t}";
+
     private void initWebView() {
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.addJavascriptInterface(new InJavaScriptLocalObj(), "local_obj");
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(android.webkit.WebView view, String url) {
                 //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
                 view.loadUrl(url);
                 return true;
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                view.loadUrl(jsCode);
             }
         });
         mWebView.setWebChromeClient(new WebChromeClient() {
@@ -167,4 +208,12 @@ public class WebFragment extends BaseFragment {
         return super.onOptionsItemSelected(item);
     }
 
+
+    final class InJavaScriptLocalObj {
+        @JavascriptInterface
+        public void showSource(String html) {
+            Log.w("HTML", html);
+
+        }
+    }
 }
