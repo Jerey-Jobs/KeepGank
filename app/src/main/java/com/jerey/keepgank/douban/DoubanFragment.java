@@ -99,8 +99,15 @@ public class DoubanFragment extends BaseFragment implements SearchView.OnSearchA
 
         mLinearLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        /** 伪造数据，实现预加载*/
+        List<SubjectsBean> tmpList = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            tmpList.add(new SubjectsBean());
+        }
+        TypeInfoBean typeInfoBean = new TypeInfoBean();
+        typeInfoBean.setSubjects(tmpList);
         for (int i = 0; i < 3; i++) {
-            items.add(new SubjectsBean());
+            items.add(typeInfoBean);
         }
         adapter.setItems(items);
         AnimationAdapter animationAdapter = new SlideInBottomAnimationAdapter(adapter);
