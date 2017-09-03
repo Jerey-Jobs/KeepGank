@@ -170,9 +170,9 @@
             </LinearLayout>
 
             <TextView
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:paddingLeft="20dp"
                 android:text="剧情简介"/>
 
@@ -184,6 +184,14 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="8dp"
                 android:textColor="@color/normal_text_color"/>
+
+            <LinearLayout
+                android:id="@+id/list_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/movie_recyclerview"

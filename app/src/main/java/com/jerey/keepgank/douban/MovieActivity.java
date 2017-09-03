@@ -66,6 +66,8 @@ public class MovieActivity extends AppSwipeBackActivity {
     TextView mTvRatingsCount;
     @BindView(R.id.tv_summary)
     TextView mTvSummary;
+    @BindView(R.id.list_container)
+    LinearLayout mContainer;
 
     MultiTypeAdapter mMultiTypeAdapter;
     List<Object> mList;
@@ -100,35 +102,35 @@ public class MovieActivity extends AppSwipeBackActivity {
 
     private void loadData(String id) {
         DoubanApi.getInstance()
-                .getDoubanInterface()
-                .getMonvieInfo(id)
-                .filter(new Func1<MovieInfoBean, Boolean>() {
-                    @Override
-                    public Boolean call(MovieInfoBean movieInfoBean) {
-                        return !TextUtils.isEmpty(movieInfoBean.getTitle());
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<MovieInfoBean>() {
-                    @Override
-                    public void onCompleted() {
+                 .getDoubanInterface()
+                 .getMonvieInfo(id)
+                 .filter(new Func1<MovieInfoBean, Boolean>() {
+                     @Override
+                     public Boolean call(MovieInfoBean movieInfoBean) {
+                         return !TextUtils.isEmpty(movieInfoBean.getTitle());
+                     }
+                 })
+                 .subscribeOn(Schedulers.io())
+                 .observeOn(AndroidSchedulers.mainThread())
+                 .subscribe(new Observer<MovieInfoBean>() {
+                     @Override
+                     public void onCompleted() {
 
-                    }
+                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
+                     @Override
+                     public void onError(Throwable e) {
+                         e.printStackTrace();
+                     }
 
-                    @Override
-                    public void onNext(MovieInfoBean movieInfoBean) {
-                        if (movieInfoBean == null) {
-                            return;
-                        }
-                        updateUI(movieInfoBean);
-                    }
-                });
+                     @Override
+                     public void onNext(MovieInfoBean movieInfoBean) {
+                         if (movieInfoBean == null) {
+                             return;
+                         }
+                         updateUI(movieInfoBean);
+                     }
+                 });
     }
 
     private void updateUI(MovieInfoBean movieInfoBean) {
@@ -143,10 +145,10 @@ public class MovieActivity extends AppSwipeBackActivity {
             }
         }
         Glide.with(MovieActivity.this)
-                .load(imageUrl)
-                .placeholder(R.drawable.bg_grey)
-                .error(R.drawable.bg_red)
-                .into(mMovieImageView);
+             .load(imageUrl)
+             .placeholder(R.drawable.bg_grey)
+             .error(R.drawable.bg_red)
+             .into(mMovieImageView);
         mTvMovieTitle.setText(movieInfoBean.getTitle());
         mTitleText.setText(movieInfoBean.getTitle());
         /** 设置年代 */
@@ -180,6 +182,10 @@ public class MovieActivity extends AppSwipeBackActivity {
         if (movieInfoBean.getRating() != null) {
             mTvRating.setText("" + movieInfoBean.getRating().getAverage());
             mTvRatingsCount.setText("评分人数:" + movieInfoBean.getRatings_count());
+        }
+
+        if (movieInfoBean.getCasts() != null) {
+
         }
     }
 
