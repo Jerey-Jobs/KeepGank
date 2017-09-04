@@ -1,7 +1,6 @@
 package com.jerey.themelib.loader;
 
 import android.graphics.Typeface;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.jerey.themelib.utils.TypefaceUtils;
@@ -23,7 +22,7 @@ public class TextViewRepository {
     public static void add(TextView textView) {
         mTextViewsWeakList.add(new WeakReference<TextView>(textView));
         textView.setTypeface(TypefaceUtils.CURRENT_TYPEFACE);
-        Log.d(TAG, "TextViewRepository mTextViews count: " + mTextViewsWeakList.size());
+    //    Log.d(TAG, "TextViewRepository mTextViews count: " + mTextViewsWeakList.size());
     }
 
     public static void clear() {
