@@ -179,7 +179,6 @@ public class ThemeChooseActivity extends AppSwipeBackActivity {
             theme = THEME_DEFAULT;
         }
         updateUIByName(theme);
-
     }
 
     private static final String THEME_NIGHT = "com.jerey.theme_night";

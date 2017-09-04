@@ -1,7 +1,7 @@
 package com.jerey.keepgank.douban;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -17,8 +17,7 @@ import com.bumptech.glide.Glide;
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.base.AppSwipeBackActivity;
 import com.jerey.keepgank.douban.bean.MovieInfoBean;
-import com.jerey.keepgank.douban.bean.SubjectsBean;
-import com.jerey.keepgank.douban.itembinder.SubjectsBinder;
+import com.jerey.keepgank.douban.itembinder.CastsBinder;
 import com.jerey.keepgank.net.DoubanApi;
 import com.jerey.loglib.LogTools;
 import com.jerey.mutitype.MultiTypeAdapter;
@@ -42,6 +41,8 @@ public class MovieActivity extends AppSwipeBackActivity {
 
     @Autowired
     String movieId;
+    @BindView(R.id.toolbar_layout)
+    CollapsingToolbarLayout mToolbarLayout;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.movie_imageView)
@@ -77,7 +78,10 @@ public class MovieActivity extends AppSwipeBackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
         ButterKnife.bind(this);
+        dynamicAddView(mToolbarLayout, "ContentScrimColor", R.color.app_main_color);
+        //dynamicAddView(mToolbar, "background", R.color.app_main_color);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         /** 使用ARouter解析 */
         ARouter.getInstance().inject(this);
         /** 使用Android自带 */
@@ -89,15 +93,15 @@ public class MovieActivity extends AppSwipeBackActivity {
 
 
         // TODO 测试代码
-        mMultiTypeAdapter = new MultiTypeAdapter(mList);
-        mMultiTypeAdapter.register(SubjectsBean.class, new SubjectsBinder());
-        mMovieRecyclerview.setLayoutManager(new LinearLayoutManager(this));
-        mMovieRecyclerview.setAdapter(mMultiTypeAdapter);
-        mMovieRecyclerview.setNestedScrollingEnabled(false);
-        for (int i = 0; i < 15; i++) {
-            mList.add(new SubjectsBean());
-        }
-        mMultiTypeAdapter.notifyDataSetChanged();
+        //        mMultiTypeAdapter = new MultiTypeAdapter(mList);
+        //        mMultiTypeAdapter.register(SubjectsBean.class, new SubjectsBinder());
+        //        mMovieRecyclerview.setLayoutManager(new LinearLayoutManager(this));
+        //        mMovieRecyclerview.setAdapter(mMultiTypeAdapter);
+        //        mMovieRecyclerview.setNestedScrollingEnabled(false);
+        //        for (int i = 0; i < 15; i++) {
+        //            mList.add(new SubjectsBean());
+        //        }
+        //        mMultiTypeAdapter.notifyDataSetChanged();
     }
 
     private void loadData(String id) {
@@ -185,7 +189,7 @@ public class MovieActivity extends AppSwipeBackActivity {
         }
 
         if (movieInfoBean.getCasts() != null) {
-
+            new CastsBinder().addView(mContainer, movieInfoBean.getCasts());
         }
     }
 
