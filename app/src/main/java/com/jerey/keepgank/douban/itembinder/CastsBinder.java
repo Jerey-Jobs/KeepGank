@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.douban.bean.SubjectsBean;
@@ -78,15 +79,16 @@ public class CastsBinder extends ItemViewBinder<List<SubjectsBean.CastsBean>, Ca
         }
 
         @Override
-        public void onBindViewHolder(CastViewHolder holder, int position) {
+        public void onBindViewHolder(final CastViewHolder holder, final int position) {
             String imgUrl = null;
-            if (dataList.get(position).getAvatars() != null) {
-                imgUrl = dataList.get(position).getAvatars().getMedium();
+            final SubjectsBean.CastsBean castsBean = dataList.get(position);
+            if (castsBean.getAvatars() != null) {
+                imgUrl = castsBean.getAvatars().getMedium();
                 if (imgUrl == null) {
-                    imgUrl = dataList.get(position).getAvatars().getLarge();
+                    imgUrl = castsBean.getAvatars().getLarge();
                 }
                 if (imgUrl == null) {
-                    imgUrl = dataList.get(position).getAvatars().getSmall();
+                    imgUrl = castsBean.getAvatars().getSmall();
                 }
             }
             Glide.with(holder.itemView.getContext())
@@ -94,7 +96,18 @@ public class CastsBinder extends ItemViewBinder<List<SubjectsBean.CastsBean>, Ca
                  .centerCrop()
                  .placeholder(R.drawable.bg_grey)
                  .into(holder.mItemImageView);
-            holder.mItemName.setText(dataList.get(position).getName());
+            holder.mItemName.setText(castsBean.getName());
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ARouter.getInstance()
+                           .build("/activity/MyWebActivity")
+                           .withString("title", castsBean.getName())
+                           .withString("url", castsBean.getAlt())
+                           .withTransition(R.anim.in_from_right, 0)
+                           .navigation(holder.itemView.getContext());
+                }
+            });
         }
 
         @Override
