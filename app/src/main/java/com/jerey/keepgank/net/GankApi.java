@@ -108,7 +108,7 @@ public class GankApi {
                                          );
 
         //http://gank.io/api/search/query/%E4%BD%A0/category/all/count/10/page/1
-        @GET("/api/search/query/{content}/category/all/count/10/page/1")
+        @GET("/api/search/query/{content}/category/all/count/30/page/1")
         Observable<Data> getSearchResult(
                 @Path("content") String content);
     }

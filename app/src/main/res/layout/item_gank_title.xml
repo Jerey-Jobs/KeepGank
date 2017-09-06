@@ -4,6 +4,8 @@
     xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/space_normal"
+    android:layout_marginRight="@dimen/space_normal"
     android:background="@color/normal_background"
     android:orientation="vertical"
     skin:enable="true">

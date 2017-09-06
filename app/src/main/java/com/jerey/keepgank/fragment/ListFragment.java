@@ -17,6 +17,7 @@ import com.jerey.keepgank.bean.Data;
 import com.jerey.keepgank.bean.Result;
 import com.jerey.keepgank.net.Config;
 import com.jerey.keepgank.net.GankApi;
+import com.jerey.keepgank.view.MyBottomItemDecoration;
 import com.jerey.keepgank.view.SlideInOutRightItemAnimator;
 import com.jerey.keepgank.view.SwipeToRefreshLayout;
 import com.jerey.loglib.LogTools;
@@ -39,7 +40,7 @@ import rx.schedulers.Schedulers;
  */
 
 public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,
-                                                          FooterRecyclerView.onLoadMoreListener {
+        FooterRecyclerView.onLoadMoreListener {
     private static final String TAG = "ListFragment";
     public static final String KEY_TYPE = "type";
 
@@ -120,6 +121,7 @@ public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         mRecyclerView.setAdapter(animationAdapter);
         mRecyclerView.setItemAnimator(new SlideInOutRightItemAnimator(mRecyclerView));
         mRecyclerView.setOnLoadMoreListener(this);
+        mRecyclerView.addItemDecoration(new MyBottomItemDecoration(getContext()));
 
         Observable.create(new Observable.OnSubscribe<Data>() {
             @Override
@@ -208,7 +210,7 @@ public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                                                 resources.getColor(R.color.red_dark),
                                                 resources.getColor(R.color.yellow_dark),
                                                 resources.getColor(R.color.green_dark)
-                                               );
+        );
         swipeRefreshLayout.setOnRefreshListener(this);
     }
 

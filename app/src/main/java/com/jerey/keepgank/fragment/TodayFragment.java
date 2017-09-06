@@ -16,24 +16,32 @@ import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.jerey.animationadapter.AnimationAdapter;
-import com.jerey.animationadapter.SlideInBottomAnimationAdapter;
 import com.jerey.footerrecyclerview.FooterRecyclerView;
 import com.jerey.keepgank.R;
-import com.jerey.keepgank.adapter.DayFragmentAdapter;
 import com.jerey.keepgank.bean.GankDay;
+import com.jerey.keepgank.bean.GankDayResults;
+import com.jerey.keepgank.bean.Result;
+import com.jerey.keepgank.bean.TitleBean;
+import com.jerey.keepgank.binder.GankResultBinder;
+import com.jerey.keepgank.binder.TitleBeanBinder;
 import com.jerey.keepgank.net.GankApi;
+import com.jerey.keepgank.view.MyBottomItemDecoration;
 import com.jerey.keepgank.view.SlideInOutRightItemAnimator;
 import com.jerey.loglib.LogTools;
 import com.jerey.lruCache.DiskLruCacheManager;
+import com.jerey.mutitype.MultiTypeAdapter;
 import com.trello.rxlifecycle.FragmentEvent;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
+import rx.Observable;
+import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
@@ -62,11 +70,12 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
     FloatingActionButton mButton;
 
     private LinearLayoutManager mLinearLayoutManager;
-    private DayFragmentAdapter mAdapter;
+    private MultiTypeAdapter mAdapter;
     int year;
     int month;
     int day;
     private DiskLruCacheManager mDiskLruCacheManager;
+    private List<Object> mDataList;
 
     @Override
     protected int returnLayoutID() {
@@ -78,7 +87,6 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         initUI();
         dynamicAddView(mToolbarLayout, "ContentScrimColor", R.color.app_main_color);
-        mAdapter = new DayFragmentAdapter(getActivity());
         java.util.Calendar calendar = java.util.Calendar.getInstance();
         calendar.setTime(new Date());
         year = calendar.get(java.util.Calendar.YEAR);
@@ -132,11 +140,17 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
                 statusBarColorAnim.start();
             }
         }
+        mDataList = new ArrayList<>();
+        mAdapter = new MultiTypeAdapter(mDataList)
+                .register(TitleBean.class, new TitleBeanBinder())
+                .register(Result.class, new GankResultBinder());
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.addItemDecoration(new MyBottomItemDecoration(getContext()));
         mRecyclerView.setEndText("没有更多数据了...");
         mLinearLayoutManager = new LinearLayoutManager(mRecyclerView.getContext());
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,7 +160,7 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
                         now.get(Calendar.YEAR),
                         now.get(Calendar.MONTH),
                         now.get(Calendar.DAY_OF_MONTH)
-                                                                                );
+                );
                 datePickerDialog.setVersion(DatePickerDialog.Version.VERSION_2);
                 datePickerDialog.show(getActivity().getFragmentManager(), "Datepickerdialog");
             }
@@ -154,7 +168,6 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
     }
 
     private void load(final int year, final int month, final int day) {
-
         GankApi.getInstance()
                .getWebService()
                .getGoodsByDay(year, month, day)
@@ -195,7 +208,7 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
                });
     }
 
-    private void loadUIByGankday(GankDay gankDay) {
+    private void loadUIByGankday(final GankDay gankDay) {
         LogTools.d(gankDay.results.福利.get(0).getUrl());
         Glide.with(TodayFragment.this)
              .load(gankDay.results.福利.get(0).getUrl())
@@ -203,11 +216,65 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
              .crossFade()
              .error(R.drawable.jay)
              .into(mImageView);
-        mAdapter.setData(gankDay.results);
-        AnimationAdapter animationAdapter = new SlideInBottomAnimationAdapter(mAdapter);
-        animationAdapter.setDuration(600);
-        mRecyclerView.setAdapter(animationAdapter);
-        mRecyclerView.setItemAnimator(new SlideInOutRightItemAnimator(mRecyclerView));
+        LogTools.d("loadUIByGankday");
+        Observable.create(new Observable.OnSubscribe<GankDayResults>() {
+            @Override
+            public void call(Subscriber<? super GankDayResults> subscriber) {
+                mDataList.clear();
+                subscriber.onNext(gankDay.results);
+            }
+        })
+                  .subscribeOn(Schedulers.io())
+                  .map(new Func1<GankDayResults, List<Object>>() {
+
+                      @Override
+                      public List<Object> call(GankDayResults gankDayResults) {
+                          if (gankDayResults.Android != null) {
+                              mDataList.add(new TitleBean("Android"));
+                              mDataList.addAll(gankDayResults.Android);
+                          }
+                          if (gankDayResults.iOS != null) {
+                              mDataList.add(new TitleBean("IOS"));
+                              mDataList.addAll(gankDayResults.iOS);
+                          }
+                          if (gankDayResults.App != null) {
+                              mDataList.add(new TitleBean("APP"));
+                              mDataList.addAll(gankDayResults.App);
+                          }
+                          if (gankDayResults.休息视频 != null) {
+                              mDataList.add(new TitleBean("休息视频"));
+                              mDataList.addAll(gankDayResults.休息视频);
+                          }
+                          if (gankDayResults.瞎推荐 != null) {
+                              mDataList.add(new TitleBean("瞎推荐"));
+                              mDataList.addAll(gankDayResults.瞎推荐);
+                          }
+                          return mDataList;
+                      }
+                  })
+                  .observeOn(AndroidSchedulers.mainThread())
+                  .subscribe(new Observer<List<Object>>() {
+                      @Override
+                      public void onCompleted() {
+
+                      }
+
+                      @Override
+                      public void onError(Throwable e) {
+                          e.printStackTrace();
+                      }
+
+                      @Override
+                      public void onNext(List<Object> objects) {
+                          LogTools.d("onNext");
+
+                          mRecyclerView.setItemAnimator(new SlideInOutRightItemAnimator
+                                                                (mRecyclerView));
+                          mAdapter.notifyDataSetChanged();
+                      }
+                  });
+
+
     }
 
     @Override
