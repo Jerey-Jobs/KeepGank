@@ -1,12 +1,15 @@
 package com.jerey.keepgank.net;
 
 
+import com.jerey.keepgank.GankApp;
 import com.jerey.keepgank.douban.bean.MovieInfoBean;
 import com.jerey.keepgank.douban.bean.TypeInfoBean;
 import com.jerey.keepgank.douban.bean.USBean;
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -40,10 +43,11 @@ public class DoubanApi {
     }
 
     public DoubanApi() {
-
+        File httpCacheDirectory = new File(GankApp.getmCachePath(), "responses");
         OkHttpClient client = new OkHttpClient.Builder()
-                .retryOnConnectionFailure(true)//连接失败后是否重新连接
-                .connectTimeout(15, TimeUnit.SECONDS)//超时时间15S
+                .retryOnConnectionFailure(true)                         //retry
+                .connectTimeout(15, TimeUnit.SECONDS)                   //timeout 15S
+                .cache(new Cache(httpCacheDirectory, 10 * 1024 * 1024)) // add cache dir
                 .addInterceptor(new HttpInterceptor())
                 .build();
 
@@ -67,13 +71,13 @@ public class DoubanApi {
     public interface DoubanInterface {
         @GET("/v2/movie/{type}")
         Observable<TypeInfoBean> getTypeData(@Path("type") String type,
-                                             @Query("start") int start,
-                                             @Query("count") int count);
+                @Query("start") int start,
+                @Query("count") int count);
 
         //http://api.douban.com/v2/movie/top250?start=10&count=10
         @GET("/v2/movie/top250")
         Observable<TypeInfoBean> getTop250(@Query("start") int start,
-                                           @Query("count") int count);
+                @Query("count") int count);
 
         /**
          * http://api.douban.com/v2/movie/coming_soon?start=10&count=10
@@ -81,7 +85,7 @@ public class DoubanApi {
          */
         @GET("/v2/movie/coming_soon")
         Observable<TypeInfoBean> getCommingSoon(@Query("start") int start,
-                                                @Query("count") int count);
+                @Query("count") int count);
 
         /**
          * http://api.douban.com/v2/movie/us_box
@@ -96,7 +100,7 @@ public class DoubanApi {
          */
         @GET("/v2/movie/in_theaters")
         Observable<TypeInfoBean> getInTheaters(@Query("start") int start,
-                                               @Query("count") int count);
+                @Query("count") int count);
 
         /**
          * http://api.douban.com/v2/movie/subject/26363254

@@ -5,10 +5,10 @@ import android.support.annotation.StringDef;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/**
- * Created by Hui on 2016/2/13.
- */
+
 public class Config {
+
+    
 
     @StringDef({TYPE_ANDROID, TYPE_IOS,TYPE_FRONT_END,TYPE_RECOMMEND,TYPE_VIDEO,TYPE_GIRL,TYPE_RESOURCES})
     @Retention(RetentionPolicy.SOURCE)
