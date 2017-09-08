@@ -212,19 +212,19 @@ public class MainActivity extends SkinBaseActivity implements
         switch (item.getItemId()) {
             case R.id.nav_home:
                 LogTools.d("home被点击");
-              //  item.setChecked(true);
+                //  item.setChecked(true);
                 mCurrentUIIndex = INDEX_HOME;
                 updateUI();
                 break;
             case R.id.nav_today:
                 LogTools.d("今日被点击");
-              //  item.setChecked(true);
+                //  item.setChecked(true);
                 mCurrentUIIndex = INDEX_TODAY;
                 updateUI();
                 break;
             case R.id.nav_collection:
                 LogTools.d("收藏被点击");
-               // item.setChecked(true);
+                // item.setChecked(true);
                 mCurrentUIIndex = INDEX_COLLECTION;
                 updateUI();
                 break;

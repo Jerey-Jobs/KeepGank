@@ -1,6 +1,7 @@
 package com.jerey.keepgank;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.jerey.keepgank.utils.NetworkManager;
 import com.jerey.themelib.SkinConfig;
 import com.jerey.themelib.base.SkinBaseApplication;
 
@@ -14,7 +15,8 @@ public class GankApp extends SkinBaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        mCachePath = getExternalCacheDir();
+        mCachePath = getExternalCacheDir().getPath();
+        NetworkManager.init(this);
         SkinConfig.setCanChangeStatusColor(true);
         SkinConfig.setCanChangeFont(true);
         SkinConfig.setDebug(false);
@@ -22,7 +24,7 @@ public class GankApp extends SkinBaseApplication {
         ARouter.openDebug();
         ARouter.init(this);
     }
-    
+
     public static String getmCachePath() {
         return mCachePath;
     }
