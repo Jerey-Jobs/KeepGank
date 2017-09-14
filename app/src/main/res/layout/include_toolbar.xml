@@ -24,5 +24,5 @@
     android:background="@color/app_main_color"
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     app:navigationIcon="@mipmap/ic_menu"
-    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+    app:popupTheme="@style/ToolbarPopupTheme"
     skin:enable="true"/>

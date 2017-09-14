@@ -67,8 +67,11 @@
             android:theme="@style/WebTheme"/>
         <activity
             android:name=".modules.about.AboutActivity"
-            android:theme="@style/MyPreferenceTheme"
-            />
+            android:theme="@style/MyPreferenceTheme"/>
+
+        <activity
+            android:name=".modules.welcome.WelcomeActivity"
+            android:theme="@style/WebTheme"/>
 
         <meta-data
             android:name="UMENG_APPKEY"

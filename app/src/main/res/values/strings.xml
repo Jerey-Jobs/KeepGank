@@ -74,4 +74,6 @@
     <string name="my_github">https://github.com/Jerey-Jobs</string>
     <string name="my_jianshu">http://www.jianshu.com/u/016a5ba708a0</string>
     <string name="perm_request_refused">权限申请被拒绝</string>
+    <string name="click_go_first_enter">引导界面</string>
+    <string name="click_go_photo_choose">头像选择界面</string>
 </resources>

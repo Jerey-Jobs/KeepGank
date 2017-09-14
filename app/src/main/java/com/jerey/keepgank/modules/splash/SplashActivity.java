@@ -2,15 +2,18 @@ package com.jerey.keepgank.modules.splash;
 
 import android.Manifest;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.widget.Toast;
 
 import com.cn.jerey.permissiontools.Callback.PermissionCallbacks;
 import com.cn.jerey.permissiontools.PermissionTools;
-import com.jerey.keepgank.modules.MainActivity;
 import com.jerey.keepgank.R;
+import com.jerey.keepgank.data.constant.AppConstant;
+import com.jerey.keepgank.modules.MainActivity;
+import com.jerey.keepgank.modules.welcome.WelcomeActivity;
+import com.jerey.keepgank.utils.SPUtils;
 
 import java.util.List;
 
@@ -26,12 +29,21 @@ public class SplashActivity extends AppCompatActivity {
                     public void onPermissionsGranted(int requestCode, List<String> perms) {
                         //    Toast.makeText(MainActivity.this, "权限申请通过", Toast.LENGTH_SHORT)
                         // .show();
-                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                        if (SPUtils.get(SplashActivity.this, AppConstant.isFirstEnter, true)) {
+                            SPUtils.put(SplashActivity.this, AppConstant.isFirstEnter, false);
+                            startActivity(new Intent(SplashActivity.this, WelcomeActivity.class));
+                            finish();
+                        } else {
+                            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                            finish();
+                        }
                     }
 
                     @Override
                     public void onPermissionsDenied(int requestCode, List<String> perms) {
-                        Toast.makeText(SplashActivity.this, R.string.perm_request_refused, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SplashActivity.this, R.string.perm_request_refused, Toast
+                                .LENGTH_SHORT)
+                             .show();
                     }
                 })
                 .setRequestCode(99)

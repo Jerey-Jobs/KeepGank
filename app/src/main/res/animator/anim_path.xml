@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:androd="http://schemas.android.com/apk/res/android">
+    <objectAnimator
+        androd:duration="5000"
+        androd:propertyName="trimPathStart"
+        androd:repeatCount="infinite"
+        androd:repeatMode="reverse"
+        androd:valueFrom="1"
+        androd:valueTo="0"
+        androd:valueType="floatType">
+    </objectAnimator>
+    <objectAnimator
+        androd:duration="5000"
+        androd:propertyName="strokeColor"
+        androd:repeatCount="infinite"
+        androd:repeatMode="reverse"
+        androd:valueFrom="#554f8d"
+        androd:valueTo="@android:color/holo_blue_dark"
+        androd:valueType="colorType">
+    </objectAnimator>
+</set>

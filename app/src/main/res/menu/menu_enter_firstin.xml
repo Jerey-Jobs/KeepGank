@@ -1,0 +1,14 @@
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".modules.MainActivity">
+    <item
+        android:id="@+id/action_picture_choose"
+        android:title="@string/click_go_photo_choose"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_first_enter"
+        android:title="@string/click_go_first_enter"
+        app:showAsAction="never"/>
+</menu>

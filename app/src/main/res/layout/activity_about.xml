@@ -57,6 +57,7 @@
                 android:title=""
                 app:layout_collapseMode="pin"
                 app:navigationIcon="@drawable/ic_arrow_back"
+                app:popupTheme="@style/ToolbarPopupTheme"
                 skin:enable="true">
 
                 <TextView

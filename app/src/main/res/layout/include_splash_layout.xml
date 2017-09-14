@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+
+    <ImageView
+        android:id="@+id/path_iv"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_marginTop="80dp"
+        app:srcCompat="@drawable/path_anim"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:src="@drawable/fling_xiangshang"
+            android:id="@+id/imageView6"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="向上滑动"
+            android:textSize="20sp"
+            android:textColor="#345c5f5f"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/imageView6"
+            android:layout_marginTop="53dp"/>
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_above="@+id/imageView3"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="66dp"
+            android:src="@drawable/big_dipper"/>
+
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_alignBottom="@+id/imageView3"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="53dp"
+            android:layout_marginStart="26dp"
+            android:src="@drawable/meteorites"/>
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@+id/imageView4"
+            android:layout_marginBottom="27dp"
+            android:layout_marginStart="49dp"
+            android:src="@drawable/planet_univearse_telestial_space_mars"/>
+
+
+    </RelativeLayout>
+
+</LinearLayout>

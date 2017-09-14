@@ -37,6 +37,7 @@ dependencies {
     compile project(':footerrecyclerview')
     compile project(':mutiType')
     compile project(':searchview')
+    compile project(':animationlib')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -53,7 +54,6 @@ dependencies {
     compile GLIDE
     //一个滑动返回库
     compile 'me.imid.swipebacklayout.lib:library:1.0.0'
-
     compile 'io.reactivex:rxandroid:0.24.0'
     compile 'com.hwangjr.rxbus:rxbus:1.0.5'
     //严格控制由于发布了一个订阅后，由于没有及时取消，导致Activity/Fragment无法销毁导致的内存泄露的库
@@ -75,7 +75,6 @@ dependencies {
     //我的权限库
     compile 'com.github.Jerey-Jobs:PermissionTools:1.5'
     compile 'com.github.Jerey-Jobs:LogTools:0.1'
-
     //友盟统计 crash日志
     compile 'com.umeng.analytics:analytics:latest.integration'
     //查找内存泄露 临时调试用
