@@ -1,6 +1,6 @@
 package com.jerey.keepgank.data;
 
-import com.jerey.keepgank.bean.Bookmark;
+import com.jerey.keepgank.data.bean.Bookmark;
 
 import java.util.List;
 

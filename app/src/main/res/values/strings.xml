@@ -73,4 +73,5 @@
     <string name="my_blog">http://jerey.cn/</string>
     <string name="my_github">https://github.com/Jerey-Jobs</string>
     <string name="my_jianshu">http://www.jianshu.com/u/016a5ba708a0</string>
+    <string name="perm_request_refused">权限申请被拒绝</string>
 </resources>

@@ -39,5 +39,6 @@ public class GankApp extends SkinBaseApplication {
     }
 
     public static DiskLruCacheManager getDiskCacheManager() {
+        return diskLruCacheManager;
     }
 }

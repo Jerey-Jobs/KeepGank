@@ -17,7 +17,7 @@
         android:roundIcon="@drawable/ic_launcher"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".modules.MainActivity"
             android:label="@string/study"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme">
@@ -35,38 +35,38 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.MyWebActivity"
+            android:name=".modules.common.MyWebActivity"
             android:launchMode="singleTop"
             android:theme="@style/WebTheme"/>
         <activity
-            android:name=".activity.PhotoActivity"
+            android:name=".modules.photoview.PhotoActivity"
             android:launchMode="singleTop"
             android:theme="@style/PhotoActivity"/>
-        <activity android:name=".SplashActivity">
+        <activity android:name=".modules.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.ThemeChooseActivity"
+            android:name=".modules.theme.ThemeChooseActivity"
             android:theme="@style/WebTheme"/>
         <activity
-            android:name=".activity.PhotoChoose.PhotoChooseActivity"
+            android:name=".modules.photochoose.PhotoChooseActivity"
             android:theme="@style/WebTheme"/>
         <activity
-            android:name=".douban.DoubanActivity"
-            android:theme="@style/WebTheme"/>
-
-        <activity
-            android:name=".douban.MovieListActivity"
+            android:name=".modules.douban.DoubanActivity"
             android:theme="@style/WebTheme"/>
 
         <activity
-            android:name=".douban.MovieActivity"
+            android:name=".modules.douban.MovieListActivity"
+            android:theme="@style/WebTheme"/>
+
+        <activity
+            android:name=".modules.douban.MovieActivity"
             android:theme="@style/WebTheme"/>
         <activity
-            android:name=".activity.AboutActivity"
+            android:name=".modules.about.AboutActivity"
             android:theme="@style/MyPreferenceTheme"
             />
 

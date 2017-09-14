@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.jerey.keepgank.activity.PhotoChoose.PolygonView
+    <com.jerey.keepgank.modules.photochoose.PolygonView
         android:id="@+id/item_image"
         android:layout_width="180dp"
         android:layout_height="250dp"

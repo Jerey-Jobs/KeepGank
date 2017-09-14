@@ -2,7 +2,7 @@ package com.jerey.keepgank.utils;
 
 
 import com.jerey.keepgank.R;
-import com.jerey.keepgank.net.Config;
+import com.jerey.keepgank.api.Config;
 
 public class IconUtils {
 
