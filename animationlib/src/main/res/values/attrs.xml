@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MyFrameLayout">
+        <attr name="animation_alpha" format="boolean" />//是否支持透明度动画；
+        <attr name="animation_scaleX" format="boolean" />//是否支持X轴缩放动画；
+        <attr name="animation_scaleY" format="boolean" />//是否支持Y轴缩放动画；
+        <attr name="bgColorStart" format="color" />//背景渐变颜色的开始颜色值；
+        <attr name="bgColorEnd" format="color" />//背景渐变颜色的结束颜色值，与bgColorStart成对出现；
+        <attr name="animation_translation">//移动动画，是一个枚举类型，支持上下左右四种值。
+            <flag name="left" value="0x01" />
+            <flag name="top" value="0x02" />
+            <flag name="right" value="0x04" />
+            <flag name="bottom" value="0x08" />
+        </attr>
+    </declare-styleable>
+</resources>

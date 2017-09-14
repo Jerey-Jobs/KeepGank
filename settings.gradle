@@ -1,1 +1,1 @@
-include ':app', ':lrucache', ':themelib', ':theme-night', ':theme-ocean', ':downloadmanager', ':footerrecyclerview', ':searchview', ':mutiType'
+include ':app', ':lrucache', ':themelib', ':theme-night', ':theme-ocean', ':downloadmanager', ':footerrecyclerview', ':searchview', ':mutiType', ':animationlib'

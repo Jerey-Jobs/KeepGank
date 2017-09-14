@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/KeepGank.iml" filepath="$PROJECT_DIR$/KeepGank.iml" />
+      <module fileurl="file://$PROJECT_DIR$/animationlib/animationlib.iml" filepath="$PROJECT_DIR$/animationlib/animationlib.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/downloadmanager/downloadmanager.iml" filepath="$PROJECT_DIR$/downloadmanager/downloadmanager.iml" />
       <module fileurl="file://$PROJECT_DIR$/footerrecyclerview/footerrecyclerview.iml" filepath="$PROJECT_DIR$/footerrecyclerview/footerrecyclerview.iml" />
