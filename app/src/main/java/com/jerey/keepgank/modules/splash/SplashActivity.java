@@ -27,8 +27,6 @@ public class SplashActivity extends AppCompatActivity {
                 .setOnPermissionCallbacks(new PermissionCallbacks() {
                     @Override
                     public void onPermissionsGranted(int requestCode, List<String> perms) {
-                        //    Toast.makeText(MainActivity.this, "权限申请通过", Toast.LENGTH_SHORT)
-                        // .show();
                         if (SPUtils.get(SplashActivity.this, AppConstant.isFirstEnter, true)) {
                             SPUtils.put(SplashActivity.this, AppConstant.isFirstEnter, false);
                             startActivity(new Intent(SplashActivity.this, WelcomeActivity.class));
@@ -41,9 +39,7 @@ public class SplashActivity extends AppCompatActivity {
 
                     @Override
                     public void onPermissionsDenied(int requestCode, List<String> perms) {
-                        Toast.makeText(SplashActivity.this, R.string.perm_request_refused, Toast
-                                .LENGTH_SHORT)
-                             .show();
+                        Toast.makeText(SplashActivity.this, R.string.perm_request_refused, Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setRequestCode(99)
@@ -55,7 +51,7 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         permissionTools.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }

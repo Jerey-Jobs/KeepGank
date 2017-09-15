@@ -17,10 +17,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.jerey.keepgank.R;
-import com.jerey.keepgank.widget.PinchImageView;
 import com.jerey.keepgank.modules.base.AppSwipeBackActivity;
-import com.jerey.keepgank.utils.AnimationHelper;
 import com.jerey.keepgank.utils.ImageSave;
+import com.jerey.keepgank.widget.PinchImageView;
 import com.jerey.loglib.LogTools;
 
 import butterknife.BindView;
@@ -48,16 +47,16 @@ public class PhotoActivity extends AppSwipeBackActivity implements View.OnClickL
         Intent intent = new Intent(activity, PhotoActivity.class);
         intent.putExtra(URL, url);
 
-        // 这里指定了共享的视图元素
-//        ActivityOptionsCompat options = ActivityOptionsCompat
-//                .makeSceneTransitionAnimation(activity, transitionView, "image");
-//
-//        ActivityCompat.startActivity(activity, intent, options.toBundle());
+        // 指定共享视图元素
+        ActivityOptionsCompat options = ActivityOptionsCompat
+                .makeSceneTransitionAnimation(activity, transitionView, "image");
+
+        ActivityCompat.startActivity(activity, intent, options.toBundle());
         // 使用覆盖动画, 体验更好
-        AnimationHelper.startActivity(activity
-                , intent
-                , transitionView
-                , R.color.app_main_color);
+        //        AnimationHelper.startActivity(activity
+        //                , intent
+        //                , transitionView
+        //                , R.color.app_main_color);
     }
 
     public static void startActivity1(Context context, String url) {
@@ -85,18 +84,18 @@ public class PhotoActivity extends AppSwipeBackActivity implements View.OnClickL
         mUrl = intent.getStringExtra(URL);
         LogTools.d(TAG, "url: " + mUrl);
         Glide.with(this)
-                .load(mUrl)
-                .asBitmap()
-                .error(R.drawable.bg_cyan)
-                .placeholder(R.drawable.bg_cyan)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        pinchImageView.setImageBitmap(resource);
-                        mBitmap = resource;
-                    }
-                });
+             .load(mUrl)
+             .asBitmap()
+             .error(R.drawable.bg_cyan)
+             .placeholder(R.drawable.bg_cyan)
+             .diskCacheStrategy(DiskCacheStrategy.ALL)
+             .into(new SimpleTarget<Bitmap>() {
+                 @Override
+                 public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                     pinchImageView.setImageBitmap(resource);
+                     mBitmap = resource;
+                 }
+             });
 
     }
 
@@ -112,18 +111,18 @@ public class PhotoActivity extends AppSwipeBackActivity implements View.OnClickL
                 LogTools.d("点击保存,保存图片");
                 Toast.makeText(this, "保存图片", Toast.LENGTH_SHORT).show();
                 ImageSave.with(getApplicationContext())
-                        .save(mBitmap)
-                        .setImageSaveListener(new ImageSave.ImageSaveListener() {
-                            @Override
-                            public void onSuccess() {
-                                Toast.makeText(PhotoActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
-                            }
+                         .save(mBitmap)
+                         .setImageSaveListener(new ImageSave.ImageSaveListener() {
+                             @Override
+                             public void onSuccess() {
+                                 Toast.makeText(PhotoActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
+                             }
 
-                            @Override
-                            public void onError() {
-                                Toast.makeText(PhotoActivity.this, "保存失败", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                             @Override
+                             public void onError() {
+                                 Toast.makeText(PhotoActivity.this, "保存失败", Toast.LENGTH_SHORT).show();
+                             }
+                         });
                 break;
         }
 
