@@ -32,6 +32,7 @@ public class GankApp extends SkinBaseApplication {
         ARouter.openLog();
         ARouter.openDebug();
         ARouter.init(this);
+       // LeakCanary.install(this);
     }
 
     public static String getmCachePath() {
