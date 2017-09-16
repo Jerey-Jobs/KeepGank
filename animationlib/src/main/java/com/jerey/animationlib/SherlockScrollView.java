@@ -23,6 +23,7 @@ public class SherlockScrollView extends ScrollView {
     public SherlockScrollView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setClipChildren(false);
+        setOverScrollMode(OVER_SCROLL_NEVER);
     }
 
     //获取内部LinearLayout；
@@ -88,7 +89,7 @@ public class SherlockScrollView extends ScrollView {
             //进入了屏幕
             if (childAbsluteTop <= scrollViewHeight) {
                 //当前子控件显示出来的高度；
-                int childShowHeight = scrollViewHeight - childAbsluteTop - 100 ;
+                int childShowHeight = scrollViewHeight - childAbsluteTop - 100;
                 float moveRadio = childShowHeight / (float) childHeight;//这里一定要转化成float类型；
                 //执行动画；
                 myCallBack.excuteanimation(getMiddleValue(moveRadio, 0, 1));
