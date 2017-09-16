@@ -29,6 +29,7 @@ public class WelcomeActivity extends AppCompatActivity {
     ImageView mPathIv;
     @BindView(R.id.enter_btn)
     Button mEnterBtn;
+    Animatable mAnimatable;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,12 +38,13 @@ public class WelcomeActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //全屏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                             WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_welcome);
         ButterKnife.bind(this);
         Drawable drawable = mPathIv.getDrawable();
         if (drawable instanceof Animatable) {
-            ((Animatable) drawable).start();
+            mAnimatable = (Animatable) drawable;
+            mAnimatable.start();
         }
     }
 
@@ -50,6 +52,11 @@ public class WelcomeActivity extends AppCompatActivity {
     public void onViewClicked() {
         ARouter.getInstance()
                .build("/activity/MainActivity")
+               .withTransition(R.anim.fade_in, R.anim.fade_out)
                .navigation(this);
+        if (mAnimatable != null) {
+            mAnimatable.stop();
+        }
+        finish();
     }
 }
