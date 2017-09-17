@@ -14,4 +14,5 @@
     <dimen name="item_margin">72dp</dimen>
     <dimen name="nav_header_height">240dp</dimen>
     <dimen name="user_image_size">80dp</dimen>
+    <dimen name="dimen_25dp">25dp</dimen>
 </resources>

@@ -33,6 +33,9 @@
     </style>
 
     <style name="PhotoActivity" parent="WebTheme">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 
     <style name="MaterialPreferenceTheme" parent="PreferenceThemeOverlay.v14.Material">

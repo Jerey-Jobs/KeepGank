@@ -39,9 +39,14 @@
             android:launchMode="singleTop"
             android:theme="@style/WebTheme"/>
         <activity
-            android:name=".modules.photoview.PhotoActivity"
+            android:name=".modules.photopreview.PhotoActivity"
             android:launchMode="singleTop"
             android:theme="@style/PhotoActivity"/>
+
+        <activity
+            android:name=".modules.photopreview.PhotoPreviewActivity"
+            android:theme="@style/PhotoActivity"/>
+
         <activity android:name=".modules.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

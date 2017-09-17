@@ -1,4 +1,4 @@
-package com.jerey.keepgank.modules.photoview;
+package com.jerey.keepgank.modules.photopreview;
 
 import android.app.Activity;
 import android.content.Context;
@@ -93,7 +93,8 @@ public class PhotoActivity extends AppSwipeBackActivity implements View.OnClickL
              .diskCacheStrategy(DiskCacheStrategy.ALL)
              .into(new SimpleTarget<Bitmap>() {
                  @Override
-                 public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                 public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap>
+                         glideAnimation) {
                      pinchImageView.setImageBitmap(resource);
                      mBitmap = resource;
                  }
@@ -107,7 +108,7 @@ public class PhotoActivity extends AppSwipeBackActivity implements View.OnClickL
             case R.id.btn_back:
                 LogTools.d("点击back,结束Activity");
                 finish();
-                overridePendingTransition(R.anim.out_to_bottom, 0);
+                //overridePendingTransition(R.anim.out_to_bottom, 0);
                 break;
             case R.id.btn_save:
                 LogTools.d("点击保存,保存图片");
@@ -117,14 +118,19 @@ public class PhotoActivity extends AppSwipeBackActivity implements View.OnClickL
                          .setImageSaveListener(new ImageSave.ImageSaveListener() {
                              @Override
                              public void onSuccess() {
-                                 Toast.makeText(PhotoActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
+                                 Toast.makeText(PhotoActivity.this, "保存成功", Toast.LENGTH_SHORT)
+                                      .show();
                              }
 
                              @Override
                              public void onError() {
-                                 Toast.makeText(PhotoActivity.this, "保存失败", Toast.LENGTH_SHORT).show();
+                                 Toast.makeText(PhotoActivity.this, "保存失败", Toast.LENGTH_SHORT)
+                                      .show();
                              }
                          });
+                break;
+            case R.id.meizi_image:
+                finish();
                 break;
         }
 

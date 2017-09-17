@@ -1,7 +1,7 @@
 package com.jerey.keepgank.modules.gank.adapter;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
+import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +10,13 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.jerey.keepgank.R;
-import com.jerey.keepgank.modules.photoview.PhotoActivity;
 import com.jerey.keepgank.data.bean.Result;
+import com.jerey.keepgank.modules.photopreview.PhotoBean;
+import com.jerey.loglib.LogTools;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +47,7 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         ViewGroup.LayoutParams layoutParams = holder.imageView.getLayoutParams();
         layoutParams.height = heightList.get(position);
         layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
@@ -61,13 +63,26 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.ViewHolder> 
                  .into(holder.imageView);
         } else {
             holder.imageView.setImageResource(R.drawable.jay);
-
         }
+
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PhotoActivity.startActivity((AppCompatActivity) mContext, data.getUrl(), holder
-                        .imageView);
+                ArrayList<PhotoBean> mPhotoBeanArrayList = new ArrayList<PhotoBean>();
+                Rect bounds = new Rect();
+                holder.imageView.getGlobalVisibleRect(bounds);
+                LogTools.w("mPhotoBeanArrayList:" + mPhotoBeanArrayList.size()
+                                   + " position:" + position + " bounds:" + bounds.toString());
+                for (Result result : mDatas) {
+                    PhotoBean photoBean = new PhotoBean(result.getUrl(), bounds);
+                    mPhotoBeanArrayList.add(photoBean);
+                }
+
+                ARouter.getInstance()
+                       .build("/activity/PhotoPreviewActivity")
+                       .withInt("index", position)
+                       .withParcelableArrayList("photo_beans", mPhotoBeanArrayList)
+                       .navigation();
             }
         });
         holder.textView.setText(data.getDesc());
@@ -105,5 +120,6 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.ViewHolder> 
             int height = new Random().nextInt(200) + 250;//[100,300)的随机数
             heightList.add(height);
         }
+
     }
 }
