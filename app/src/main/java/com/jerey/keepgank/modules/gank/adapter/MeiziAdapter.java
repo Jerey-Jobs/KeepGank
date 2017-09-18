@@ -1,8 +1,8 @@
 package com.jerey.keepgank.modules.gank.adapter;
 
 import android.content.Context;
-import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,15 +10,11 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.data.bean.Result;
-import com.jerey.keepgank.modules.photopreview.PhotoBean;
-import com.jerey.loglib.LogTools;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -29,13 +25,15 @@ import java.util.Random;
 public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.ViewHolder> {
     private List<Result> mDatas;
     private Context mContext;
-    private List<Integer> heightList;//装产出的随机数
+    private SparseArray<Integer> mSparseArray;//装产出的随机数
 
-    public MeiziAdapter(Context context) {
+    private OnItemClickListener mOnItemClickListener;
+
+
+    public MeiziAdapter(Context context, List<Result> data) {
         mContext = context;
-        mDatas = new ArrayList<>();
-        //记录为每个控件产生的随机高度,避免滑回到顶部出现空白
-        heightList = new ArrayList<>();
+        mDatas = data;
+        mSparseArray = new SparseArray<>();
 
     }
 
@@ -49,7 +47,8 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         ViewGroup.LayoutParams layoutParams = holder.imageView.getLayoutParams();
-        layoutParams.height = heightList.get(position);
+        layoutParams.height = getHeightByPosition(position);
+        //heightList.get(position);
         layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
         holder.imageView.setLayoutParams(layoutParams);
         final Result data = mDatas.get(position);
@@ -65,27 +64,27 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.ViewHolder> 
             holder.imageView.setImageResource(R.drawable.jay);
         }
 
+
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<PhotoBean> mPhotoBeanArrayList = new ArrayList<PhotoBean>();
-                Rect bounds = new Rect();
-                holder.imageView.getGlobalVisibleRect(bounds);
-                LogTools.w("mPhotoBeanArrayList:" + mPhotoBeanArrayList.size()
-                                   + " position:" + position + " bounds:" + bounds.toString());
-                for (Result result : mDatas) {
-                    PhotoBean photoBean = new PhotoBean(result.getUrl(), bounds);
-                    mPhotoBeanArrayList.add(photoBean);
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onItemClick(v, position);
                 }
 
-                ARouter.getInstance()
-                       .build("/activity/PhotoPreviewActivity")
-                       .withInt("index", position)
-                       .withParcelableArrayList("photo_beans", mPhotoBeanArrayList)
-                       .navigation();
             }
         });
         holder.textView.setText(data.getDesc());
+    }
+
+    private int getHeightByPosition(int position) {
+        int ret = mSparseArray.get(position, 0);
+        if (ret == 0) {
+            int height = new Random().nextInt(200) + 250;//[100,300)的随机数
+            mSparseArray.put(position, height);
+            ret = height;
+        }
+        return ret;
     }
 
     @Override
@@ -104,22 +103,29 @@ public class MeiziAdapter extends RecyclerView.Adapter<MeiziAdapter.ViewHolder> 
         }
     }
 
-    public void addData(List<Result> datas) {
-        int start = mDatas.size() - 1;
-        this.mDatas.addAll(datas);
-        for (int i = 0; i < mDatas.size(); i++) {
-            int height = new Random().nextInt(200) + 250;//[100,300)的随机数
-            heightList.add(height);
-        }
-        notifyItemRangeInserted(start + 1, mDatas.size());
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
     }
 
-    public void setData(List<Result> datas) {
-        this.mDatas = datas;
-        for (int i = 0; i < mDatas.size(); i++) {
-            int height = new Random().nextInt(200) + 250;//[100,300)的随机数
-            heightList.add(height);
-        }
-
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
     }
+    //    public void addData(List<Result> datas) {
+    //        int start = mDatas.size() - 1;
+    //        this.mDatas.addAll(datas);
+    //        for (int i = 0; i < mDatas.size(); i++) {
+    //            int height = new Random().nextInt(200) + 250;//[100,300)的随机数
+    //            heightList.add(height);
+    //        }
+    //        notifyItemRangeInserted(start + 1, mDatas.size());
+    //    }
+    //
+    //    public void setData(List<Result> datas) {
+    //        this.mDatas = datas;
+    //        for (int i = 0; i < mDatas.size(); i++) {
+    //            int height = new Random().nextInt(200) + 250;//[100,300)的随机数
+    //            heightList.add(height);
+    //        }
+    //
+    //    }
 }

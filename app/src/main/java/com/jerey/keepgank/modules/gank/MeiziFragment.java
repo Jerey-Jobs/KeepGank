@@ -2,6 +2,7 @@ package com.jerey.keepgank.modules.gank;
 
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -10,21 +11,26 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.jerey.animationadapter.AnimationAdapter;
 import com.jerey.animationadapter.SlideInBottomAnimationAdapter;
 import com.jerey.keepgank.R;
-import com.jerey.keepgank.modules.gank.adapter.MeiziAdapter;
+import com.jerey.keepgank.api.GankApi;
 import com.jerey.keepgank.data.bean.Data;
 import com.jerey.keepgank.data.bean.Result;
 import com.jerey.keepgank.modules.base.BaseFragment;
-import com.jerey.keepgank.api.GankApi;
+import com.jerey.keepgank.modules.gank.adapter.MeiziAdapter;
+import com.jerey.keepgank.modules.photopreview.PhotoBean;
 import com.jerey.keepgank.widget.SwipeToRefreshLayout;
 import com.jerey.loglib.LogTools;
 import com.jerey.lruCache.DiskLruCacheManager;
 import com.trello.rxlifecycle.FragmentEvent;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -39,9 +45,10 @@ import rx.schedulers.Schedulers;
  * Created by Xiamin on 2017/3/1.
  */
 
-public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, MeiziAdapter
+        .OnItemClickListener {
 
-    private static final String TAG = "MeiziFragment";
+    private static final String TAG = MeiziFragment.class.getSimpleName();
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
@@ -51,7 +58,6 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
     Toolbar mToolBar;
 
     private StaggeredGridLayoutManager mStaggeredGridLayoutManager;
-
     //当前页数
     private int currentPager = 1;
     //是否刷新状态
@@ -61,6 +67,7 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
     //是否已经载入去全部
     private boolean isALlLoad = false;
     MeiziAdapter mAdapter;
+    List<Result> mResultList;
     private DiskLruCacheManager mDiskLruCacheManager;
 
     @Override
@@ -76,14 +83,14 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
         dynamicAddView(mToolBar, "background", R.color.app_main_color);
         initRecyclerView(mRecyclerView);
         initSwipeRefreshLayout(mSwipeRefreshLayout);
-        mAdapter = new MeiziAdapter(getActivity());
+        mResultList = new ArrayList<>();
+        mAdapter = new MeiziAdapter(getActivity(), mResultList);
+        mAdapter.setOnItemClickListener(this);
         AnimationAdapter animationAdapter = new SlideInBottomAnimationAdapter(mAdapter);
         animationAdapter.setDuration(800);
         mRecyclerView.setAdapter(animationAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.addOnScrollListener(mOnScrollListener);
-
-
         Observable.create(new Observable.OnSubscribe<Data>() {
 
             @Override
@@ -128,7 +135,7 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
                       @Override
                       public void onNext(List<Result> results) {
                           Log.i(TAG, "获取到缓存数据");
-                          mAdapter.setData(results);
+                          mResultList.addAll(results);
                           mAdapter.notifyDataSetChanged();
                       }
                   });
@@ -140,17 +147,16 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         mStaggeredGridLayoutManager = new StaggeredGridLayoutManager(2,
-                                                                     StaggeredGridLayoutManager
-                                                                             .VERTICAL);
+                StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(mStaggeredGridLayoutManager);
     }
 
     private void initSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout) {
         Resources resources = getResources();
         swipeRefreshLayout.setColorSchemeColors(resources.getColor(R.color.blue_dark),
-                                                resources.getColor(R.color.red_dark),
-                                                resources.getColor(R.color.yellow_dark),
-                                                resources.getColor(R.color.green_dark)
+                resources.getColor(R.color.red_dark),
+                resources.getColor(R.color.yellow_dark),
+                resources.getColor(R.color.green_dark)
                                                );
         swipeRefreshLayout.setOnRefreshListener(this);
     }
@@ -164,20 +170,14 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
         loadData(1);
     }
 
-    int[] lastPositions;
     private RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
             //但RecyclerView滑动到倒数第三个之请求加载更多
-            if (lastPositions == null) {
-                lastPositions = new int[mStaggeredGridLayoutManager.getSpanCount()];
-            }
-            int[] lastVisibleItem = mStaggeredGridLayoutManager.findLastVisibleItemPositions(
-                    lastPositions);
             int totalItemCount = mAdapter.getItemCount();
             // dy>0 表示向下滑动
-            if (lastVisibleItem[0] >= totalItemCount - 4 && dy > 0 && !isLoading() && !isALlLoad) {
+            if (getLastVisibleItemPosition() >= totalItemCount - 4 && dy > 0 && !isLoading() && !isALlLoad) {
                 requestMoreData();
             }
         }
@@ -246,10 +246,12 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
                            }
 
                            if (isLoadingMore) {
-                               mAdapter.addData(results);
+                               addData(results);
                            } else if (isLoadingNewData) {
                                isALlLoad = false;
-                               mAdapter.setData(results);
+                               mResultList.clear();
+                               mResultList.addAll(results);
+                               mAdapter.notifyDataSetChanged();
                            }
 
                        }
@@ -257,4 +259,57 @@ public class MeiziFragment extends BaseFragment implements SwipeRefreshLayout.On
                });
     }
 
+    private int getFirstVisibleItemPositions() {
+        int[] first = mStaggeredGridLayoutManager.findFirstVisibleItemPositions(null);
+        return first[0];
+    }
+
+    private int getLastVisibleItemPosition() {
+        int[] lastVisibleItem = mStaggeredGridLayoutManager.findLastVisibleItemPositions(null);
+        return lastVisibleItem[lastVisibleItem.length - 1];
+    }
+
+    private void addData(List<Result> data) {
+        int start = mResultList.size() - 1;
+        mResultList.addAll(data);
+        mAdapter.notifyItemRangeInserted(start + 1, mResultList.size());
+    }
+
+    /**
+     * 1. Assemble the photo data
+     * 2. Acquisition photo's Rect, default rect is the clicked view's Rect
+     * 3. navigation
+     * @param view
+     * @param position
+     */
+    @Override
+    public void onItemClick(View view, int position) {
+        ArrayList<PhotoBean> mPhotoBeanArrayList = new ArrayList<PhotoBean>();
+        Rect bounds = new Rect();
+        view.getGlobalVisibleRect(bounds);
+        LogTools.w("mPhotoBeanArrayList:" + mPhotoBeanArrayList.size()
+                + " position:" + position + " bounds:" + bounds.toString());
+        for (Result result : mResultList) {
+            PhotoBean photoBean = new PhotoBean(result.getUrl(), bounds);
+            mPhotoBeanArrayList.add(photoBean);
+        }
+        int start = getFirstVisibleItemPositions();
+        int last = getLastVisibleItemPosition();
+
+        for (int i = start; i < last; i++) {
+            View itemView = mStaggeredGridLayoutManager.findViewByPosition(i);
+            Rect bound = new Rect();
+            if (itemView != null) {
+                ImageView thumbView = (ImageView) itemView.findViewById(R.id.item_img);
+                thumbView.getGlobalVisibleRect(bound);
+            }
+            mPhotoBeanArrayList.get(i).setRect(bound);
+        }
+
+        ARouter.getInstance()
+               .build("/activity/PhotoPreviewActivity")
+               .withInt("index", position)
+               .withParcelableArrayList("photo_beans", mPhotoBeanArrayList)
+               .navigation();
+    }
 }

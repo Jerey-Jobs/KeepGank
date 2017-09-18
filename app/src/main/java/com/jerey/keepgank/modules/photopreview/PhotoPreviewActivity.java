@@ -26,6 +26,13 @@ import butterknife.ButterKnife;
 /**
  * @author Xiamin
  * @date 2017/9/17
+ * <pre>
+ *      ARouter.getInstance()
+ *          .build("/activity/PhotoPreviewActivity")
+ *          .withInt("index", position)
+ *          .withParcelableArrayList("photo_beans", mPhotoBeanArrayList)
+ *          .navigation();
+ * </pre>
  */
 @Route(path = "/activity/PhotoPreviewActivity")
 public class PhotoPreviewActivity extends FragmentActivity {
@@ -70,6 +77,7 @@ public class PhotoPreviewActivity extends FragmentActivity {
 
                 @Override
                 public void onPageSelected(int position) {
+                    mIndicatorTv.setVisibility(View.VISIBLE);
                     mIndicatorTv.setText((position + 1) + "/" + photoBeans.size());
                 }
 
