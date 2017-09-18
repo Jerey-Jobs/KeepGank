@@ -9,7 +9,8 @@
     android:background="@color/normal_background_grey"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    skin:enable="true">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar_layout"
@@ -65,7 +66,9 @@
         android:id="@+id/m_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:background="@color/normal_background_grey"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        skin:enable="true">
     </com.jerey.footerrecyclerview.FooterRecyclerView>
 
     <com.jerey.searchview.SearchView

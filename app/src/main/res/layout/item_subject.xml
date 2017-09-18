@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:skin="http://schemas.android.com/android/skin"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_marginTop="8dp"
               android:background="@color/normal_background"
-              android:orientation="horizontal">
+              android:orientation="horizontal"
+              skin:enable="true">
 
     <ImageView
         android:id="@+id/item_imageView"
@@ -25,21 +27,26 @@
             android:text="..."
             android:textColor="@color/normal_text_color"
             android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            skin:enable="true"/>
 
         <TextView
             android:id="@+id/item_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="评分："/>
+            android:text="评分："
+            android:textColor="@color/md_grey_600"
+            skin:enable="true"/>
 
         <TextView
             android:id="@+id/item_director"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="导演："/>
+            android:text="导演："
+            android:textColor="@color/md_grey_600"
+            skin:enable="true"/>
 
         <TextView
             android:id="@+id/item_actor"
@@ -48,7 +55,9 @@
             android:layout_marginTop="4dp"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="演员："/>
+            android:textColor="@color/md_grey_600"
+            android:text="演员："
+            skin:enable="true"/>
 
     </LinearLayout>
 

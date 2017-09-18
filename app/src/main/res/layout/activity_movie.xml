@@ -8,6 +8,7 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
+    android:background="@color/normal_background_grey"
     skin:enable="true">
 
 
@@ -83,8 +84,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/md_grey_50"
-            android:orientation="vertical">
+            android:background="@color/normal_background"
+            android:orientation="vertical"
+            skin:enable="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -106,25 +108,29 @@
                         android:text=""
                         android:textColor="@color/normal_text_color"
                         android:textSize="23sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold"
+                        skin:enable="true"/>
 
                     <TextView
                         android:id="@+id/tv_movie_detail1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"/>
+                        android:layout_marginTop="5dp"
+                        skin:enable="true"/>
 
                     <TextView
                         android:id="@+id/tv_movie_detail2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"/>
+                        android:layout_marginTop="5dp"
+                        skin:enable="true"/>
 
                     <TextView
                         android:id="@+id/tv_movie_detail3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"/>
+                        android:layout_marginTop="5dp"
+                        skin:enable="true"/>
 
                 </LinearLayout>
 
@@ -132,7 +138,9 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
-                    app:cardElevation="8dp">
+                    app:cardBackgroundColor="@color/normal_background"
+                    app:cardElevation="8dp"
+                    skin:enable="true">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -156,7 +164,8 @@
                             android:text="7.4"
                             android:textColor="@color/normal_text_color"
                             android:textSize="30sp"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold"
+                            skin:enable="true"/>
 
                         <TextView
                             android:id="@+id/tv_ratings_count"
@@ -164,7 +173,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:text="评分人数：123454"
-                            android:textSize="10sp"/>
+                            android:textSize="10sp"
+                            skin:enable="true"/>
 
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
@@ -175,7 +185,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:paddingLeft="20dp"
-                android:text="剧情简介"/>
+                android:text="剧情简介"
+                skin:enable="true"/>
 
             <TextView
                 android:id="@+id/tv_summary"
@@ -184,7 +195,8 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="8dp"
-                android:textColor="@color/normal_text_color"/>
+                android:textColor="@color/normal_text_color"
+                skin:enable="true"/>
 
             <LinearLayout
                 android:id="@+id/list_container"
