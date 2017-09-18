@@ -1,6 +1,7 @@
 package com.jerey.themelib.attr.base;
 
 import com.jerey.themelib.attr.BackgroundAttr;
+import com.jerey.themelib.attr.CardViewBackgroundAttr;
 import com.jerey.themelib.attr.ContentScrimColorAttr;
 import com.jerey.themelib.attr.ImageViewSrcAttr;
 import com.jerey.themelib.attr.NavigationIconAttr;
@@ -21,6 +22,7 @@ public class AttrFactory {
         sSupportAttr.put("tabLayoutIndicator", new TabLayoutIndicatorAttr());
         sSupportAttr.put("navigationIcon", new NavigationIconAttr());
         sSupportAttr.put("ContentScrimColor", new ContentScrimColorAttr());
+        sSupportAttr.put("cardBackgroundColor", new CardViewBackgroundAttr());
     }
 
 

@@ -31,4 +31,5 @@ dependencies {
     compile SUPPORT_DESIGN
     compile project(':downloadmanager')
     compile 'com.githang:status-bar-compat:0.5.3'
+    compile 'com.android.support:cardview-v7:26.0.0-alpha1'
 }
