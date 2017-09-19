@@ -8,9 +8,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 
-import com.jerey.animationadapter.AnimationAdapter;
-import com.jerey.animationadapter.SlideInBottomAnimationAdapter;
 import com.jerey.footerrecyclerview.FooterRecyclerView;
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.api.Config;
@@ -19,7 +18,6 @@ import com.jerey.keepgank.data.bean.Data;
 import com.jerey.keepgank.data.bean.Result;
 import com.jerey.keepgank.modules.base.BaseFragment;
 import com.jerey.keepgank.modules.gank.binder.GankResultBinder;
-import com.jerey.keepgank.widget.GankHeadItemDecoration;
 import com.jerey.keepgank.widget.MyBottomItemDecoration;
 import com.jerey.keepgank.widget.SlideInOutRightItemAnimator;
 import com.jerey.keepgank.widget.SwipeToRefreshLayout;
@@ -45,7 +43,7 @@ import rx.schedulers.Schedulers;
  */
 
 public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,
-                                                          FooterRecyclerView.onLoadMoreListener {
+        FooterRecyclerView.onLoadMoreListener {
     private static final String TAG = "ListFragment";
     public static final String KEY_TYPE = "type";
 
@@ -74,6 +72,7 @@ public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         @Override
         public void onNext(final List<Result> results) {
             if (null != results) {
+                LogTools.d("onNext");
                 //如果取得的Results小于 预先设定的数量（GankApi.LOAD_LIMIT）就表示已经是最后一页
                 if (results.size() < GankApi.LOAD_LIMIT) {
                     isALlLoad = true;
@@ -85,7 +84,6 @@ public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                     isALlLoad = false;
                     currentPager = 1;
                     setData(results);
-                    mAdapter.notifyDataSetChanged();
                 }
             }
         }
@@ -121,15 +119,16 @@ public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         mDataList = new ArrayList<>();
         mAdapter = new MultiTypeAdapter(mDataList)
                 .register(Result.class, new GankResultBinder());
-        AnimationAdapter animationAdapter = new SlideInBottomAnimationAdapter(mAdapter);
-        animationAdapter.setDuration(600);
-        mRecyclerView.setAdapter(animationAdapter);
-
+        //        AnimationAdapter animationAdapter = new SlideInBottomAnimationAdapter(mAdapter);
+        //        animationAdapter.setDuration(600);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
         mRecyclerView.setItemAnimator(new SlideInOutRightItemAnimator(mRecyclerView));
         mRecyclerView.setOnLoadMoreListener(this);
-        mRecyclerView.addItemDecoration(new MyBottomItemDecoration(getContext()));
-        mRecyclerView.addItemDecoration(new GankHeadItemDecoration(getContext(), mDataList));
-
+        /** 悬浮提示的ItemDecoration */
+        // mRecyclerView.addItemDecoration(new GankHeadItemDecoration(getContext(), mDataList));
+        mRecyclerView.addItemDecoration(new MyBottomItemDecoration(getContext())
+                                                .setDividerHeight(getResources().getDimensionPixelSize(R.dimen.space_small)));
         Observable.create(new Observable.OnSubscribe<Data>() {
             @Override
             public void call(Subscriber<? super Data> subscriber) {
@@ -171,7 +170,6 @@ public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                       public void onNext(List<Result> results) {
                           Log.d(TAG, "获取缓存数据成功");
                           setData(results);
-                          mAdapter.notifyDataSetChanged();
                       }
                   });
 
@@ -199,10 +197,10 @@ public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     private void initSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout) {
         Resources resources = getResources();
         swipeRefreshLayout.setColorSchemeColors(resources.getColor(R.color.blue_dark),
-                resources.getColor(R.color.red_dark),
-                resources.getColor(R.color.yellow_dark),
-                resources.getColor(R.color.green_dark)
-                                               );
+                                                resources.getColor(R.color.red_dark),
+                                                resources.getColor(R.color.yellow_dark),
+                                                resources.getColor(R.color.green_dark)
+        );
         swipeRefreshLayout.setOnRefreshListener(this);
     }
 
@@ -218,7 +216,7 @@ public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         return isLoadingMore || isLoadingNewData;
     }
 
-    private void loadData(int pager) {
+    private void loadData(final int pager) {
         GankApi.getInstance()
                .getCommonGoods(mType, GankApi.LOAD_LIMIT, pager)
                .compose(this.<Data>bindUntilEvent(FragmentEvent.DESTROY_VIEW))
@@ -234,13 +232,16 @@ public class ListFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                    @Override
                    public List<Result> call(Data data) {
                        Log.i(TAG, "DiskLruCacheManager 写入");
-                       mDiskLruCacheManager.put(mType, data);
                        for (Result result : data.getResults()) {
                            String string = result.getPublishedAt();
                            if (!TextUtils.isEmpty(string)) {
                                String tmp = string.substring(0, 10);
                                result.setPublishedAt(tmp);
+                               result.setCreatedAt(tmp);
                            }
+                       }
+                       if (pager == 1) {
+                           mDiskLruCacheManager.put(mType, data);
                        }
                        return data.getResults();
                    }

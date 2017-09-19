@@ -71,7 +71,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MainActivity extends SkinBaseActivity implements
         NavigationView.OnNavigationItemSelectedListener {
 
-
     private int mCurrentUIIndex = 0;
     private static final int INDEX_HOME = 0;
     private static final int INDEX_COLLECTION = 1;

@@ -24,5 +24,14 @@ public class MyBottomItemDecoration extends RecyclerView.ItemDecoration {
             state) {
         super.getItemOffsets(outRect, view, parent, state);
         outRect.bottom = dividerHeight;
+        int pos = parent.getChildAdapterPosition(view);
+        if (pos == 0) {
+            outRect.top = dividerHeight;
+        }
+    }
+
+    public MyBottomItemDecoration setDividerHeight(int dividerHeight) {
+        this.dividerHeight = dividerHeight;
+        return this;
     }
 }
