@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -18,14 +19,14 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.jerey.footerrecyclerview.FooterRecyclerView;
 import com.jerey.keepgank.R;
+import com.jerey.keepgank.api.GankApi;
 import com.jerey.keepgank.data.bean.GankDay;
 import com.jerey.keepgank.data.bean.GankDayResults;
 import com.jerey.keepgank.data.bean.Result;
 import com.jerey.keepgank.data.bean.TitleBean;
+import com.jerey.keepgank.modules.base.BaseFragment;
 import com.jerey.keepgank.modules.gank.binder.GankResultBinder;
 import com.jerey.keepgank.modules.gank.binder.TitleBeanBinder;
-import com.jerey.keepgank.modules.base.BaseFragment;
-import com.jerey.keepgank.api.GankApi;
 import com.jerey.keepgank.widget.MyBottomItemDecoration;
 import com.jerey.keepgank.widget.SlideInOutRightItemAnimator;
 import com.jerey.loglib.LogTools;
@@ -161,7 +162,7 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
                         now.get(Calendar.YEAR),
                         now.get(Calendar.MONTH),
                         now.get(Calendar.DAY_OF_MONTH)
-                );
+                                                                                );
                 datePickerDialog.setVersion(DatePickerDialog.Version.VERSION_2);
                 datePickerDialog.show(getActivity().getFragmentManager(), "Datepickerdialog");
             }
@@ -253,6 +254,22 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
                           return mDataList;
                       }
                   })
+                  .map(new Func1<List<Object>, List<Object>>() {
+                      @Override
+                      public List<Object> call(List<Object> objects) {
+                          for (Object obj : objects) {
+                              if (obj instanceof Result) {
+                                  Result result = (Result) obj;
+                                  String string = result.getPublishedAt();
+                                  if (!TextUtils.isEmpty(string)) {
+                                      String tmp = string.substring(0, 10);
+                                      result.setPublishedAt(tmp);
+                                  }
+                              }
+                          }
+                          return objects;
+                      }
+                  })
                   .observeOn(AndroidSchedulers.mainThread())
                   .subscribe(new Observer<List<Object>>() {
                       @Override
@@ -270,7 +287,7 @@ public class TodayFragment extends BaseFragment implements DatePickerDialog.OnDa
                           LogTools.d("onNext");
 
                           mRecyclerView.setItemAnimator(new SlideInOutRightItemAnimator
-                                                                (mRecyclerView));
+                                  (mRecyclerView));
                           mAdapter.notifyDataSetChanged();
                       }
                   });

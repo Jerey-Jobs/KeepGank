@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jerey.keepgank.R;
-import com.jerey.keepgank.modules.common.MyWebActivity;
 import com.jerey.keepgank.data.bean.Result;
+import com.jerey.keepgank.modules.common.MyWebActivity;
 import com.jerey.keepgank.utils.IconUtils;
 import com.jerey.mutitype.ItemViewBinder;
 import com.jerey.searchview.KeyboardUtils;
@@ -24,7 +24,7 @@ public class GankResultBinder extends ItemViewBinder<Result, GankResultBinder.Vi
     @NonNull
     @Override
     protected GankResultBinder.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater,
-                                                             @NonNull ViewGroup parent) {
+            @NonNull ViewGroup parent) {
 
         View view = inflater.inflate(R.layout.item_list, parent, false);
         return new ViewHolder(view);
