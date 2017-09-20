@@ -74,11 +74,16 @@ RxJava + Retrofit + Glide + DiskLruCache + Material-Design
 <a><img src="pic/pic4.jpg" width="32%"/></a>
 <a><img src="pic/pic6.jpg" width="32%"/></a>
 <a><img src="pic/pic7.jpg" width="32%"/></a>
+<a><img src="pic/pic18.jpg" width="32%"/></a>
 <a><img src="pic/pic8.jpg" width="32%"/></a>
 <a><img src="pic/pic9.jpg" width="32%"/></a>
 <a><img src="pic/pic2.jpg" width="32%"/></a>
+<a><img src="pic/pic16.jpg" width="32%"/></a>
+<a><img src="pic/pic17.jpg" width="32%"/></a>
+<a><img src="pic/pic15.jpg" width="32%"/></a>
+<a><img src="pic/pic14.jpg" width="32%"/></a>
 <a><img src="pic/pic10.jpg" width="32%"/></a>
-
+<a><img src="pic/pic19.jpg" width="32%"/></a>
 
 ### 头像选择
 <a><img src="pic/choose_head.gif" width="32%"/></a>
