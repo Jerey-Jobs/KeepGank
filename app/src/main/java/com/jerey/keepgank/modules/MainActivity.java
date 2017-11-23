@@ -30,6 +30,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -51,10 +52,10 @@ import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.jerey.keepgank.R;
 import com.jerey.keepgank.data.Constants;
+import com.jerey.keepgank.modules.common.WebView;
 import com.jerey.keepgank.modules.gank.HomeFragment;
 import com.jerey.keepgank.modules.gank.MeiziFragment;
 import com.jerey.keepgank.modules.gank.TodayFragment;
-import com.jerey.keepgank.modules.common.WebView;
 import com.jerey.keepgank.utils.BlurImageUtils;
 import com.jerey.keepgank.utils.SPUtils;
 import com.jerey.loglib.LogTools;
@@ -69,7 +70,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 @Route(path = "/activity/MainActivity")
 public class MainActivity extends SkinBaseActivity implements
-        NavigationView.OnNavigationItemSelectedListener {
+                                                   NavigationView.OnNavigationItemSelectedListener {
 
     private int mCurrentUIIndex = 0;
     private static final int INDEX_HOME = 0;
@@ -105,21 +106,7 @@ public class MainActivity extends SkinBaseActivity implements
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         mHander = new Handler();
-        mHeadViewContainer = mNavigationView.getHeaderView(0);
-        mHeadViewContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ARouter.getInstance()
-                       .build("/activity/PhotoChooseActivity")
-                       .withTransition(R.anim.in_from_right, 0)
-                       .navigation(MainActivity.this);
-            }
-        });
-        mUserimage = (CircleImageView) mHeadViewContainer.findViewById(R.id.userimage);
-        mNavigationView.setNavigationItemSelectedListener(this);
-
-        loadHead(SPUtils.get(this, Constants.HEAD_URL, ""));
-
+        initUI();
         permissionTools = new PermissionTools.Builder(this)
                 .setOnPermissionCallbacks(new PermissionCallbacks() {
                     @Override
@@ -140,6 +127,43 @@ public class MainActivity extends SkinBaseActivity implements
                 , Manifest.permission.READ_EXTERNAL_STORAGE
                 , Manifest.permission.ACCESS_NETWORK_STATE);
         updateUI();
+    }
+
+    private void initUI() {
+        mHeadViewContainer = mNavigationView.getHeaderView(0);
+        mHeadViewContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ARouter.getInstance()
+                       .build("/activity/PhotoChooseActivity")
+                       .withTransition(R.anim.in_from_right, 0)
+                       .navigation(MainActivity.this);
+            }
+        });
+        mUserimage = (CircleImageView) mHeadViewContainer.findViewById(R.id.userimage);
+        mNavigationView.setNavigationItemSelectedListener(this);
+        mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                mContent.scrollTo(-(int) (drawerView.getMeasuredWidth() * slideOffset), 0);
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
+        loadHead(SPUtils.get(this, Constants.HEAD_URL, ""));
     }
 
     @Override
@@ -329,7 +353,7 @@ public class MainActivity extends SkinBaseActivity implements
                      Bitmap overlay = BlurImageUtils.blur(mUserimage, 3, 3);
                      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                          mHeadViewContainer.setBackground(new BitmapDrawable(getResources(),
-                                                                             overlay));
+                                 overlay));
                      }
                  }
              });
@@ -353,7 +377,7 @@ public class MainActivity extends SkinBaseActivity implements
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         permissionTools.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
