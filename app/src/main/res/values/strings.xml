@@ -76,4 +76,8 @@
     <string name="perm_request_refused">权限申请被拒绝</string>
     <string name="click_go_first_enter">引导界面</string>
     <string name="click_go_photo_choose">头像选择界面</string>
+
+
+
+
 </resources>

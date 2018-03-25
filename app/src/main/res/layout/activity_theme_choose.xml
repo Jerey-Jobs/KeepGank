@@ -124,4 +124,12 @@
             skin:enable="true"/>
     </RadioGroup>
 
+    <Button
+        android:id="@+id/choose_font_size"
+        android:text="字体大小选择"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"/>
+
+
 </LinearLayout>

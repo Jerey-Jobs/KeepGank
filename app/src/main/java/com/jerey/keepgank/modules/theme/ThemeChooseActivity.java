@@ -1,9 +1,12 @@
 package com.jerey.keepgank.modules.theme;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
@@ -46,6 +49,8 @@ public class ThemeChooseActivity extends AppSwipeBackActivity {
     ImageView mThemeNightImg;
     @BindView(R.id.theme_ocean_img)
     ImageView mThemeOceanImg;
+    @BindView(R.id.choose_font_size)
+    Button mChooseFontSize;
 
     Toolbar mToolbar;
 
@@ -159,6 +164,32 @@ public class ThemeChooseActivity extends AppSwipeBackActivity {
         SPUtils.put(this, FONT_DEFAULT, false);
         mRadioFontWryh.setChecked(true);
         mRadioFontDefault.setChecked(false);
+    }
+
+    public static final String KEY_FONT_LEVEL = "key_font_level";
+    public static final float[] FONT_LEVEL = new float[] {
+            0.8f,
+            1f,
+            1.2f,
+            1.5f
+    };
+
+    @OnClick(R.id.choose_font_size)
+    public void onFontSizeClicked() {
+       final String[] FONT_STRING = {
+                "小","标准","大","特大"};
+      AlertDialog a =  new AlertDialog.Builder(ThemeChooseActivity.this)
+               .setTitle("选择字体大小")
+               .setItems(FONT_STRING, new DialogInterface.OnClickListener() {
+                @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        LogTools.i("choose:" + FONT_STRING[which]);
+                        SPUtils.put(ThemeChooseActivity.this,KEY_FONT_LEVEL,FONT_LEVEL[which]);
+                    }
+                })
+               .create();
+      a.show();
+
     }
 
     @Override

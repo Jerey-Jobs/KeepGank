@@ -17,6 +17,10 @@ package com.jerey.keepgank.modules;
  */
 
 import android.Manifest;
+import android.app.ActivityManager;
+import android.app.LocalActivityManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -56,6 +60,7 @@ import com.jerey.keepgank.modules.common.WebView;
 import com.jerey.keepgank.modules.gank.HomeFragment;
 import com.jerey.keepgank.modules.gank.MeiziFragment;
 import com.jerey.keepgank.modules.gank.TodayFragment;
+import com.jerey.keepgank.modules.theme.ThemeChooseActivity;
 import com.jerey.keepgank.utils.BlurImageUtils;
 import com.jerey.keepgank.utils.SPUtils;
 import com.jerey.loglib.LogTools;
@@ -381,6 +386,16 @@ public class MainActivity extends SkinBaseActivity implements
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         permissionTools.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
+    @Override
+    public Resources getResources() {
+        Resources r =  super.getResources();
+        Configuration configuration = r.getConfiguration();
+        configuration.fontScale =  SPUtils.get(MainActivity.this,ThemeChooseActivity.KEY_FONT_LEVEL,1.0f);
+        r.updateConfiguration(configuration, r.getDisplayMetrics());
+        return r;
+    }
+
 
     /**
      * RxBus, 主线程, 接收Photo_URL的TAG的String类方法
